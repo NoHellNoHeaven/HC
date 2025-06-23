@@ -1,1 +1,87 @@
-<p>chofer works!</p>
+<app-navbar></app-navbar>
+<header>
+  <h1>HEALTHY TRUCK</h1>
+</header>
+
+<div class="choferes-container">
+  <!-- LISTA DE CHOFERES -->
+  <div class="choferes-list">
+    <h2>Lista de Choferes</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Teléfono</th>
+          <th>Licencia</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let chofer of choferes">
+          <td>{{ chofer.nombre }}</td>
+          <td>{{ chofer.apellido }}</td>
+          <td>{{ chofer.telefono }}</td>
+          <td>{{ chofer.licencia }}</td>
+          <td>
+            <button type="button" (click)="editarChofer(chofer)">Editar</button>
+            <button type="button" (click)="eliminarChofer(chofer)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="btn-agregar" (click)="abrirAgregarChofer()">Agregar Chofer</button>
+  </div>
+</div>
+
+<!-- MODAL AGREGAR CHOFER -->
+<div class="modal-overlay" *ngIf="mostrarFormularioAgregar">
+  <div class="modal">
+    <h2>Agregar Nuevo Chofer</h2>
+    <form (ngSubmit)="agregarChofer()" #choferForm="ngForm">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" placeholder="Nombre" [(ngModel)]="nuevoChofer.nombre" name="nombre" required />
+
+      <label for="apellido">Apellido</label>
+      <input type="text" id="apellido" placeholder="Apellido" [(ngModel)]="nuevoChofer.apellido" name="apellido" required />
+
+      <label for="telefono">Teléfono</label>
+      <input type="text" id="telefono" placeholder="Teléfono" [(ngModel)]="nuevoChofer.telefono" name="telefono" required />
+
+      <label for="licencia">Licencia</label>
+      <input type="text" id="licencia" placeholder="Licencia" [(ngModel)]="nuevoChofer.licencia" name="licencia" required />
+
+      <div class="modal-buttons">
+        <button type="submit" [disabled]="!choferForm.form.valid">Agregar</button>
+        <button type="button" (click)="cancelarAgregar()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL EDICIÓN -->
+<div class="modal-overlay" *ngIf="mostrarFormularioEdicion">
+  <div class="modal">
+    <h2>Editar Chofer</h2>
+    <form (ngSubmit)="guardarEdicion()">
+      <label for="nombreEdit">Nombre</label>
+      <input type="text" id="nombreEdit" [(ngModel)]="choferEditado.nombre" name="nombre" required />
+
+      <label for="apellidoEdit">Apellido</label>
+      <input type="text" id="apellidoEdit" [(ngModel)]="choferEditado.apellido" name="apellido" required />
+
+      <label for="telefonoEdit">Teléfono</label>
+      <input type="text" id="telefonoEdit" [(ngModel)]="choferEditado.telefono" name="telefono" required />
+
+      <label for="licenciaEdit">Licencia</label>
+      <input type="text" id="licenciaEdit" [(ngModel)]="choferEditado.licencia" name="licencia" readonly />
+
+      <div class="modal-buttons">
+        <button type="submit">Guardar</button>
+        <button type="button" (click)="cancelarEdicion()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

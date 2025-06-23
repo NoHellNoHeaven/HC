@@ -1,0 +1,134 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <div class="truck-icon">🚛</div>
+      <h1>Selección de Vehículo</h1>
+    </div>
+    <p class="subtitle">Seleccione el camión que utilizará para su jornada</p>
+  </div>
+
+  <!-- Trucks Grid -->
+  <div *ngIf="camionesLocales.length > 0; else sinCamiones" class="trucks-grid">
+    <div 
+      *ngFor="let camion of camionesLocales" 
+      class="truck-card"
+      (click)="seleccionarCamion(camion)"
+    >
+      <!-- Badge de mantenciones vencidas -->
+      <div *ngIf="getExpiredMaintenanceCount(camion) > 0" class="expired-badge">
+        <span class="warning-icon">⚠️</span>
+        <span>{{ getExpiredMaintenanceCount(camion) }}</span>
+      </div>
+
+      <!-- Header del card -->
+      <div class="card-header">
+        <h3 class="truck-plate">{{ camion.patente }}</h3>
+        <div class="truck-icon-small">🚛</div>
+      </div>
+
+      <!-- Contenido del card -->
+      <div class="card-content">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Marca:</span>
+            <span class="value">{{ camion.marca }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Modelo:</span>
+            <span class="value">{{ camion.modelo }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">📅</span>
+            <span class="value">{{ camion.anno }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Tipo:</span>
+            <span class="value">{{ camion.tipo }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">🎨</span>
+            <span class="value">{{ camion.color }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">⛽</span>
+            <span class="value">{{ camion.combustible }}</span>
+          </div>
+        </div>
+
+        <!-- Kilometraje -->
+        <div class="kilometers-section">
+          <div class="kilometers-info">
+            <div class="kilometers-label">
+              <span class="gauge-icon">📊</span>
+              <span>Kilometraje:</span>
+            </div>
+            <span class="kilometers-value">{{ camion.kilometraje_camion | number }} km</span>
+          </div>
+        </div>
+
+        <!-- Estado de mantenciones -->
+        <div class="maintenance-status">
+          <span class="status-label">Estado mantenciones:</span>
+          <div *ngIf="getExpiredMaintenanceCount(camion) > 0; else upToDate" class="status-expired">
+            {{ getExpiredMaintenanceCount(camion) }} vencida<span *ngIf="getExpiredMaintenanceCount(camion) > 1">s</span>
+          </div>
+          <ng-template #upToDate>
+            <div class="status-ok">
+              <span class="check-icon">✅</span>
+              Al día
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sin camiones -->
+  <ng-template #sinCamiones>
+    <div class="no-trucks">
+      <div class="no-trucks-icon">🚛</div>
+      <p>No hay camiones guardados localmente.</p>
+    </div>
+  </ng-template>
+
+  <!-- Modal -->
+  <div *ngIf="camionSeleccionado" class="modal-backdrop" (click)="cerrarModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>
+          <span class="gauge-icon">📊</span>
+          Actualizar Kilometraje - {{ camionSeleccionado.patente }}
+        </h3>
+      </div>
+
+      <div class="modal-content">
+        <div class="input-group">
+          <label for="kilometers">Nuevo Kilometraje</label>
+          <input
+            id="kilometers"
+            type="number"
+            [(ngModel)]="nuevoKilometraje"
+            min="0"
+            placeholder="Ingrese el nuevo kilometraje"
+            class="kilometers-input"
+          />
+          <p class="current-km">
+            Kilometraje actual: {{ camionSeleccionado.kilometraje_camion | number }} km
+          </p>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-alert">
+          <span class="error-icon">⚠️</span>
+          <span>{{ errorMessage }}</span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn-save" (click)="guardarKilometraje()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

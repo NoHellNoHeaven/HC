@@ -1,0 +1,96 @@
+<app-navbar></app-navbar>
+
+<div class="contact-wrapper">
+  <section class="contact-title">
+    <h1>Contáctanos</h1>
+    <p>Estamos aquí para ayudarte. Envíanos un mensaje y te responderemos lo antes posible.</p>
+  </section>
+
+  <section class="contact-form-container">
+    <h2>📩 Envíanos un Mensaje</h2>
+    <p>Completa el formulario y nos pondremos en contacto contigo pronto.</p>
+
+    <form (ngSubmit)="enviarFormulario()" #formulario="ngForm" class="contact-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre *</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            [(ngModel)]="contacto.nombre"
+            placeholder="Tu nombre"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="apellido">Apellido *</label>
+          <input
+            type="text"
+            id="apellido"
+            name="apellido"
+            [(ngModel)]="contacto.apellido"
+            placeholder="Tu apellido"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Correo Electrónico *</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="contacto.email"
+            placeholder="tu@ejemplo.com"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="celular">Teléfono</label>
+          <input
+            type="text"
+            id="celular"
+            name="celular"
+            [(ngModel)]="contacto.celular"
+            placeholder="+56 9 1234 5678"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            (keypress)="soloNumeros($event)"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="asunto">Asunto *</label>
+        <select
+          id="asunto"
+          name="asunto"
+          [(ngModel)]="contacto.asunto"
+          required
+        >
+          <option value="" disabled selected>Selecciona un asunto</option>
+          <option value="general">Consulta General</option>
+          <option value="soporte">Soporte Técnico</option>
+          <option value="otros">Otros</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="mensaje">Mensaje *</label>
+        <textarea
+          id="mensaje"
+          name="mensaje"
+          [(ngModel)]="contacto.mensaje"
+          placeholder="Escribe tu mensaje aquí..."
+          required
+          rows="6"
+        ></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">📨 Enviar Mensaje</button>
+    </form>
+  </section>
+</div>
