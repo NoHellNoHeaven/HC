@@ -1,0 +1,139 @@
+.navbar {
+  position: relative;
+  background: #fafa08fb;
+  color: #000;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+/* Botón hamburguesa */
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 30px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+  z-index: 1010;
+  position: relative;
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  background: white;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* Animación al abrir menú */
+.hamburger .bar1 {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger .bar2 {
+  opacity: 0;
+}
+
+.hamburger .bar3 {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Estilo del menú */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: none;
+  flex-direction: column;
+  background: #fafa08fb;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 1020;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  gap: 8px; /* Espacio entre botones */
+}
+
+.menu.open {
+  display: flex;
+}
+
+/* Estilo de cada ítem del menú */
+.menu li {
+  margin: 0 0 8px 0;
+  padding: 0;
+}
+
+.menu li:last-child {
+  margin-bottom: 0;
+}
+
+/* Estilo de los botones */
+.menu li button {
+  background-color: #fafa08;
+  color: #000;
+  border: none;
+  width: 100%;
+  padding: 1rem;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.menu li button:hover {
+  background-color: #e0e005;
+}
+
+/* Overlay para oscurecer fondo */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1015;
+}
+
+/* Para pantallas grandes */
+@media(min-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+
+  .menu {
+    display: flex !important;
+    position: static;
+    flex-direction: row;
+    background: transparent;
+    width: auto;
+    box-shadow: none;
+    z-index: auto;
+    gap: 16px;
+  }
+
+  .menu li {
+    margin: 0;
+  }
+
+  .menu li button {
+    background: transparent;
+    color: #000;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+  }
+
+  .menu li button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .overlay {
+    display: none !important;
+  }
+}

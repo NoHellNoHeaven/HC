@@ -1,1 +1,88 @@
-<p>usuarios works!</p>
+<app-navbar></app-navbar>
+
+<header class="bienvenida">
+  <h2>¡Buen viaje, {{ nombre }}!</h2>
+  <p><strong>En Ruta</strong></p>
+  <p>• Licencia: {{ licencia }}</p>
+</header>
+
+<section class="tarjeta servicio">
+  <h3>Estado de Servicio</h3>
+  <p>Estado: {{ estadoServicio.estado }}</p>
+  <p>Desde: {{ estadoServicio.desde }}</p>
+  <p>Nota: {{ estadoServicio.nota }}</p>
+  <button (click)="cambiarEstadoServicio()">
+    {{ estadoServicio.estado === 'Activo' ? 'Pausar Servicio' : 'Reanudar Servicio' }}
+  </button>
+</section>
+
+<main class="contenedor-dashboard">
+
+  <!-- RUTA -->
+  <section class="tarjeta ruta">
+    <h3>Ruta Actual</h3>
+    <p><strong>{{ ruta.origen }}</strong> → <strong>{{ ruta.destino }}</strong></p>
+    <p>Ciudad actual: {{ ruta.ciudadActual }}</p>
+    <p>Progreso: {{ ruta.progreso }}%</p>
+    <div class="barra-progreso">
+      <div class="relleno" [style.width.%]="ruta.progreso"></div>
+    </div>
+    <p>Restante: {{ ruta.kmRestantes }} km</p>
+    <p>Velocidad promedio: {{ ruta.velocidadPromedio }} km/h</p>
+    <p>ETA: {{ ruta.eta }}</p>
+  </section>
+
+  <!-- CAMIÓN -->
+  <section class="tarjeta camion">
+    <h3>Mi Camión</h3>
+    <p>Placa: {{ camion.placa }}</p>
+    <p>Combustible: {{ camion.combustible }}%</p>
+    <p>Kilometraje: {{ camion.kilometraje }} km</p>
+    <p>Capacidad: {{ camion.capacidad }} kg</p>
+
+    <div class="mantenimiento">
+      <h4>Mantenimiento</h4>
+      <p>Tipo: {{ camion.mantenimiento.tipo }}</p>
+      <p>Fecha: {{ camion.mantenimiento.fecha }}</p>
+      <p>Estado:
+        <span [class.realizado]="camion.mantenimiento.realizado">
+          {{ camion.mantenimiento.realizado ? 'Realizado' : 'Pendiente' }}
+        </span>
+      </p>
+      <button (click)="marcarMantenimientoRealizado()" [disabled]="camion.mantenimiento.realizado">
+        Marcar como realizado
+      </button>
+    </div>
+  </section>
+
+  <!-- CARGA -->
+  <section class="tarjeta carga">
+    <h3>Carga Actual</h3>
+    <p>Descripción: {{ carga.descripcion }}</p>
+    <p>Peso: {{ carga.peso }} kg</p>
+    <p>Destino: {{ carga.destino }}</p>
+    <p>Estado: 
+      <span [class.confirmada]="carga.estado === 'Confirmada'">{{ carga.estado }}</span>
+    </p>
+    <button (click)="confirmarEntrega()" [disabled]="carga.estado === 'Confirmada'">Confirmar Entrega</button>
+  </section>
+
+  <!-- BOTONES DE VISTA -->
+  <div class="view-buttons">
+    <button (click)="switchView('calendar')" [disabled]="esVistaCalendar()">Vista Calendario</button>
+    <button (click)="switchView('list')" [disabled]="esVistaList()">Vista Lista</button>
+  </div>
+
+  <!-- CALENDARIO -->
+  <div *ngIf="vistaActual === 'calendar'" class="calendar-wrapper">
+    <div class="calendar-container">
+      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </div>
+
+  <!-- LISTA -->
+  <div *ngIf="vistaActual === 'list'" class="list-container">
+    <p>Contenido de la lista de tareas, eventos o entregas...</p>
+  </div>
+
+</main>

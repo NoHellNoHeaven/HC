@@ -1,0 +1,18 @@
+<nav class="navbar" role="navigation" aria-label="Menú principal">
+  <button class="hamburger" (click)="toggleMenu()" aria-label="Menú" [attr.aria-expanded]="menuOpen">
+    <span [class.bar1]="menuOpen"></span>
+    <span [class.bar2]="menuOpen"></span>
+    <span [class.bar3]="menuOpen"></span>
+  </button>
+
+  <ul [class.open]="menuOpen" class="menu">
+    <li><button class="home" (click)="navegar('/home')">Home</button></li>
+    <li><button class="mantenciones" (click)="navegar('/mantenciones')">Mantenciones</button></li>
+    <li><button class="choferes" (click)="navegar('/choferes')">Choferes</button></li>
+    <li><button class="Dashboard" (click)="navegar('/Dashboard')">Reportes</button></li>
+    <li><button class="configuraciones" (click)="navegar('/configuraciones')">Configuración</button></li>
+  </ul>
+
+  <!-- Overlay -->
+  <div class="overlay" *ngIf="menuOpen" (click)="closeMenu()" aria-hidden="true"></div>
+</nav>

@@ -1,1 +1,273 @@
 /* You can add global styles to this file, and also import other style files */
+/* ====== VARIABLES GLOBALES ====== */
+:root {
+  /* Variables personalizadas */
+  --card-background: #ffffff; /* antes: #87c2ff */
+  --box-shadow-light: #888888; /* antes: #1c4e85 */
+  --text-color: #1F2937; /* gris oscuro */
+  --primary-color: #333333; /* reemplazo neutro al azul fuerte */
+  --text-secondary: #4B5563;
+  --background-color-focus: #e5e7eb;
+  --error-color: #EF4444;
+  --button-text-color: #FFFFFF;
+  --background-color-boton: #444444;
+  --box-shadow-light-strong: #999999;
+  --primary-hover-boton: #111111;
+
+  /* Colores primarios */
+  --color-primary: #333333;
+  --color-primary-hover: #111111;
+  --color-secondary: #6B7280;
+  --color-background: #F3F4F6;
+  --color-surface: #FFFFFF;
+  --color-border: #E5E7EB;
+  --color-text: #1F2937;
+  --color-text-alt: #6B7280;
+  --color-success: #10B981;
+  --color-success-hover: #059669;
+  --color-error: #EF4444;
+  --color-error-hover: #DC2626;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 6px 8px rgba(0, 0, 0, 0.1);
+
+  /* Tamaños */
+  --border-radius: 0.5rem;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --transition: 0.3s ease;
+}
+
+/* ====== RESET Y ESTILOS BASE ====== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ====== LAYOUT ADMIN ====== */
+.admin-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-header,
+.admin-footer {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  text-align: center;
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-body {
+  display: flex;
+  flex: 1;
+  margin-top: var(--spacing-lg);
+}
+
+.admin-sidebar {
+  width: 240px;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: var(--spacing-lg) var(--spacing-md);
+}
+
+.admin-sidebar h2 {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-primary);
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.sidebar-button {
+  display: block;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  color: var(--color-surface);
+  border-radius: var(--border-radius);
+  transition: background var(--transition);
+  text-align: left;
+}
+
+.sidebar-button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.admin-content {
+  flex: 1;
+  padding: var(--spacing-lg);
+  background-color: var(--color-background);
+}
+
+/* ====== COMPONENTES ====== */
+.section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+button,
+.action-button {
+  display: inline-block;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+button.primary {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+}
+
+button.primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+button.success {
+  background-color: var(--color-success);
+  color: var(--color-surface);
+}
+
+button.success:hover {
+  background-color: var(--color-success-hover);
+}
+
+button.error {
+  background-color: var(--color-error);
+  color: var(--color-surface);
+}
+
+button.error:hover {
+  background-color: var(--color-error-hover);
+}
+
+/* ====== TABLAS ====== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing-md);
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+thead th {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-secondary);
+  color: var(--color-surface);
+  text-align: left;
+}
+
+tbody td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+tr:hover td {
+  background-color: var(--color-background);
+}
+
+/* ====== TARJETAS DE MANTENIMIENTO ====== */
+.maintenance-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.maintenance-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md);
+  transition: box-shadow var(--transition);
+}
+
+.maintenance-card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* ====== CALENDARIO ====== */
+.day {
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+  transition: box-shadow var(--transition);
+}
+
+.day:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.date {
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+}
+
+event {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+}
+
+event-warning {
+  color: #92400E;
+}
+
+event-error {
+  background-color: #FED7D7;
+  color: #991B1B;
+}
+
+event-success {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+.hidden {
+  display: none;
+}

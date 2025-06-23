@@ -1,0 +1,38 @@
+<app-navbar></app-navbar>
+<header>
+  <h1>HEALTHY TRUCK</h1>
+</header>
+
+<div class="main-container">
+  <main>
+    <h2>Configuraciones</h2>
+    <ul class="settings-list">
+      <li>
+        <label for="language">Idioma:</label>
+        <select id="language" (change)="guardarConfiguracion('language', $event)">
+          <option value="es">Español</option>
+          <option value="en">Inglés</option>
+        </select>
+      </li>
+      <li>
+        <label for="theme">Tema:</label>
+        <select id="theme" [value]="theme" (change)="onThemeChange($event)">
+          <option value="light">Claro</option>
+          <option value="dark">Oscuro</option>
+        </select>
+      </li>
+      <li>
+        <label for="privacy">Privacidad:</label>
+        <select id="privacy" (change)="guardarConfiguracion('privacy', $event)">
+          <option value="public">Público</option>
+          <option value="private">Privado</option>
+        </select>
+      </li>
+    </ul>
+    <button class="save-button" (click)="mostrarMensaje()">Guardar Cambios</button>
+  </main>
+</div>
+
+<footer>
+  <p>&copy; 2025 Healthy Truck. Todos los derechos reservados.</p>
+</footer>

@@ -1,1 +1,112 @@
-<p>camiones works!</p>
+<app-navbar></app-navbar>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de camiones</title>
+</head>
+<body>
+  <div class="formulario-container">
+  <h1>Agregar Camión</h1>
+
+  <form #form="ngForm" (ngSubmit)="enviarFormulario()" novalidate class="formulario-grid">
+
+    <!-- Información del Vehículo -->
+    <div id="FormularioVehiculo">
+      <h2>Información del Vehículo</h2>
+
+      <label for="patente">Patente</label>
+      <input type="text" name="patente" [(ngModel)]="camion.patente" required #patente="ngModel" placeholder="Ej: ABCD12" />
+      <div *ngIf="patente.invalid && patente.touched" class="error">
+        La patente es obligatoria
+      </div>
+
+      <label for="tipo_vehiculo">Tipo</label>
+      <select id="tipo_vehiculo" name="tipo_vehiculo" [(ngModel)]="camion.tipo_vehiculo" class="form-control" required>
+        <option value="" disabled selected hidden>Selecciona tipo de vehículo</option>
+        <option *ngFor="let tipo of tipoVehiculo" [value]="tipo">{{ tipo }}</option>
+      </select>
+
+      <label for="marca">Marca</label>
+      <input type="text" name="marca" [(ngModel)]="camion.marca" required placeholder="Ej: Mitsubishi" />
+
+      <label for="modelo">Modelo</label>
+      <input type="text" name="modelo" [(ngModel)]="camion.modelo" required placeholder="Ej: Canter" />
+
+      <label for="anno">Año</label>
+      <input  type="number" name="anno" id="anno" [(ngModel)]="camion.anno" required placeholder="Ej: 2009" min="1900" [max]="currentYear"/>
+
+      <label for="color">Color</label>
+      <input type="text" name="color" [(ngModel)]="camion.color" required placeholder="Ej: Blanco Escocia" />
+
+      <label for="nro_motor">Nro Motor</label>
+      <input type="text" name="nro_motor" [(ngModel)]="camion.nro_motor" required placeholder="Ej: 4M50 D11124" />
+
+      <label for="nro_chasis">Nro Chasis</label>
+      <input type="text" name="nro_chasis" [(ngModel)]="camion.nro_chasis" required placeholder="Ej: FE85DGA00785" />
+
+      <label for="fabricante">Fabricante</label>
+      <input type="text" name="fabricante" [(ngModel)]="camion.fabricante" required placeholder="Ej: Mitsubishi Fuso" />
+
+      <label for="procedencia">Procedencia</label>
+      <input type="text" name="procedencia" [(ngModel)]="camion.procedencia" required placeholder="Ej: Brasil" />
+
+      <label for="tipo_sello">Tipo Sello</label>
+      <select id="tipo_sello" name="tipo_sello" [(ngModel)]="camion.tipo_sello" class="form-control" required>
+        <option value="" disabled selected hidden>Selecciona tipo de sello</option>
+        <option *ngFor="let sello of tiposSello" [value]="sello">{{ sello }}</option>
+      </select>
+
+<label for="combustible">Combustible</label>
+<select id="combustible" [(ngModel)]="camion.combustible" name="combustible" class="form-control">
+  <option value="" disabled selected hidden>Selecciona tipo de combustible</option>
+  <option *ngFor="let tipo of tiposCombustible" [value]="tipo">{{ tipo }}</option>
+</select>
+
+
+      <label for="kilometraje_camion">Kilometraje del Camión</label>
+      <input type="number" name="kilometraje_camion" [(ngModel)]="camion.kilometraje_camion" required #kilometraje_camion="ngModel" placeholder="Ej: 150000" />
+      <div *ngIf="kilometraje_camion.invalid && (kilometraje_camion.touched || form.submitted)" class="error">
+        Ingresa el kilometraje del camión
+      </div>
+      <label for="fecha_revision_tecnica">Fecha Revisión Técnica</label>
+      <input type="month" id="fecha_revision_tecnica" name="fecha_revision_tecnica" [(ngModel)]="camion.fecha_revision_tecnica" class="form-control" required/>
+
+    </div>
+
+
+    <!-- Plan de Mantenciones -->
+    <div id="FormularioMantenciones">
+      <h2>Plan de Mantenciones</h2>
+      <div *ngFor="let mantencion of mantenciones; let i = index" class="mantencion-item">
+        <label>{{ mantencion.nombre }}</label>
+
+        <div class="campo-container">
+          <select [(ngModel)]="mantencion.accionSeleccionada" [name]="'accion_' + i" required #accion="ngModel">
+            <option value="" disabled hidden>¿Qué hacer?</option>
+            <option *ngFor="let a of mantencion.accion" [value]="a">{{ a }}</option>
+          </select>
+          <div *ngIf="accion.invalid && (accion.touched || form.submitted)" class="error">
+            Selecciona una acción
+          </div>
+        </div>
+
+        <div class="campo-container">
+          <input type="number" [(ngModel)]="mantencion.kilometraje" [name]="'km_' + i" required #km="ngModel" placeholder="Km" min="0" step="5000" />
+          <div *ngIf="km.invalid && (km.touched || form.submitted)" class="error">
+            Ingresa el kilometraje
+          </div>
+        </div>
+
+        <div class="campo-container">
+          <input type="number" [(ngModel)]="mantencion.meses" [name]="'meses_' + i" placeholder="Meses" min="1" max="24" />
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="!form.valid">Registrar</button>
+  </form>
+</div>
+</body>
+</html>

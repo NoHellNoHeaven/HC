@@ -1,1 +1,84 @@
-<p>dashboard works!</p>
+<app-navbar></app-navbar>
+<!-- dashboard.component.html -->
+<div class="dashboard">
+  <!-- Tarjetas resumen -->
+  <div class="summary-cards">
+    <div class="card danger">
+      <p class="label">Alertas Críticas</p>
+      <h2>1</h2>
+      <span>Requieren atención inmediata</span>
+    </div>
+    <div class="card warning">
+      <p class="label">Mantenciones Urgentes</p>
+      <h2>1</h2>
+      <span>Próximos 7 días</span>
+    </div>
+    <div class="card info">
+      <p class="label">Flota Total</p>
+      <h2>4</h2>
+      <span>Camiones activos</span>
+    </div>
+    <div class="card success">
+      <p class="label">En Buen Estado</p>
+      <h2>1</h2>
+      <span>Sin alertas pendientes</span>
+    </div>
+  </div>
+
+  <!-- Alertas urgentes -->
+  <div class="urgent-alerts">
+    <div class="header">
+      <h3>Alertas Urgentes</h3>
+      <p>Mantenimientos que requieren atención inmediata</p>
+    </div>
+    <div class="alert-list">
+      <div class="alert-item" *ngFor="let alert of alertas">
+        <div>
+          <strong>{{ alert.codigo }}</strong> - {{ alert.descripcion }}<br>
+          <small>{{ alert.detalle }}</small>
+        </div>
+        <div class="buttons">
+          <button>Programar</button>
+          <button class="notify">Notificar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado de la Flota -->
+  <div class="fleet-status">
+    <div class="header">
+      <h3>Estado de la Flota</h3>
+      <p>Monitoreo en tiempo real de todos los vehículos</p>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Camion</th>
+          <th>Chofer</th>
+          <th>Kilometraje</th>
+          <th>Próximo Manto.</th>
+          <th>Estado</th>
+          <th>Alertas</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let camion of camiones">
+          <td data-label="Camion">{{ camion.codigo }}<br><small>{{ camion.modelo }}</small></td>
+          <td data-label="Chofer">{{ camion.chofer }}</td>
+          <td data-label="Kilometraje"><strong>{{ camion.km }}</strong></td>
+          <td data-label="Próximo Manto.">{{ camion.proximoManto }}</td>
+          <td data-label="Estado"><span class="status" [ngClass]="camion.estado">{{ camion.estado }}</span></td>
+          <td data-label="Alertas">
+            <span class="tag" *ngFor="let alerta of camion.alertas">{{ alerta }}</span>
+          </td>
+          <td data-label="Acciones">
+            <button>Ver</button>
+            <button>Mantener</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
