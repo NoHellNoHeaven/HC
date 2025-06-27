@@ -38,11 +38,11 @@ import {
   ɵɵtemplate,
   ɵɵviewQuery
 } from "./chunk-5QXQOMPN.js";
+import "./chunk-P6U2JBMQ.js";
 import {
   Calendar,
   CustomRenderingStore
 } from "./chunk-C36RJ64M.js";
-import "./chunk-P6U2JBMQ.js";
 import {
   __spreadValues
 } from "./chunk-WDMUDEB6.js";

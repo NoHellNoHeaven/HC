@@ -1,1 +1,72 @@
-<p>alertas works!</p>
+<app-navbar></app-navbar>
+<div class="alertas-container">
+  <h2>Alertas de Mantenimiento</h2>
+  <p>Sistema de gestión de mantenimientos preventivo y correctivo</p>
+
+  <div class="stats-cards">
+    <div class="card total">Total Alertas <strong>{{ totalAlertas }}</strong></div>
+    <div class="card critica">Críticas <strong>{{ criticasCount }}</strong></div>
+    <div class="card vencidas">Vencidas <strong>{{ vencidasCount }}</strong></div>
+    <div class="card programadas">Programadas <strong>{{ programadasCount }}</strong></div>
+    <div class="card costo">Costo Estimado <strong>{{ calcularCostoTotal() }}</strong></div>
+  </div>
+
+  <div class="filtros" role="group" aria-label="Filtros de alertas">
+    <button
+      [class.active]="filtro === 'Todas'"
+      (click)="filtro = 'Todas'"
+      [attr.aria-pressed]="filtro === 'Todas'">
+      Todas
+    </button>
+    <button
+      [class.active]="filtro === 'Favoritas'"
+      (click)="filtro = 'Favoritas'"
+      [attr.aria-pressed]="filtro === 'Favoritas'">
+      Favoritas
+    </button>
+    <button
+      [class.active]="filtro === 'Críticas'"
+      (click)="filtro = 'Críticas'"
+      [attr.aria-pressed]="filtro === 'Críticas'">
+      Críticas
+    </button>
+    <button
+      [class.active]="filtro === 'Inspección'"
+      (click)="filtro = 'Inspección'"
+      [attr.aria-pressed]="filtro === 'Inspección'">
+      Inspección
+    </button>
+    <button
+      [class.active]="filtro === 'Mecánica'"
+      (click)="filtro = 'Mecánica'"
+      [attr.aria-pressed]="filtro === 'Mecánica'">
+      Mecánica
+    </button>
+  </div>
+
+  <div *ngIf="alertasFiltradas().length === 0" class="no-alertas">
+    No hay alertas para mostrar con el filtro seleccionado.
+  </div>
+
+  <div *ngFor="let alerta of alertasFiltradas()" class="alerta-card">
+    <div class="alerta-header">
+      <span class="estado critica">{{ alerta.tipo }}</span>
+      <span class="prioridad">{{ alerta.prioridad }}</span>
+      <span class="programada" *ngIf="alerta.programada">Programada</span>
+    </div>
+    <h3>{{ alerta.titulo }}</h3>
+    <p>{{ alerta.descripcion }}</p>
+
+    <div class="datos">
+      <div><strong>Camión:</strong> {{ alerta.camion }}</div>
+      <div><strong>Kilometraje:</strong> {{ alerta.kilometraje }}</div>
+      <div><strong>Costo estimado:</strong> {{ alerta.costo }}</div>
+      <div><strong>Fecha estimada:</strong> {{ alerta.fecha }}</div>
+    </div>
+
+    <div class="botones">
+      <button class="programar" (click)="programar(alerta)">Programar</button>
+      <button class="completada" (click)="marcarCompletada(alerta)">Marcar Completada</button>
+    </div>
+  </div>
+</div>
