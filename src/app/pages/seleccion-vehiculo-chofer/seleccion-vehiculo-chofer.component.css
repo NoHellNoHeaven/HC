@@ -62,6 +62,7 @@
 }
 
 .expired-badge {
+<<<<<<< HEAD
   position: absolute;
   top: -8px;
   right: -8px;
@@ -75,6 +76,21 @@
   align-items: center;
   gap: 4px;
   z-index: 10;
+=======
+position: absolute;
+    top: -4px;
+    right: 0px;
+    background-color: #dc2626;
+    color: white;
+    border-radius: 7px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 10;
+>>>>>>> 943ccfefaf717acd14d2961f2668d1e444afab03
 }
 
 .warning-icon {
