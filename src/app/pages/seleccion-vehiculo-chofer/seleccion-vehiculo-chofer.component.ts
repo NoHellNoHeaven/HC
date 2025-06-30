@@ -116,7 +116,7 @@ export class SeleccionVehiculoChoferComponent implements OnInit {
         .map((m: any) => `${m.nombre} (programado para ${m.proximoKilometraje} km)`);
 
       if (vencidas.length > 0) {
-        const mensajeWhatsApp = `⚠️ Alerta: Mantenciones vencidas en el camión ${this.camionesLocales[index].patente}.\nKilometraje actual: ${this.nuevoKilometraje} km\n\nVencidas:\n${vencidas.join('\n')}`;
+        const mensajeWhatsApp = `⚠️ Alerta: Mantenciones vencidas en el camión *${this.camionesLocales[index].patente}*.\nKilometraje actual: *${this.nuevoKilometraje}* km\n\nMantenciones vencidas:\n${vencidas.join('\n')}`;
         this.enviarWhatsApp(mensajeWhatsApp);
         this.enviarWhatsapp2(mensajeWhatsApp);
         alert(`⚠️ Atención: Estas mantenciones ya vencieron:\n\n${vencidas.join('\n')}`);
