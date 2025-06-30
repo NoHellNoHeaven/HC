@@ -8,7 +8,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
   standalone: true,
   imports: [CommonModule, NavbarComponent],
   templateUrl: './configuraciones.component.html',
-  styleUrls: ['./configuraciones.component.scss']
+  styleUrls: ['./configuraciones.component.css']
 })
 export class ConfiguracionesComponent implements OnInit {
   theme = 'light'; // valor por defecto

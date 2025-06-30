@@ -19,7 +19,7 @@ interface Alerta {
   standalone: true,
   imports: [NavbarComponent, CommonModule],
   templateUrl: './alertas.component.html',
-  styleUrls: ['./alertas.component.scss']
+  styleUrls: ['./alertas.component.css']
 })
 export class AlertasComponent {
   filtro: string = 'Todas';

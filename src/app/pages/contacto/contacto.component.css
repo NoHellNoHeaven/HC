@@ -1,21 +1,38 @@
+/* Reset global */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
+html, body {
+  height: 100%;
+  min-height: 100%;
+  background-color: var(--color-background);
+  color: var(--color-text);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-color);
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
-/* Contenedor general */
+/* Forzar que body ocupe toda la altura y sea flex container */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Contenedor principal que ocupa todo el espacio */
 .contact-wrapper {
+  flex-grow: 1; /* Ocupa todo el espacio disponible */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   padding: 80px 24px 40px;
   max-width: 1000px;
   margin: 0 auto;
+  background-color: var(--color-background);
+  min-height: 0; /* Para evitar crecimiento no deseado */
 }
 
 /* Título principal */
@@ -26,13 +43,13 @@ body {
 
 .contact-title h1 {
   font-size: 2.5rem;
-  color: var(--primary-dark);
+  color: var(--primary-color);
   margin-bottom: 10px;
 }
 
 .contact-title p {
   font-size: 1.1rem;
-  color: #555;
+  color: var(--color-text-alt);
 }
 
 /* Contenedor del formulario */
@@ -40,7 +57,12 @@ body {
   background-color: var(--card-background);
   padding: 40px;
   border-radius: 16px;
-  box-shadow: var(--card-shadow);
+  box-shadow: var(--shadow-md);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
 }
 
 .contact-form-container h2 {
@@ -51,7 +73,7 @@ body {
 
 .contact-form-container p {
   margin-bottom: 30px;
-  color: #666;
+  color: var(--color-text-alt);
 }
 
 /* Formulario */
@@ -84,10 +106,11 @@ select,
 textarea {
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--color-border);
   font-size: 1rem;
-  background-color: #fefefe;
-  transition: border 0.3s, box-shadow 0.3s;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  transition: border 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
 }
 
 input:focus,
@@ -102,7 +125,7 @@ textarea:focus {
 .submit-btn {
   padding: 14px;
   background-color: var(--primary-color);
-  color: white;
+  color: var(--button-text-color);
   font-size: 1rem;
   font-weight: 600;
   border: none;
@@ -113,7 +136,7 @@ textarea:focus {
 }
 
 .submit-btn:hover {
-  background-color: var(--primary-dark);
+  background-color: var(--primary-hover-boton);
 }
 
 .submit-btn:active {

@@ -9,7 +9,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
   selector: 'app-choferes',
   imports: [CommonModule, FormsModule, NavbarComponent],
   templateUrl: './chofer.component.html',
-  styleUrls: ['./chofer.component.scss']
+  styleUrls: ['./chofer.component.css']
 })
 export class ChoferesComponent {
   constructor(private router: Router) {}

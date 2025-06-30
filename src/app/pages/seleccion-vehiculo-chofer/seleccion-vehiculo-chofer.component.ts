@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-seleccion-vehiculo-chofer',
   imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, NavbarComponent, CommonModule ],
   templateUrl: './seleccion-vehiculo-chofer.component.html',
-  styleUrls: ['./seleccion-vehiculo-chofer.component.scss']
+  styleUrls: ['./seleccion-vehiculo-chofer.component.css']
 })
 export class SeleccionVehiculoChoferComponent implements OnInit {
   camionesLocales: any[] = [];

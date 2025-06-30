@@ -7,7 +7,7 @@ import { NavbarComponent } from '../../navbar/navbar.component';
   selector: 'app-dashboard',
   standalone: true,
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  styleUrls: ['./dashboard.component.css'],
   imports: [CommonModule, NavbarComponent]
 })
 

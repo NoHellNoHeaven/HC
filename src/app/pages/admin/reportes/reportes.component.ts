@@ -8,7 +8,7 @@ import { NavbarComponent } from "../../navbar/navbar.component";
   standalone: true,
   imports: [CommonModule, FormsModule, NavbarComponent], // Añade FormsModule aquí
   templateUrl: './reportes.component.html',
-  styleUrls: ['./reportes.component.scss']
+  styleUrls: ['./reportes.component.css']
 })
 export class ReportesComponent {
   reportes = [

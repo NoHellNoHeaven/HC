@@ -13,7 +13,7 @@ const routes: Routes = [
   standalone: true,
   imports: [NavbarComponent],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.css'
 })
 export class LoginComponent {
   constructor(private router: Router) {}

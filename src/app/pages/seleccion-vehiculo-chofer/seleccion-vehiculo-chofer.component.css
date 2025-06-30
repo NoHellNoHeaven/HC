@@ -1,6 +1,6 @@
 .container {
   min-height: 100vh;
-  background-color: #f9fafb;
+  background-color: var(--color-bg-box);
   padding: 24px;
 }
 
@@ -25,12 +25,12 @@
 .header h1 {
   font-size: 2rem;
   font-weight: bold;
-  color: #111827;
+  color: var(--color-text);
   margin: 0;
 }
 
 .subtitle {
-  color: #6b7280;
+  color: var(--color-text-alt);
   font-size: 1.125rem;
   margin: 0;
 }
@@ -45,10 +45,10 @@
 }
 
 .truck-card {
-  background: white;
+  background: var(--color-surface);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e5e7eb;
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--color-border);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -56,8 +56,8 @@
 }
 
 .truck-card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  border-color: #3b82f6;
+  box-shadow: var(--shadow-hover);
+  border-color: #3b82f6; /* azul fuerte, podría hacerse variable si quieres */
   transform: translateY(-2px);
 }
 
@@ -65,8 +65,8 @@
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: #dc2626;
-  color: white;
+  background-color: var(--color-error);
+  color: var(--button-text-color);
   border-radius: 20px;
   padding: 4px 8px;
   font-size: 0.75rem;
@@ -85,15 +85,15 @@
 .card-header {
   padding: 20px 20px 12px 20px;
   display: flex;
-  justify-content: between;
+  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--color-background);
 }
 
 .truck-plate {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #2563eb;
+  color: #2563eb; /* azul - si quieres puedes pasarlo a variable */
   margin: 0;
   flex: 1;
 }
@@ -124,19 +124,19 @@
 
 .label {
   font-weight: 500;
-  color: #6b7280;
+  color: var(--color-text-alt);
   min-width: fit-content;
 }
 
 .value {
-  color: #111827;
+  color: var(--color-text);
   font-weight: 400;
 }
 
 /* Kilometers Section */
 .kilometers-section {
   padding-top: 16px;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid var(--color-background);
   margin-bottom: 16px;
 }
 
@@ -151,7 +151,7 @@
   align-items: center;
   gap: 8px;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--color-text-alt);
 }
 
 .gauge-icon {
@@ -161,7 +161,7 @@
 .kilometers-value {
   font-size: 1.125rem;
   font-weight: bold;
-  color: #2563eb;
+  color: #2563eb; /* azul */
 }
 
 /* Maintenance Status */
@@ -173,12 +173,12 @@
 }
 
 .status-label {
-  color: #6b7280;
+  color: var(--color-text-alt);
 }
 
 .status-expired {
-  background-color: #fef2f2;
-  color: #dc2626;
+  background-color: #fef2f2; /* claro, podría usar variable */
+  color: var(--color-error);
   padding: 4px 8px;
   border-radius: 6px;
   font-weight: 500;
@@ -186,7 +186,7 @@
 }
 
 .status-ok {
-  background-color: #f0fdf4;
+  background-color: #f0fdf4; /* claro, también se puede poner variable */
   color: #16a34a;
   padding: 4px 8px;
   border-radius: 6px;
@@ -214,7 +214,7 @@
 }
 
 .no-trucks p {
-  color: #6b7280;
+  color: var(--color-text-alt);
   font-size: 1.125rem;
   margin: 0;
 }
@@ -235,25 +235,26 @@
 }
 
 .modal {
-  background: white;
+  background: var(--color-surface);
   border-radius: 12px;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   width: 100%;
   max-width: 480px;
   max-height: 90vh;
   overflow-y: auto;
+  color: var(--color-text);
 }
 
 .modal-header {
   padding: 24px 24px 16px 24px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--color-background);
 }
 
 .modal-header h3 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -270,18 +271,20 @@
 .input-group label {
   display: block;
   font-weight: 500;
-  color: #374151;
+  color: var(--color-text-alt);
   margin-bottom: 8px;
 }
 
 .kilometers-input {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #d1d5db;
+  border: 2px solid var(--color-border);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s;
   box-sizing: border-box;
+  background-color: var(--color-surface);
+  color: var(--color-text);
 }
 
 .kilometers-input:focus {
@@ -292,7 +295,7 @@
 
 .current-km {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--color-text-alt);
   margin-top: 8px;
   margin-bottom: 0;
 }
@@ -300,7 +303,7 @@
 .error-alert {
   background-color: #fef2f2;
   border: 1px solid #fecaca;
-  color: #dc2626;
+  color: var(--color-error);
   padding: 12px 16px;
   border-radius: 8px;
   display: flex;
@@ -322,9 +325,9 @@
 
 .btn-cancel {
   padding: 10px 20px;
-  border: 2px solid #d1d5db;
-  background: white;
-  color: #374151;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-alt);
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
@@ -332,7 +335,7 @@
 }
 
 .btn-cancel:hover {
-  background-color: #f9fafb;
+  background-color: var(--color-bg-box);
   border-color: #9ca3af;
 }
 
