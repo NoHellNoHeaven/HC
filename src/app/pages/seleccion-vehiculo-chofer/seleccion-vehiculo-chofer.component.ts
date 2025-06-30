@@ -44,6 +44,7 @@ export class SeleccionVehiculoChoferComponent implements OnInit {
     this.nuevoKilometraje = null;
     this.errorMessage = "";
   }
+  //API DE MENSAJERIA WHATSAPP
   enviarWhatsApp(mensaje: string) {
     const telefono = '56948859245'; // sin +
     const apikey = '4730094';
@@ -54,6 +55,19 @@ export class SeleccionVehiculoChoferComponent implements OnInit {
       .then(data => console.log('✅ WhatsApp enviado:', data))
       .catch(error => console.error('❌ Error al enviar WhatsApp:', error));
   }
+
+  enviarWhatsapp2(mensaje: string) {
+  const telefono = '56942026558'; // Número sin el signo +
+  const apikey = '4003809';
+  const url = `https://api.callmebot.com/whatsapp.php?phone=${telefono}&text=${encodeURIComponent(mensaje)}&apikey=${apikey}`;
+
+  fetch(url)
+    .then(response => response.text())
+    .then(data => console.log('📲 WhatsApp 2 enviado:', data))
+    .catch(error => console.error('❌ Error al enviar WhatsApp 2:', error));
+}
+  //API DE MENSAJERIA WHATSAPP
+
 
   guardarKilometraje() {
     if (this.nuevoKilometraje == null || this.nuevoKilometraje < 0) {
@@ -104,6 +118,7 @@ export class SeleccionVehiculoChoferComponent implements OnInit {
       if (vencidas.length > 0) {
         const mensajeWhatsApp = `⚠️ Alerta: Mantenciones vencidas en el camión ${this.camionesLocales[index].patente}.\nKilometraje actual: ${this.nuevoKilometraje} km\n\nVencidas:\n${vencidas.join('\n')}`;
         this.enviarWhatsApp(mensajeWhatsApp);
+        this.enviarWhatsapp2(mensajeWhatsApp);
         alert(`⚠️ Atención: Estas mantenciones ya vencieron:\n\n${vencidas.join('\n')}`);
       } else {
         alert("✅ Kilometraje actualizado correctamente");
