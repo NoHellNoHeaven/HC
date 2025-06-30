@@ -1,0 +1,324 @@
+/* ====== CONTENEDOR PRINCIPAL Y ENCABEZADO ====== */
+.home-container {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  padding: 24px;
+}
+
+.home-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.home-header h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 12px 0;
+  color: var(--text-color);
+}
+
+.home-header p {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.boton {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.configuraciones {
+  background: var(--primary-color);
+  color: var(--card-background);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.configuraciones:hover {
+  background-color: var(--primary-dark);
+}
+
+/* ====== BOTONES DE VISTA ====== */
+.view-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.view-buttons button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: var(--card-background);
+  transition: background-color 0.3s ease;
+}
+
+.view-buttons button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #666;
+}
+
+.view-buttons button:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+}
+
+/* ====== SECCIÓN DE MANTENIMIENTOS ====== */
+.maintenance-list h2,
+.alert-list h2 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.maintenance-card,
+.alert-card {
+  padding: 20px;
+  border-radius: 14px;
+  background: var(--card-background);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+}
+
+.mantenimiento-rojo {
+  background-color: #f8d7da;
+  border-left: 6px solid #dc3545;
+  color: #721c24;
+}
+
+.mantenimiento-amarillo {
+  background-color: #fff3cd;
+  border-left: 6px solid #ffc107;
+  color: #856404;
+}
+
+.mantenimiento-verde {
+  background-color: #d4edda;
+  border-left: 6px solid #28a745;
+  color: #155724;
+}
+
+/* ====== SECCIÓN DE ALERTAS ====== */
+.alert-card {
+  margin-bottom: 20px;
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: white;
+}
+
+.status-badge.pendiente {
+  background-color: #dc3545;
+}
+
+.status-badge.reconocida {
+  background-color: #28a745;
+}
+
+.alert-type {
+  font-weight: bold;
+  margin-top: 12px;
+}
+
+.alert-type.advertencia {
+  color: #856404;
+}
+
+.alert-type.critica {
+  color: #721c24;
+}
+
+.alert-type.normal {
+  color: #155724;
+}
+
+.alert-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.alert-buttons button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.alert-buttons .details {
+  background-color: #6c757d;
+  color: white;
+}
+
+.alert-buttons .details:hover {
+  background-color: #5a6268;
+}
+
+.alert-buttons .primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.alert-buttons .primary:hover {
+  background-color: var(--primary-dark);
+}
+
+/* ====== PIE DE PÁGINA ====== */
+.home-footer {
+  text-align: center;
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--card-border);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  opacity: 0.6;
+} 
+
+.truck-name-box {
+  display: inline-block;
+  background-color: var(--card-background);
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fleet-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+.truck-card {
+  background-color: var(--card-background);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow, 0 4px 6px rgba(0, 0, 0, 0.1));
+  padding: 20px;
+  max-width: 320px;
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.truck-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover, 0 6px 10px rgba(0, 0, 0, 0.15));
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.badge-green {
+  background-color: #28a745;
+}
+
+.badge-blue {
+  background-color: #007bff;
+}
+
+.alert-count {
+  font-weight: bold;
+  color: #dc3545;
+}
+
+.icon.green {
+  color: #28a745;
+}
+
+.icon.blue {
+  color: #007bff;
+}
+
+.progress-info {
+  margin-top: 12px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 6px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.green {
+  background-color: #28a745;
+}
+
+.progress-fill.red {
+  background-color: #dc3545;
+}
+
+.progress-fill.black {
+  background-color: #333;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.details-btn {
+  margin-top: 12px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.details-btn:hover {
+  background-color: var(--primary-dark);
+}

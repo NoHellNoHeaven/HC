@@ -1,162 +1,552 @@
-body{
-  align-content: center;
+.page-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 2rem 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-.formulario-container {
-  background-color: var(--card-background);
-  max-width: 100%;
-  max-height: 100%;
-      height: 100%;
-  align-content: center;
+
+.form-card {
+  max-width: 1200px;
   margin: 0 auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   border-radius: 16px;
-  box-shadow: 0 8px 20px var(--box-shadow-light);
-  color: var(--text-color);
-  font-family: 'Segoe UI', sans-serif;
-  padding-bottom: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
 }
 
-.formulario-container #FormularioVehiculo {
-  background-color: var(--background-color);
-  padding: 1rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px var(--box-shadow-light);
-  max-height: 530px;
-  overflow-y: auto;
-}
-
-.formulario-container h1 {
+/* Header Styles */
+.card-header {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  padding: 2rem;
   text-align: center;
-  margin-bottom: 2rem;
-  color: var(--text-color);
-  font-weight: bold;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.truck-icon {
+  width: 2rem;
+  height: 2rem;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2'/%3E%3Cpath d='M15 18H9'/%3E%3Cpath d='M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14'/%3E%3Ccircle cx='17' cy='18' r='2'/%3E%3Ccircle cx='7' cy='18' r='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.card-header h1 {
   font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
 }
 
-.formulario-container h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: var(--primary-color);
-  font-weight: 500;
-  font-size: 1.5rem;
+.header-description {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
 }
 
-.formulario-container form.formulario-grid {
+/* Tabs Styles */
+.tabs-container {
+  padding: 1.5rem;
+}
+
+.tabs-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 2rem;
+}
+
+.tab-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tab-trigger:hover {
+  color: #334155;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.tab-trigger.active {
+  background: white;
+  color: #2563eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-trigger.completed {
+  border: 2px solid #10b981;
+}
+
+.tab-trigger.completed:not(.active) {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.completion-indicator {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: #10b981;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.tab-icon {
+  width: 1rem;
+  height: 1rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.vehicle-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2'/%3E%3Cpath d='M15 18H9'/%3E%3Cpath d='M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14'/%3E%3Ccircle cx='17' cy='18' r='2'/%3E%3Ccircle cx='7' cy='18' r='2'/%3E%3C/svg%3E");
+}
+
+.tab-trigger.active .vehicle-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2'/%3E%3Cpath d='M15 18H9'/%3E%3Cpath d='M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14'/%3E%3Ccircle cx='17' cy='18' r='2'/%3E%3Ccircle cx='7' cy='18' r='2'/%3E%3C/svg%3E");
+}
+
+.tab-trigger.completed .vehicle-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23059669' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2'/%3E%3Cpath d='M15 18H9'/%3E%3Cpath d='M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14'/%3E%3Ccircle cx='17' cy='18' r='2'/%3E%3Ccircle cx='7' cy='18' r='2'/%3E%3C/svg%3E");
+}
+
+.maintenance-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z'/%3E%3C/svg%3E");
+}
+
+.tab-trigger.active .maintenance-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z'/%3E%3C/svg%3E");
+}
+
+.tab-trigger.completed .maintenance-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23059669' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z'/%3E%3C/svg%3E");
+}
+
+.maintenance-badge {
+  background: #e2e8f0;
+  color: #475569;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.tab-trigger.active .maintenance-badge {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.tab-trigger.completed .maintenance-badge {
+  background: #dcfce7;
+  color: #059669;
+}
+
+/* Progress Bar */
+.maintenance-progress {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.progress-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.progress-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  transition: width 0.3s ease;
+}
+
+/* Form Styles */
+.tab-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
-.formulario-container label {
-  display: block;
-  margin-bottom: 0.5rem;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-secondary);
-  font-size: 0.95rem;
+  color: #374151;
 }
 
-.formulario-container input,
-.formulario-container select {
-  width: 100%;
-  padding: 0.6rem 0.8rem;
-  margin-bottom: 1rem;
-  border: 1px solid var(--border-color);
+.form-input,
+.form-select {
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
   border-radius: 8px;
-  box-sizing: border-box;
-  background-color: var(--card-background);
-  color: var(--text-color);
-  font-size: 0.95rem;
-  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  font-size: 1rem;
+  background: white;
+  color: #374151;
+  transition: all 0.2s ease;
 }
 
-.formulario-container input:focus,
-.formulario-container select:focus {
+.form-input:focus,
+.form-select:focus {
   outline: none;
-  border-color: var(--primary-color);
-  background-color: var(--background-color-focus);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-.formulario-container select:invalid {
-  color: #aaaaaa;
+.form-select {
+  cursor: pointer;
 }
 
-.formulario-container select option:not(:disabled) {
-  color: var(--text-color);
+.form-select:invalid {
+  color: #9ca3af;
 }
 
-.formulario-container button[type="submit"] {
-  grid-column: span 2;
-  padding: 0.8rem;
-  background-color: var(--background-color-boton);
-  color: var(--button-text-color);
+.error-message {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: -0.25rem;
+}
+
+/* Maintenance Styles */
+.maintenance-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.maintenance-card {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-left: 4px solid #2563eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.maintenance-card:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.maintenance-card.completed {
+  border-left-color: #10b981;
+  background: #f0fdf4;
+}
+
+.maintenance-card.incomplete {
+  border-left-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.maintenance-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.maintenance-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #dcfce7;
+  color: #166534;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid #bbf7d0;
+}
+
+.incomplete-badge {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.check-icon {
+  width: 0.75rem;
+  height: 0.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23166534' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 12l2 2 4-4'/%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.warning-icon {
+  width: 0.75rem;
+  height: 0.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%2392400e' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z'/%3E%3Cline x1='12' y1='9' x2='12' y2='13'/%3E%3Cline x1='12' y1='17' x2='12.01' y2='17'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.maintenance-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* Submit Button */
+.submit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 1.5rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 1rem;
+}
+
+.submit-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #fde68a;
+}
+
+.info-icon {
+  width: 1rem;
+  height: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%2392400e' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='16' x2='12' y2='12'/%3E%3Cline x1='12' y1='8' x2='12.01' y2='8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  flex-shrink: 0;
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.1s ease;
   font-weight: 600;
-  box-shadow: 0 4px 12px var(--box-shadow-light-strong);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  padding: 0;
+  overflow: hidden;
 }
 
-.formulario-container button[type="submit"]:hover {
-  background-color: var(--primary-hover-boton);
-  box-shadow: 0 6px 15px var(--box-shadow-light-strong);
+.button-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
 
-.formulario-container button[type="submit"]:active {
-  transform: translateY(1px);
+.submit-button:active:not(:disabled) {
+  transform: translateY(0);
 }
 
-.formulario-container .error {
-  color: var(--error-color);
-  font-size: 0.9rem;
-  margin-top: -1.5rem;
-  margin-bottom: -0.5rem;
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background: #9ca3af;
 }
 
-@media (max-width: 900px) {
-  .formulario-container form.formulario-grid {
+.submit-icon {
+  width: 1rem;
+  height: 1rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z'/%3E%3Cpolyline points='17,21 17,13 7,13 7,21'/%3E%3Cpolyline points='7,3 7,8 15,8'/%3E%3C/svg%3E");
+}
+
+.submit-button.loading .submit-icon {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  background-image: none;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  background: #10b981;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  max-width: 400px;
+}
+
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast.error {
+  background: #dc2626;
+}
+
+.toast-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.toast-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.toast:not(.error) .toast-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 12l2 2 4-4'/%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3C/svg%3E");
+}
+
+.toast.error .toast-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='15' y1='9' x2='9' y2='15'/%3E%3Cline x1='9' y1='9' x2='15' y2='15'/%3E%3C/svg%3E");
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .form-grid {
     grid-template-columns: 1fr;
   }
 
-  .formulario-container button[type="submit"] {
-    grid-column: span 1;
+  .tabs-list {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
   }
-  body {
-    height: auto;
+
+  .maintenance-fields {
+    grid-template-columns: 1fr;
   }
-  .formulario-container {
-    max-height: none;
+
+  .maintenance-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .toast {
+    right: 1rem;
+    left: 1rem;
+    top: 1rem;
   }
 }
 
-/* Formulario de mantenciones */
-.formulario-container #FormularioMantenciones {
-  background-color: var(--background-color);
-  padding: 1rem;
-  border-radius: 16px;
-  overflow-y: auto;
-  box-shadow: 0 4px 15px var(--box-shadow-light);
-  max-height: 530px;
-}
+@media (max-width: 480px) {
+  .card-header {
+    padding: 1.5rem 1rem;
+  }
 
-.formulario-container .mantencion-item {
-  margin-bottom: 1.5rem;
-}
+  .header-content {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 
-.formulario-container .campo-container {
-  margin-bottom: 1rem;
-}
+  .card-header h1 {
+    font-size: 1.5rem;
+  }
 
-.formulario-container .mantencion-linea {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.formulario-container .mantencion-linea input,
-.formulario-container .mantencion-linea select {
-  flex: 1;
+  .tabs-container {
+    padding: 1rem;
+  }
 }

@@ -9,9 +9,10 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-seleccion-vehiculo-chofer',
-  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, NavbarComponent, CommonModule ],
+  standalone: true,
+  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, CommonModule ],
   templateUrl: './seleccion-vehiculo-chofer.component.html',
-  styleUrls: ['./seleccion-vehiculo-chofer.component.scss']
+  styleUrls: ['./seleccion-vehiculo-chofer.component.css']
 })
 export class SeleccionVehiculoChoferComponent implements OnInit {
   camionesLocales: any[] = [];
@@ -60,8 +61,10 @@ export class SeleccionVehiculoChoferComponent implements OnInit {
     );
 
     if (index !== -1) {
+      // Actualiza el kilometraje del camión seleccionado
       this.camionesLocales[index].kilometraje_camion = this.nuevoKilometraje;
 
+      // Actualiza el estado de mantenciones (vencidas o no) con el nuevo kilometraje
       this.camionesLocales[index].mantenciones = this.camionesLocales[index].mantenciones.map((m: any) => {
         const proximoKm = Number(m.proximoKilometraje);
         const fechaBase = new Date(this.camionesLocales[index].fecha_revision_tecnica + '-01');
@@ -73,8 +76,17 @@ export class SeleccionVehiculoChoferComponent implements OnInit {
         return { ...m, vencida };
       });
 
+      // Guarda el array completo actualizado en localStorage bajo 'camiones'
       localStorage.setItem('camiones', JSON.stringify(this.camionesLocales));
 
+      // --- NUEVO: sincroniza el camión seleccionado actualizado en localStorage
+      // Guarda el camión actualizado bajo la clave 'camionSeleccionado' (para el servicio)
+      localStorage.setItem('camionSeleccionado', JSON.stringify(this.camionesLocales[index]));
+
+      // Actualiza el BehaviorSubject en el servicio para que otros componentes se enteren
+      this.camionDataService.setCamionSeleccionado(this.camionesLocales[index]);
+
+      // Mensajes de mantenciones vencidas o éxito
       const vencidas = this.camionesLocales[index].mantenciones
         .filter((m: any) => m.vencida)
         .map((m: any) => `${m.nombre} (programado para ${m.proximoKilometraje} km)`);
@@ -85,7 +97,7 @@ export class SeleccionVehiculoChoferComponent implements OnInit {
         alert("✅ Kilometraje actualizado correctamente");
       }
 
-      this.camionDataService.setCamionSeleccionado(this.camionesLocales[index]);
+      // Navega a la pantalla de mantenciones pendientes
       this.router.navigate(['/mantenciones-pendientes']);
     }
 

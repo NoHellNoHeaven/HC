@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+
+<div class="alert-header">
+  ⚠️ Alertas de Mantenimiento
+</div>
+<p class="alert-subtext">
+  Mantenimientos pendientes y próximos vencimientos
+</p>
+
+<!-- 🔴 Mantenciones Pendientes -->
+<h2>Mantenciones Pendientes</h2>
+<div class="mantenciones-list">
+  <div *ngFor="let mantencion of mantencionesPendientes" class="mantencion-item critica">
+    <div class="mantencion-top">
+      <div class="mantencion-info">
+        <h3 class="patente">{{ mantencion.nombre }}</h3>
+        <span class="badge badge-critico">{{ mantencion.criticidad }}</span>
+        <span class="tipo">{{ mantencion.tipo }}</span>
+        <p class="descripcion">{{ mantencion.descripcion }}</p>
+        
+        <!-- Nueva línea minimalista de kilometraje -->
+        <div class="km-line">
+          <span class="km-text">Programado: {{ mantencion.kmProgramado | number }} km</span>
+          <span class="km-separator">•</span>
+          <span class="km-text">Actual: {{ mantencion.kmActual | number }} km</span>
+          <span class="km-separator">•</span>
+          <span class="km-status" [ngClass]="getKmStatusClass(mantencion)">
+            {{ getKmStatusText(mantencion) }}
+          </span>
+        </div>
+      </div>
+      <div class="mantencion-fecha">
+        <strong>Vencimiento</strong><br />
+        <span>{{ mantencion.fecha | date:'d/M/yyyy' }}</span>
+      </div>
+    </div>
+    <div class="acciones">
+      <button class="button">
+        Programar Mantenimiento
+      </button>
+      <button class="button button-light" (click)="confirmarMantencion(mantencion)">
+        Marcar como Completado
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- 🟡 Mantenciones Próximas -->
+<h2>Mantenciones Próximas</h2>
+<div class="mantenciones-list">
+  <div *ngFor="let mantencion of mantencionesProximas" class="mantencion-item proxima">
+    <div class="mantencion-top">
+      <div class="mantencion-info">
+        <h3 class="patente">{{ mantencion.nombre }}</h3>
+        <span class="tipo">{{ mantencion.tipo }}</span>
+        <p class="descripcion">{{ mantencion.descripcion }}</p>
+        
+        <!-- Nueva línea minimalista de kilometraje para próximas -->
+        <div class="km-line">
+          <span class="km-text">Programado: {{ mantencion.kmProgramado | number }} km</span>
+          <span class="km-separator">•</span>
+          <span class="km-text">Actual: {{ mantencion.kmActual | number }} km</span>
+          <span class="km-separator">•</span>
+          <span class="km-status km-status-pending">
+            {{ getKmStatusText(mantencion) }}
+          </span>
+        </div>
+      </div>
+      <div class="mantencion-fecha">
+        <strong>Fecha</strong><br />
+        <span>{{ mantencion.fecha | date:'d/M/yyyy' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal de confirmación -->
+<div *ngIf="mostrarModal" class="modal-backdrop" (click)="cancelarConfirmacion()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>¿Confirmar mantenimiento?</h3>
+    <p>¿Deseas marcar esta mantención como completada?</p>
+    <div class="acciones">
+      <button class="button button-light" (click)="cancelarConfirmacion()">Cancelar</button>
+      <button class="button" (click)="completarMantencion()">Confirmar</button>
+    </div>
+  </div>
+</div>
+

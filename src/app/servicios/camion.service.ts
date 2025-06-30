@@ -23,6 +23,15 @@ export class CamionService {
     return data ? JSON.parse(data) : null;
   }
 
+  // NUEVO: Guarda todo el array completo de camiones en localStorage
+  setCamiones(camiones: any[]): void {
+    localStorage.setItem('camiones', JSON.stringify(camiones));
+  }
+
+  getCamiones(): any[] {
+    return JSON.parse(localStorage.getItem('camiones') || '[]');
+  }
+
   crearCamion(camion: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, camion);
   }

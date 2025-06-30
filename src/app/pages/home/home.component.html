@@ -1,0 +1,118 @@
+<app-navbar></app-navbar>
+
+<div class="home-container">
+  <header class="home-header">
+    <h1>Bienvenido a Healthy Truck</h1>
+    <p>Tu plataforma para cuidar tu camión</p>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  </header>
+
+  <!-- Estadísticas -->
+  <section class="home-stats">
+    <div class="stat" *ngFor="let stat of stats">
+      <h3>{{ stat.label }}</h3>
+      <p>{{ stat.value }}</p>
+    </div>
+  </section>
+
+  <!-- Botones para cambiar de vista -->
+  <div class="view-buttons">
+    <button (click)="switchView('calendar')" [disabled]="vistaActual === 'calendar'">Vista Calendario</button>
+    <button (click)="switchView('list')" [disabled]="vistaActual === 'list'">Vista Lista</button>
+  </div>
+
+  <!-- Calendario o lista, según la vista actual -->
+  <div *ngIf="vistaActual === 'calendar'" class="calendar-container">
+    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+  </div>
+
+  <div *ngIf="vistaActual === 'list'" class="list-container">
+
+    <!-- Lista de camiones -->
+<section class="fleet-container">
+  <div class="truck-card" *ngFor="let camion of camiones">
+    <div class="card-header">
+      <h3>{{ camion.nombre }}</h3>
+      <span [ngClass]="{
+        'badge badge-green': camion.estado === 'activo',
+        'badge badge-blue': camion.estado === 'en mantencion'
+      }">{{ camion.estado }}</span>
+    </div>
+    <p><strong>ID:</strong> {{ camion.id }}</p>
+    <p><strong>Patente:</strong> {{ camion.patente }}</p>
+    <p><strong>Año:</strong> {{ camion.anio }}</p>
+    <p><strong>Alertas:</strong> <span class="alert-count">{{ camion.alertas }}</span></p>
+    <p><span class="icon green">✔</span> Última mantención: {{ camion.ultimaMantencion }}</p>
+    <p><span class="icon blue">🕓</span> Próxima mantención: {{ camion.proximaMantencion }}</p>
+    <div class="progress-info">
+      <p>Progreso hasta próxima mantención:</p>
+      <div class="progress-bar">
+        <div class="progress-fill"
+             [ngClass]="{
+               'red': camion.progreso >= 90,
+               'green': camion.progreso < 90,
+               'black': camion.progreso > 100
+             }"
+             [style.width.%]="camion.progreso"></div>
+      </div>
+      <div class="progress-labels">
+        <span>{{ camion.kmActual }} km</span>
+        <span>{{ camion.kmMeta }} km</span>
+      </div>
+    </div>
+    <button class="details-btn" (click)="navegar('/camion-detalles/' + camion.id)">Ver Detalles</button>
+  </div>
+</section>
+
+    <!-- Lista de mantenimientos -->
+    <section class="maintenance-list">
+      <h2>Mantenimientos</h2>
+      <div class="maintenance-card"
+           *ngFor="let mantencion of listaMantenciones"
+           [ngClass]="{
+             'mantenimiento-rojo': mantencion.nivel === 'critica',
+             'mantenimiento-amarillo': mantencion.nivel === 'advertencia',
+             'mantenimiento-verde': mantencion.nivel === 'normal'
+           }">
+        <strong>{{ mantencion.fecha }}:</strong> {{ mantencion.camion }} - {{ mantencion.nombre }}
+      </div>
+    </section>
+
+    <!-- Lista de alertas -->
+    <section class="alert-list">
+      <h2>Alertas</h2>
+      <div class="alert-card" *ngFor="let alerta of alertas">
+        <div class="alert-header">
+          <h3>{{ alerta.camion }}</h3>
+          <span class="status-badge"
+                [ngClass]="{
+                  'pendiente': alerta.estado === 'Pendiente',
+                  'reconocida': alerta.estado === 'Reconocida'
+                }">{{ alerta.estado }}</span>
+        </div>
+        <p><strong>ID:</strong> {{ alerta.id }}</p>
+        <p><strong>Tipo:</strong> {{ alerta.tipo }}</p>
+        <p><strong>Descripción:</strong> {{ alerta.descripcion }}</p>
+        <p><strong>Fecha límite:</strong> {{ alerta.fechaLimite }}</p>
+        <p *ngIf="alerta.km"><strong>KM actual/límite:</strong> {{ alerta.km }}</p>
+        <div class="alert-type"
+             [ngClass]="{
+               'advertencia': alerta.nivel === 'Advertencia',
+               'critica': alerta.nivel === 'Crítica',
+               'normal': alerta.nivel === 'Normal'
+             }">
+          {{ alerta.icono }} {{ alerta.nivel }}
+        </div>
+        <div class="alert-buttons">
+          <button class="details" (click)="verDetalles(alerta)">Ver Detalles</button>
+          <button class="primary" (click)="reconocerAlerta(alerta)">Reconocer</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="home-footer">
+    <p>&copy; 2025 Healthy Truck. Todos los derechos reservados.</p>
+</footer>

@@ -10,6 +10,7 @@ import { ChoferesComponent } from './pages/chofer/chofer.component';
 import { SeleccionVehiculoChoferComponent } from './pages/seleccion-vehiculo-chofer/seleccion-vehiculo-chofer.component';
 import { ReportesComponent } from './pages/admin/reportes/reportes.component';
 import { AlertasComponent } from './pages/chofer/alertas/alertas.component';
+import { MantencionesPendientesComponent } from './pages/mantenciones-pendientes/mantenciones-pendientes.component';
 
 export const routes: Routes = [
   { path: 'admin', component: AdminComponent },
@@ -23,4 +24,6 @@ export const routes: Routes = [
   { path: 'seleccion-vehiculo-chofer', component: SeleccionVehiculoChoferComponent },
   { path: 'reportes', component: ReportesComponent },
   { path: 'alertas', component: AlertasComponent },
+  { path: 'mantenciones-pendientes', component: MantencionesPendientesComponent },
+
 ];
