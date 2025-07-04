@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, CommonModule ],
   templateUrl: './seleccion-vehiculo-chofer.component.html',
-  styleUrls: ['./seleccion-vehiculo-chofer.component.css']
+  styleUrls: ['./seleccion-vehiculo-chofer.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SeleccionVehiculoChoferComponent implements OnInit {
   camionesLocales: any[] = [];

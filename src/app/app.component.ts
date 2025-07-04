@@ -1,11 +1,8 @@
-// src/app/app.component.ts
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import { NavbarComponent } from '../app/pages/navbar/navbar.component';
-
 
 @Component({
   selector: 'app-root',
@@ -18,22 +15,15 @@ export class AppComponent {
     this.cargarTemaGuardado(); // Aplica el tema al iniciar
   }
 
-  cambiarTema(valor: string) {
-    const body = document.body;
+  cambiarTema(valor: 'light' | 'dark') {
+    const html = document.documentElement;
 
-    body.classList.remove('theme-light', 'theme-dark');
-
-    if (valor === 'light') {
-      body.classList.add('theme-light');
-      localStorage.setItem('preferredTheme', 'light');
-    } else {
-      body.classList.add('theme-dark');
-      localStorage.setItem('preferredTheme', 'dark');
-    }
+    html.setAttribute('data-theme', valor);
+    localStorage.setItem('theme', valor);
   }
 
   cargarTemaGuardado() {
-    const tema = localStorage.getItem('preferredTheme') || 'light';
+    const tema = (localStorage.getItem('theme') as 'light' | 'dark') || 'light';
     this.cambiarTema(tema);
   }
 

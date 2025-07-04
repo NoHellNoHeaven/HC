@@ -1,7 +1,8 @@
-import { Component, OnInit, Renderer2, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-configuraciones',
@@ -11,22 +12,26 @@ import { NavbarComponent } from '../navbar/navbar.component';
   styleUrls: ['./configuraciones.component.css']
 })
 export class ConfiguracionesComponent implements OnInit {
-  theme = 'light'; // valor por defecto
-  private renderer = inject(Renderer2);
-  private router = inject(Router);
+  theme: 'light' | 'dark' = 'light';
+  language: string = 'es';
+  privacy: string = 'public';
+
+  constructor(
+    private themeService: ThemeService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    const savedTheme = localStorage.getItem('preferredTheme') || 'light';
-    this.theme = savedTheme;
-    this.applyTheme(savedTheme);
+    this.theme = this.themeService.getCurrentTheme() as 'light' | 'dark';
+    this.language = localStorage.getItem('language') || 'es';
+    this.privacy = localStorage.getItem('privacy') || 'public';
   }
 
   onThemeChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
-    const selectedTheme = select?.value || 'light';
+    const selectedTheme = (select?.value === 'dark' ? 'dark' : 'light') as 'light' | 'dark';
     this.theme = selectedTheme;
-    localStorage.setItem('preferredTheme', selectedTheme);
-    this.applyTheme(selectedTheme);
+    this.themeService.setTheme(selectedTheme);
   }
 
   guardarConfiguracion(key: string, event: Event): void {
@@ -34,14 +39,15 @@ export class ConfiguracionesComponent implements OnInit {
     const value = select?.value;
     if (value) {
       localStorage.setItem(key, value);
+
+      if (key === 'language') this.language = value;
+      if (key === 'privacy') this.privacy = value;
     }
   }
 
-  applyTheme(theme: string): void {
-    const body = document.body;
-    this.renderer.removeClass(body, 'theme-light');
-    this.renderer.removeClass(body, 'theme-dark');
-    this.renderer.addClass(body, `theme-${theme}`);
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
+    this.theme = this.themeService.getCurrentTheme() as 'light' | 'dark';
   }
 
   mostrarMensaje(): void {

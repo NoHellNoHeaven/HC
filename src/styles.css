@@ -1,10 +1,10 @@
 /* ====== VARIABLES GLOBALES ====== */
 :root {
-  /* Variables personalizadas */
-  --card-background: #ffffff; /* antes: #87c2ff */
-  --box-shadow-light: #888888; /* antes: #1c4e85 */
-  --text-color: #1F2937; /* gris oscuro */
-  --primary-color: #333333; /* reemplazo neutro al azul fuerte */
+  /* Variables tema claro (por defecto) */
+  --card-background: #ffffff;
+  --box-shadow-light: #888888;
+  --text-color: #1F2937;
+  --primary-color: #333333;
   --text-secondary: #4B5563;
   --background-color-focus: #e5e7eb;
   --error-color: #EF4444;
@@ -13,7 +13,6 @@
   --box-shadow-light-strong: #999999;
   --primary-hover-boton: #111111;
 
-  /* Colores primarios */
   --color-primary: #333333;
   --color-primary-hover: #111111;
   --color-secondary: #6B7280;
@@ -27,13 +26,11 @@
   --color-error: #EF4444;
   --color-error-hover: #DC2626;
 
-  /* Sombras */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --shadow-hover: 0 6px 8px rgba(0, 0, 0, 0.1);
 
-  /* Tamaños */
   --border-radius: 0.5rem;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -42,13 +39,47 @@
   --transition: 0.3s ease;
 }
 
-/* ====== RESET Y ESTILOS BASE ====== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* ====== VARIABLES TEMA OSCURO ====== */
+:root[data-theme="dark"] {
+  --card-background: #1F2937;
+  --box-shadow-light: #000000;
+  --text-color: #F9FAFB;
+  --primary-color: #D1D5DB;
+  --text-secondary: #9CA3AF;
+  --background-color-focus: #374151;
+  --error-color: #FCA5A5;
+  --button-text-color: #000000;
+  --background-color-boton: #D1D5DB;
+  --box-shadow-light-strong: #1f2937;
+  --primary-hover-boton: #9CA3AF;
+
+  --color-primary: #D1D5DB;
+  --color-primary-hover: #F9FAFB;
+  --color-secondary: #6B7280;
+  --color-background: #111827;
+  --color-surface: #1F2937;
+  --color-border: #374151;
+  --color-text: #F9FAFB;
+  --color-text-alt: #9CA3AF;
+  --color-success: #34D399;
+  --color-success-hover: #059669;
+  --color-error: #F87171;
+  --color-error-hover: #DC2626;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.8);
+  --shadow-hover: 0 6px 8px rgba(0, 0, 0, 0.7);
 }
 
+/* ====== RESET GLOBAL ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ====== ESTILOS BASE ====== */
 html, body {
   height: 100%;
   font-family: 'Inter', sans-serif;
@@ -61,12 +92,11 @@ a {
   color: var(--color-primary);
   text-decoration: none;
 }
-
 a:hover {
   text-decoration: underline;
 }
 
-/* ====== LAYOUT ADMIN ====== */
+/* ====== LAYOUT ====== */
 .admin-layout {
   display: flex;
   flex-direction: column;
@@ -116,6 +146,7 @@ a:hover {
   border-radius: var(--border-radius);
   transition: background var(--transition);
   text-align: left;
+  cursor: pointer;
 }
 
 .sidebar-button:hover {
@@ -262,7 +293,7 @@ event-error {
   color: #991B1B;
 }
 
-event-success {
+event-success { 
   background-color: #D1FAE5;
   color: #065F46;
 }

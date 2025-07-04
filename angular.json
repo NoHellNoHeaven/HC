@@ -34,7 +34,9 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/theme-init.ts"
+            ]
           },
           "configurations": {
             "production": {
