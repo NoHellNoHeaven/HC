@@ -1,325 +1,324 @@
-<div class="page-container">
-  <div class="form-card">
-    <!-- Header -->
-    <div class="card-header">
-      <div class="header-content">
-        <div class="truck-icon"></div>
-        <h1>Registro de Camiones</h1>
-      </div>
-      <p class="header-description">Sistema moderno de gestión vehicular</p>
-    </div>
-
-    <!-- Tabs Navigation -->
-    <div class="tabs-container">
-      <div class="tabs-list">
-        <button 
-          class="tab-trigger" 
-          [class.active]="activeTab === 'vehicle'"
-          [class.completed]="isBasicFormComplete()"
-          (click)="setActiveTab('vehicle')">
-          <div class="tab-icon vehicle-icon"></div>
-          Información del Vehículo
-          <div class="completion-indicator" *ngIf="isBasicFormComplete()"></div>
-        </button>
-        <button 
-          class="tab-trigger" 
-          [class.active]="activeTab === 'maintenance'"
-          [class.completed]="areAllMaintenancesComplete()"
-          (click)="setActiveTab('maintenance')">
-          <div class="tab-icon maintenance-icon"></div>
-          Plan de Mantenciones
-          <span class="maintenance-badge">
-            {{getCompletedMaintenances()}}/{{mantenciones.length}}
-          </span>
-          <div class="completion-indicator" *ngIf="areAllMaintenancesComplete()"></div>
-        </button>
+<div class="registro-camiones-theme">
+  <div class="page-container">
+    <div class="form-card">
+      <!-- Header -->
+      <div class="card-header">
+        <div class="header-content">
+          <div class="truck-icon"></div>
+          <h1>Registro de Camiones</h1>
+        </div>
+        <p class="header-description">Sistema moderno de gestión vehicular</p>
       </div>
 
-      <!-- Vehicle Information Tab -->
-      <div class="tab-content" *ngIf="activeTab === 'vehicle'">
-        <form #vehicleForm="ngForm" class="vehicle-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="patente" class="form-label">Patente *</label>
-              <input 
-                type="text" 
-                id="patente"
-                name="patente" 
-                class="form-input"
-                [(ngModel)]="camion.patente" 
-                required 
-                #patente="ngModel" 
-                placeholder="Ej: ABCD12" />
-              <div *ngIf="patente.invalid && patente.touched" class="error-message">
-                La patente es obligatoria
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="tipo_vehiculo" class="form-label">Tipo de Vehículo *</label>
-              <select 
-                id="tipo_vehiculo" 
-                name="tipo_vehiculo" 
-                class="form-select"
-                [(ngModel)]="camion.tipo_vehiculo" 
-                required>
-                <option value="" disabled selected hidden>Selecciona tipo</option>
-                <option *ngFor="let tipo of tipoVehiculo" [value]="tipo">{{ tipo }}</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="marca" class="form-label">Marca *</label>
-              <input 
-                type="text" 
-                id="marca"
-                name="marca" 
-                class="form-input"
-                [(ngModel)]="camion.marca" 
-                required 
-                placeholder="Ej: Mitsubishi" />
-            </div>
-
-            <div class="form-group">
-              <label for="modelo" class="form-label">Modelo *</label>
-              <input 
-                type="text" 
-                id="modelo"
-                name="modelo" 
-                class="form-input"
-                [(ngModel)]="camion.modelo" 
-                required 
-                placeholder="Ej: Canter" />
-            </div>
-
-            <div class="form-group">
-              <label for="anno" class="form-label">Año *</label>
-              <input 
-                type="number" 
-                id="anno"
-                name="anno" 
-                class="form-input"
-                [(ngModel)]="camion.anno" 
-                required 
-                placeholder="Ej: 2009" 
-                min="1900" 
-                [max]="currentYear"/>
-            </div>
-
-            <div class="form-group">
-              <label for="color" class="form-label">Color *</label>
-              <input 
-                type="text" 
-                id="color"
-                name="color" 
-                class="form-input"
-                [(ngModel)]="camion.color" 
-                required 
-                placeholder="Ej: Blanco Escocia" />
-            </div>
-
-            <div class="form-group">
-              <label for="nro_motor" class="form-label">Nro Motor *</label>
-              <input 
-                type="text" 
-                id="nro_motor"
-                name="nro_motor" 
-                class="form-input"
-                [(ngModel)]="camion.nro_motor" 
-                required 
-                placeholder="Ej: 4M50 D11124" />
-            </div>
-
-            <div class="form-group">
-              <label for="nro_chasis" class="form-label">Nro Chasis *</label>
-              <input 
-                type="text" 
-                id="nro_chasis"
-                name="nro_chasis" 
-                class="form-input"
-                [(ngModel)]="camion.nro_chasis" 
-                required 
-                placeholder="Ej: FE85DGA00785" />
-            </div>
-
-            <div class="form-group">
-              <label for="fabricante" class="form-label">Fabricante *</label>
-              <input 
-                type="text" 
-                id="fabricante"
-                name="fabricante" 
-                class="form-input"
-                [(ngModel)]="camion.fabricante" 
-                required 
-                placeholder="Ej: Mitsubishi Fuso" />
-            </div>
-
-            <div class="form-group">
-              <label for="procedencia" class="form-label">Procedencia *</label>
-              <input 
-                type="text" 
-                id="procedencia"
-                name="procedencia" 
-                class="form-input"
-                [(ngModel)]="camion.procedencia" 
-                required 
-                placeholder="Ej: Brasil" />
-            </div>
-
-            <div class="form-group">
-              <label for="tipo_sello" class="form-label">Tipo Sello *</label>
-              <select 
-                id="tipo_sello" 
-                name="tipo_sello" 
-                class="form-select"
-                [(ngModel)]="camion.tipo_sello" 
-                required>
-                <option value="" disabled selected hidden>Selecciona sello</option>
-                <option *ngFor="let sello of tiposSello" [value]="sello">{{ sello }}</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="combustible" class="form-label">Combustible *</label>
-              <select 
-                id="combustible" 
-                name="combustible" 
-                class="form-select"
-                [(ngModel)]="camion.combustible"
-                required>
-                <option value="" disabled selected hidden>Tipo de combustible</option>
-                <option *ngFor="let tipo of tiposCombustible" [value]="tipo">{{ tipo }}</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="kilometraje_camion" class="form-label">Kilometraje del Camión *</label>
-              <input 
-                type="number" 
-                id="kilometraje_camion"
-                name="kilometraje_camion" 
-                class="form-input"
-                [(ngModel)]="camion.kilometraje_camion" 
-                required 
-                placeholder="Ej: 150000" />
-            </div>
-
-            <div class="form-group">
-              <label for="fecha_revision_tecnica" class="form-label">Fecha Revisión Técnica *</label>
-              <input 
-                type="month" 
-                id="fecha_revision_tecnica" 
-                name="fecha_revision_tecnica" 
-                class="form-input"
-                [(ngModel)]="camion.fecha_revision_tecnica" 
-                required/>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <!-- Maintenance Tab -->
-      <div class="tab-content" *ngIf="activeTab === 'maintenance'">
-        <div class="maintenance-progress" *ngIf="getCompletedMaintenances() < mantenciones.length">
-          <div class="progress-info">
-            <span class="progress-text">
-              Progreso: {{getCompletedMaintenances()}} de {{mantenciones.length}} mantenciones completadas
+      <!-- Tabs Navigation -->
+      <div class="tabs-container">
+        <div class="tabs-list">
+          <button 
+            class="tab-trigger"
+            [class.active]="activeTab === 'vehicle'"
+            [class.completed]="isBasicFormComplete()"
+            (click)="setActiveTab('vehicle')">
+            <div class="tab-icon vehicle-icon"></div>
+            Información del Vehículo
+            <div class="completion-indicator" *ngIf="isBasicFormComplete()"></div>
+          </button>
+          <button 
+            class="tab-trigger"
+            [class.active]="activeTab === 'maintenance'"
+            [class.completed]="areAllMaintenancesComplete()"
+            (click)="setActiveTab('maintenance')">
+            <div class="tab-icon maintenance-icon"></div>
+            Plan de Mantenciones
+            <span class="maintenance-badge">
+              {{getCompletedMaintenances()}}/{{mantenciones.length}}
             </span>
-            <div class="progress-bar">
-              <div class="progress-fill" [style.width.%]="(getCompletedMaintenances() / mantenciones.length) * 100"></div>
-            </div>
-          </div>
+            <div class="completion-indicator" *ngIf="areAllMaintenancesComplete()"></div>
+          </button>
         </div>
 
-        <div class="maintenance-grid">
-          <div *ngFor="let mantencion of mantenciones; let i = index" 
-               class="maintenance-card"
-               [class.completed]="mantencion.accionSeleccionada && mantencion.kilometraje"
-               [class.incomplete]="!mantencion.accionSeleccionada || !mantencion.kilometraje">
-            <div class="maintenance-header">
-              <h3 class="maintenance-title">{{ mantencion.nombre }}</h3>
-              <div class="status-badge" *ngIf="mantencion.accionSeleccionada && mantencion.kilometraje">
-                <div class="check-icon"></div>
-                Configurado
-              </div>
-              <div class="status-badge incomplete-badge" *ngIf="!mantencion.accionSeleccionada || !mantencion.kilometraje">
-                <div class="warning-icon"></div>
-                Pendiente
-              </div>
-            </div>
-
-            <div class="maintenance-fields">
+        <!-- Vehicle Information Tab -->
+        <div class="tab-content" *ngIf="activeTab === 'vehicle'">
+          <form #vehicleForm="ngForm" class="vehicle-form">
+            <div class="form-grid">
               <div class="form-group">
-                <label class="form-label">Acción *</label>
-                <select 
-                  [(ngModel)]="mantencion.accionSeleccionada" 
-                  [name]="'accion_' + i" 
+                <label for="patente" class="form-label">Patente *</label>
+                <input
+                  type="text"
+                  id="patente"
+                  name="patente"
+                  class="form-input"
+                  [(ngModel)]="camion.patente"
+                  required
+                  #patente="ngModel"
+                  placeholder="Ej: ABCD12" />
+                <div *ngIf="patente.invalid && patente.touched" class="error-message">
+                  La patente es obligatoria
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="tipo_vehiculo" class="form-label">Tipo de Vehículo *</label>
+                <select
+                  id="tipo_vehiculo"
+                  name="tipo_vehiculo"
                   class="form-select"
+                  [(ngModel)]="camion.tipo_vehiculo"
                   required>
-                  <option value="" disabled hidden>¿Qué hacer?</option>
-                  <option *ngFor="let a of mantencion.accion" [value]="a">{{ a }}</option>
+                  <option value="" disabled selected hidden>Selecciona tipo</option>
+                  <option *ngFor="let tipo of tipoVehiculo" [value]="tipo">{{ tipo }}</option>
                 </select>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Kilometraje *</label>
-                <input 
-                  type="number" 
-                  [(ngModel)]="mantencion.kilometraje" 
-                  [name]="'km_' + i" 
+                <label for="marca" class="form-label">Marca *</label>
+                <input
+                  type="text"
+                  id="marca"
+                  name="marca"
                   class="form-input"
-                  placeholder="Km" 
-                  min="0" 
-                  step="5000"
-                  required />
+                  [(ngModel)]="camion.marca"
+                  required
+                  placeholder="Ej: Mitsubishi" />
               </div>
 
               <div class="form-group">
-                <label class="form-label">Meses</label>
-                <input 
-                  type="number" 
-                  [(ngModel)]="mantencion.meses" 
-                  [name]="'meses_' + i" 
+                <label for="modelo" class="form-label">Modelo *</label>
+                <input
+                  type="text"
+                  id="modelo"
+                  name="modelo"
                   class="form-input"
-                  placeholder="Meses" 
-                  min="1" 
-                  max="24" />
+                  [(ngModel)]="camion.modelo"
+                  required
+                  placeholder="Ej: Canter" />
+              </div>
+
+              <div class="form-group">
+                <label for="anno" class="form-label">Año *</label>
+                <input
+                  type="number"
+                  id="anno"
+                  name="anno"
+                  class="form-input"
+                  [(ngModel)]="camion.anno"
+                  required
+                  placeholder="Ej: 2009"
+                  min="1900"
+                  [max]="currentYear"/>
+              </div>
+
+              <div class="form-group">
+                <label for="color" class="form-label">Color *</label>
+                <input
+                  type="text"
+                  id="color"
+                  name="color"
+                  class="form-input"
+                  [(ngModel)]="camion.color"
+                  required
+                  placeholder="Ej: Blanco Escocia" />
+              </div>
+
+              <div class="form-group">
+                <label for="nro_motor" class="form-label">Nro Motor *</label>
+                <input
+                  type="text"
+                  id="nro_motor"
+                  name="nro_motor"
+                  class="form-input"
+                  [(ngModel)]="camion.nro_motor"
+                  required
+                  placeholder="Ej: 4M50 D11124" />
+              </div>
+
+              <div class="form-group">
+                <label for="nro_chasis" class="form-label">Nro Chasis *</label>
+                <input
+                  type="text"
+                  id="nro_chasis"
+                  name="nro_chasis"
+                  class="form-input"
+                  [(ngModel)]="camion.nro_chasis"
+                  required
+                  placeholder="Ej: FE85DGA00785" />
+              </div>
+
+              <div class="form-group">
+                <label for="fabricante" class="form-label">Fabricante *</label>
+                <input
+                  type="text"
+                  id="fabricante"
+                  name="fabricante"
+                  class="form-input"
+                  [(ngModel)]="camion.fabricante"
+                  required
+                  placeholder="Ej: Mitsubishi Fuso" />
+              </div>
+
+              <div class="form-group">
+                <label for="procedencia" class="form-label">Procedencia *</label>
+                <input
+                  type="text"
+                  id="procedencia"
+                  name="procedencia"
+                  class="form-input"
+                  [(ngModel)]="camion.procedencia"
+                  required
+                  placeholder="Ej: Brasil" />
+              </div>
+
+              <div class="form-group">
+                <label for="tipo_sello" class="form-label">Tipo Sello *</label>
+                <select
+                  id="tipo_sello"
+                  name="tipo_sello"
+                  class="form-select"
+                  [(ngModel)]="camion.tipo_sello"
+                  required>
+                  <option value="" disabled selected hidden>Selecciona sello</option>
+                  <option *ngFor="let sello of tiposSello" [value]="sello">{{ sello }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="combustible" class="form-label">Combustible *</label>
+                <select
+                  id="combustible"
+                  name="combustible"
+                  class="form-select"
+                  [(ngModel)]="camion.combustible"
+                  required>
+                  <option value="" disabled selected hidden>Tipo de combustible</option>
+                  <option *ngFor="let tipo of tiposCombustible" [value]="tipo">{{ tipo }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="kilometraje_camion" class="form-label">Kilometraje del Camión *</label>
+                <input
+                  type="number"
+                  id="kilometraje_camion"
+                  name="kilometraje_camion"
+                  class="form-input"
+                  [(ngModel)]="camion.kilometraje_camion"
+                  required
+                  placeholder="Ej: 150000" />
+              </div>
+
+              <div class="form-group">
+                <label for="fecha_revision_tecnica" class="form-label">Fecha Revisión Técnica *</label>
+                <input
+                  type="month"
+                  id="fecha_revision_tecnica"
+                  name="fecha_revision_tecnica"
+                  class="form-input"
+                  [(ngModel)]="camion.fecha_revision_tecnica"
+                  required/>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Maintenance Tab -->
+        <div class="tab-content" *ngIf="activeTab === 'maintenance'">
+          <div class="maintenance-progress" *ngIf="getCompletedMaintenances() < mantenciones.length">
+            <div class="progress-info">
+              <span class="progress-text">
+                Progreso: {{getCompletedMaintenances()}} de {{mantenciones.length}} mantenciones completadas
+              </span>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="(getCompletedMaintenances() / mantenciones.length) * 100"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="maintenance-grid">
+            <div *ngFor="let mantencion of mantenciones; let i = index"
+                 class="maintenance-card"
+                 [class.completed]="mantencion.accionSeleccionada && mantencion.kilometraje"
+                 [class.incomplete]="!mantencion.accionSeleccionada || !mantencion.kilometraje">
+              <div class="maintenance-header">
+                <h3 class="maintenance-title">{{ mantencion.nombre }}</h3>
+                <div class="status-badge" *ngIf="mantencion.accionSeleccionada && mantencion.kilometraje">
+                  <div class="check-icon"></div>
+                  Configurado
+                </div>
+                <div class="status-badge incomplete-badge" *ngIf="!mantencion.accionSeleccionada || !mantencion.kilometraje">
+                  <div class="warning-icon"></div>
+                  Pendiente
+                </div>
+              </div>
+              <div class="maintenance-fields">
+                <div class="form-group">
+                  <label class="form-label">Acción *</label>
+                  <select
+                    [(ngModel)]="mantencion.accionSeleccionada"
+                    [name]="'accion_' + i"
+                    class="form-select"
+                    required>
+                    <option value="" disabled hidden>¿Qué hacer?</option>
+                    <option *ngFor="let a of mantencion.accion" [value]="a">{{ a }}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Kilometraje *</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="mantencion.kilometraje"
+                    [name]="'km_' + i"
+                    class="form-input"
+                    placeholder="Km"
+                    min="0"
+                    step="5000"
+                    required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Meses</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="mantencion.meses"
+                    [name]="'meses_' + i"
+                    class="form-input"
+                    placeholder="Meses"
+                    min="1"
+                    max="24" />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Submit Button -->
-    <div class="submit-container">
-      <div class="submit-info" *ngIf="!canRegisterTruck()">
-        <div class="info-icon"></div>
-        <span *ngIf="!isBasicFormComplete()">Completa la información del vehículo para continuar</span>
-        <span *ngIf="isBasicFormComplete() && !areAllMaintenancesComplete()">
-          Completa todas las mantenciones ({{getCompletedMaintenances()}}/{{mantenciones.length}}) para registrar el camión
-        </span>
-      </div>
-      
-      <button 
-        type="button" 
-        class="submit-button"
-        [class.loading]="isSubmitting"
-        [disabled]="isSubmitting || !canRegisterTruck()"
-        (click)="enviarFormulario()">
-        <div class="button-content">
-          <div class="submit-icon"></div>
-          <span>{{ isSubmitting ? 'Registrando...' : 'Registrar Camión' }}</span>
+      <!-- Submit Button -->
+      <div class="submit-container">
+        <div class="submit-info" *ngIf="!canRegisterTruck()">
+          <div class="info-icon"></div>
+          <span *ngIf="!isBasicFormComplete()">Completa la información del vehículo para continuar</span>
+          <span *ngIf="isBasicFormComplete() && !areAllMaintenancesComplete()">
+            Completa todas las mantenciones ({{getCompletedMaintenances()}}/{{mantenciones.length}}) para registrar el camión
+          </span>
         </div>
-      </button>
+                
+        <button
+          type="button"
+          class="submit-button"
+          [class.loading]="isSubmitting"
+          [disabled]="isSubmitting || !canRegisterTruck()"
+          (click)="enviarFormulario()">
+          <div class="button-content">
+            <div class="submit-icon"></div>
+            <span>{{ isSubmitting ? 'Registrando...' : 'Registrar Camión' }}</span>
+          </div>
+        </button>
+      </div>
     </div>
-  </div>
 
-  <!-- Toast Notification -->
-  <div class="toast" [class.show]="showToast" [class.error]="toastType === 'error'">
-    <div class="toast-content">
-      <div class="toast-icon"></div>
-      <span>{{ toastMessage }}</span>
+    <!-- Toast Notification -->
+    <div class="toast" [class.show]="showToast" [class.error]="toastType === 'error'">
+      <div class="toast-content">
+        <div class="toast-icon"></div>
+        <span>{{ toastMessage }}</span>
+      </div>
     </div>
   </div>
 </div>

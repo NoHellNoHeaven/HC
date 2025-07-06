@@ -72,6 +72,135 @@
   --shadow-hover: 0 6px 8px rgba(0, 0, 0, 0.7);
 }
 
+/*REGISTRO DE CAMIONES*/
+
+/* ====== VARIABLES ESPECÍFICAS PARA REGISTRO DE CAMIONES - TEMA CLARO ====== */
+.registro-camiones-theme {
+  --card-background: #f4f5f7;
+  --box-shadow-light: #a0aec0;
+  --text-color: #1a202c;
+  --primary-color: #2d3748;
+  --text-secondary: #4a5568;
+  --background-color-focus: #cbd5e0;
+  --error-color: #e53e3e;
+  --button-text-color: white;
+  --background-color-boton: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  --background-color-boton-hover: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  --box-shadow: rgba(37, 99, 235, 0.3);
+  --box-shadow-light-strong: #718096;
+  --primary-hover-boton: #1a365d;
+  --color-primary: #2b6cb0;
+  --color-primary-hover: #1a365d;
+  --color-secondary: #718096;
+  --color-background: #edf2f7;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text: #2d3748;
+  --color-text-alt: #a0aec0;
+  --color-success: #38a169;
+  --color-success-hover: #2f855a;
+  --color-error: #e53e3e;
+  --color-error-hover: #c53030;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 6px 8px rgba(0, 0, 0, 0.1);
+  --border-radius: 0.5rem;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --transition: 0.3s ease;
+
+  /* Variables adicionales para mejor control */
+  --input-background: #ffffff;
+  --input-border: #e2e8f0;
+  --input-border-focus: #2563eb;
+  --input-text: #2d3748;
+  --tab-background: #f1f5f9;
+  --tab-active-background: #ffffff;
+  --tab-text: #64748b;
+  --tab-text-active: #2563eb;
+  --tab-text-completed: #059669;
+  --tab-hover-background: rgba(255, 255, 255, 0.5);
+  --maintenance-card-background: #ffffff;
+  --maintenance-card-border: #e5e7eb;
+  --maintenance-completed-background: #f0fdf4;
+  --maintenance-incomplete-background: #fffbeb;
+  --progress-background: #f8fafc;
+  --progress-border: #e2e8f0;
+  --progress-bar-background: #e5e7eb;
+  --progress-fill: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  --toast-success-background: #10b981;
+  --toast-error-background: #dc2626;
+  --header-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  --submit-info-background: #fef3c7;
+  --submit-info-color: #92400e;
+  --submit-info-border: #fde68a;
+
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+/* ====== VARIABLES ESPECÍFICAS PARA REGISTRO DE CAMIONES - TEMA OSCURO ====== */
+:root[data-theme="dark"] .registro-camiones-theme {
+  --card-background: #1f2937;
+  --box-shadow-light: #374151;
+  --text-color: #f9fafb;
+  --primary-color: #e5e7eb;
+  --text-secondary: #d1d5db;
+  --background-color-focus: #374151;
+  --error-color: #f87171;
+  --button-text-color: white;
+  --background-color-boton: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --background-color-boton-hover: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  --box-shadow: rgba(59, 130, 246, 0.4);
+  --box-shadow-light-strong: #4b5563;
+  --primary-hover-boton: #1e40af;
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-secondary: #9ca3af;
+  --color-background: #111827;
+  --color-surface: #1f2937;
+  --color-border: #374151;
+  --color-text: #f9fafb;
+  --color-text-alt: #9ca3af;
+  --color-success: #34d399;
+  --color-success-hover: #10b981;
+  --color-error: #f87171;
+  --color-error-hover: #ef4444;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 6px 8px rgba(0, 0, 0, 0.4);
+
+  /* Variables específicas para tema oscuro */
+  --input-background: #374151;
+  --input-border: #4b5563;
+  --input-border-focus: #3b82f6;
+  --input-text: #f9fafb;
+  --tab-background: #374151;
+  --tab-active-background: #1f2937;
+  --tab-text: #9ca3af;
+  --tab-text-active: #60a5fa;
+  --tab-text-completed: #34d399;
+  --tab-hover-background: #4b5563;
+  --maintenance-card-background: #374151;
+  --maintenance-card-border: #4b5563;
+  --maintenance-completed-background: #064e3b;
+  --maintenance-incomplete-background: #451a03;
+  --progress-background: #374151;
+  --progress-border: #4b5563;
+  --progress-bar-background: #4b5563;
+  --progress-fill: linear-gradient(90deg, #34d399 0%, #10b981 100%);
+  --toast-success-background: #059669;
+  --toast-error-background: #dc2626;
+  --header-gradient: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  --submit-info-background: #451a03;
+  --submit-info-color: #f59e0b;
+  --submit-info-border: #92400e;
+
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+}
 /* ====== RESET GLOBAL ====== */
 * {
   margin: 0;

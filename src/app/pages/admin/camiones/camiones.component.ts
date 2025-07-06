@@ -94,17 +94,17 @@ export class CamionesComponent {
     return this.mantenciones.filter((m) => m.accionSeleccionada && m.kilometraje !== null).length
   }
 
-  // NUEVO: Verificar si todas las mantenciones están completas
+  // Verificar si todas las mantenciones están completas
   areAllMaintenancesComplete(): boolean {
     return this.mantenciones.every((m) => m.accionSeleccionada && m.kilometraje !== null)
   }
 
-  // NUEVO: Obtener mantenciones incompletas
+  // Obtener mantenciones incompletas
   getIncompleteMaintenances(): string[] {
     return this.mantenciones.filter((m) => !m.accionSeleccionada || m.kilometraje === null).map((m) => m.nombre)
   }
 
-  // NUEVO: Verificar si el formulario básico está completo
+  // Verificar si el formulario básico está completo
   isBasicFormComplete(): boolean {
     return !!(
       this.camion.patente.trim() &&
@@ -124,7 +124,7 @@ export class CamionesComponent {
     )
   }
 
-  // NUEVO: Verificar si se puede registrar el camión
+  // Verificar si se puede registrar el camión
   canRegisterTruck(): boolean {
     return this.isBasicFormComplete() && this.areAllMaintenancesComplete()
   }
@@ -134,13 +134,12 @@ export class CamionesComponent {
     this.toastMessage = message
     this.toastType = type
     this.showToast = true
-
     setTimeout(() => {
       this.showToast = false
     }, 4000)
   }
 
-  // MÉTODO MODIFICADO con validaciones mejoradas
+  // Método con validaciones mejoradas
   enviarFormulario() {
     // Validación de patente
     if (!this.camion.patente.trim()) {
@@ -156,12 +155,11 @@ export class CamionesComponent {
       return
     }
 
-    // NUEVA VALIDACIÓN: Verificar mantenciones completas
+    // Verificar mantenciones completas
     if (!this.areAllMaintenancesComplete()) {
       const incompleteMaintenances = this.getIncompleteMaintenances()
       const completedCount = this.getCompletedMaintenances()
       const totalCount = this.mantenciones.length
-
       this.showToastNotification(
         `Faltan ${totalCount - completedCount} mantenciones por completar: ${incompleteMaintenances.join(", ")}`,
         "error",
@@ -171,7 +169,6 @@ export class CamionesComponent {
     }
 
     this.isSubmitting = true
-
     const currentKm = Number(this.camion.kilometraje_camion)
 
     const datosCamion = {
