@@ -11,7 +11,7 @@ const routes: Routes = [
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [NavbarComponent],
+  imports: [],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

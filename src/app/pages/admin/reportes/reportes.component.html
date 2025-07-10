@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
 <div class="container">
@@ -8,31 +8,52 @@
   <p class="sub">Gestiona y monitorea los reportes de tu flota</p>
 
   <div class="resumen">
-    <div class="box total">Total Reportes<br><strong>4</strong></div>
-    <div class="box urgentes">Urgentes<br><strong>1</strong></div>
-    <div class="box progreso">En Progreso<br><strong>1</strong></div>
-    <div class="box completado">Completados<br><strong>1</strong></div>
+    <div class="box total">
+      Total Reportes<br /><strong>{{ totalReportes }}</strong>
+    </div>
+    <div class="box urgentes">
+      Urgentes<br /><strong>{{ totalUrgentes }}</strong>
+    </div>
+    <div class="box progreso">
+      En Progreso<br /><strong>{{ totalEnProgreso }}</strong>
+    </div>
+    <div class="box completado">
+      Completados<br /><strong>{{ totalCompletados }}</strong>
+    </div>
   </div>
 
   <div class="filtros">
-    <input type="text" placeholder="Buscar por camión, conductor o título..." />
-    <select>
-      <option>Todos los estados</option>
+    <input
+      type="text"
+      placeholder="Buscar por camión, conductor o título..."
+      [(ngModel)]="filtroTexto"
+      (input)="aplicarFiltro()"
+    />
+    <select [(ngModel)]="filtroEstado" (change)="aplicarFiltro()">
+      <option value="">Todos los estados</option>
+      <option value="Urgente">Urgente</option>
+      <option value="En Progreso">En Progreso</option>
+      <option value="Completado">Completado</option>
+      <option value="Pendiente">Pendiente</option>
     </select>
-    <select>
-      <option>Todos los tipos</option>
+    <select [(ngModel)]="filtroTipo" (change)="aplicarFiltro()">
+      <option value="">Todos los tipos</option>
+      <option value="Mecánico">Mecánico</option>
+      <option value="Eléctrico">Eléctrico</option>
     </select>
     <button class="nuevo" (click)="nuevoReporte()">+ Nuevo Reporte</button>
   </div>
 
   <div class="lista-reportes">
-    <div class="card" *ngFor="let r of reportes">
+    <div class="card" *ngFor="let r of reportesFiltrados">
       <div class="header">
         <div>
-          <strong>{{ r.titulo }}</strong><br>
+          <strong>{{ r.titulo }}</strong><br />
           <span class="codigo">{{ r.codigo }}</span>
         </div>
-        <span class="estado" [ngClass]="r.estado.toLowerCase().replace(' ', '-')">{{ r.estado }}</span>
+        <span class="estado" [ngClass]="r.estado.toLowerCase().replace(' ', '-')">{{
+          r.estado
+        }}</span>
       </div>
       <p>{{ r.descripcion }}</p>
       <div class="info">
@@ -40,6 +61,7 @@
         <span>📍 {{ r.ubicacion }}</span>
         <span>📅 {{ r.fecha }}</span>
         <span>🛣️ {{ r.kilometraje }}</span>
+        <span>🔧 {{ r.tipo }}</span>
       </div>
     </div>
   </div>
@@ -74,10 +96,16 @@
       <input name="ubicacion" ngModel required />
 
       <label>Fecha</label>
-      <input name="fecha" type="date" ngModel required />
+      <input type="date" name="fecha" ngModel required />
 
       <label>Kilometraje</label>
       <input name="kilometraje" ngModel required />
+
+      <label>Tipo</label>
+      <select name="tipo" ngModel required>
+        <option value="Mecánico">Mecánico</option>
+        <option value="Eléctrico">Eléctrico</option>
+      </select>
 
       <div class="acciones">
         <button type="submit" [disabled]="formReporte.invalid">Guardar</button>

@@ -201,6 +201,7 @@
 
   background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
 }
+
 /* ====== RESET GLOBAL ====== */
 * {
   margin: 0;
@@ -364,6 +365,7 @@ thead th {
 tbody td {
   padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
 }
 
 tr:hover td {
@@ -384,6 +386,7 @@ tr:hover td {
   box-shadow: var(--shadow-sm);
   padding: var(--spacing-md);
   transition: box-shadow var(--transition);
+  color: var(--color-text);
 }
 
 .maintenance-card:hover {
@@ -395,6 +398,7 @@ tr:hover td {
   border-radius: var(--border-radius);
   padding: var(--spacing-sm);
   transition: box-shadow var(--transition);
+  color: var(--color-text);
 }
 
 .day:hover {
@@ -404,6 +408,7 @@ tr:hover td {
 .date {
   font-weight: 700;
   margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
 }
 
 event {
@@ -411,6 +416,7 @@ event {
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius);
   font-size: 0.875rem;
+  color: var(--color-text);
 }
 
 event-warning {

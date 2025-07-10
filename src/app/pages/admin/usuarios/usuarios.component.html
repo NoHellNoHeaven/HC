@@ -74,10 +74,8 @@
   </div>
 
   <!-- CALENDARIO -->
-  <div *ngIf="vistaActual === 'calendar'" class="calendar-wrapper">
-    <div class="calendar-container">
-      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
-    </div>
+  <div *ngIf="vistaActual === 'calendar'" class="calendar-container">
+    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
   </div>
 
   <!-- LISTA -->

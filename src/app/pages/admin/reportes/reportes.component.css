@@ -49,6 +49,7 @@ body {
   font-size: 14px;
   box-shadow: var(--shadow-sm);
   transition: box-shadow 0.3s ease;
+  color: var(--color-text); /* Texto negro */
 }
 
 .resumen .box strong {
@@ -56,15 +57,24 @@ body {
   display: block;
   margin-top: 4px;
   font-weight: 700;
+  color: inherit; /* Hereda el color definido en la tarjeta */
 }
 
 .resumen .box:hover {
   box-shadow: var(--shadow-hover);
 }
 
-.urgentes { border-left: 4px solid var(--color-urgente); }
-.progreso { border-left: 4px solid var(--color-en-progreso); }
-.completado { border-left: 4px solid var(--color-completado-text); }
+.urgentes {
+  border-left: 4px solid var(--color-urgente);
+}
+
+.progreso {
+  border-left: 4px solid var(--color-en-progreso);
+}
+
+.completado {
+  border-left: 4px solid var(--color-completado-text);
+}
 
 /* Filtros */
 .filtros {
@@ -325,4 +335,29 @@ body {
     width: 95%;
     max-width: 100%;
   }
+}
+
+/* Colores específicos para cajas resumen */
+.resumen .box.total {
+  background-color: #4a90e2;
+  color: white;
+  border-left: 4px solid #357ABD;
+}
+
+.resumen .box.urgentes {
+  background-color: #e74c3c;
+  color: white;
+  border-left: 4px solid #c0392b;
+}
+
+.resumen .box.progreso {
+  background-color: #f39c12;
+  color: black;
+  border-left: 4px solid #d68910;
+}
+
+.resumen .box.completado {
+  background-color: #27ae60;
+  color: white;
+  border-left: 4px solid #1e8449;
 }
