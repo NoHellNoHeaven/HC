@@ -23,7 +23,7 @@ export interface Usuario {
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = `${environment.apiUrl}/usuarios`;
+  private apiUrl = `${environment.apiUrl}/usuario`;
 
   constructor(private http: HttpClient) {}
 
