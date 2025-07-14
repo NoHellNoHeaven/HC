@@ -8,8 +8,10 @@
     <table>
       <thead>
         <tr>
+          <th>RUT</th>
           <th>Nombre</th>
           <th>Apellido</th>
+          <th>Email</th>
           <th>Teléfono</th>
           <th>Licencia</th>
           <th>Acciones</th>
@@ -17,8 +19,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let chofer of choferes">
+          <td>{{ chofer.rut }}</td>
           <td>{{ chofer.nombre }}</td>
-          <td>{{ chofer.apellido }}</td>
+          <td>{{ chofer.p_apellido }}</td>
+          <td>{{ chofer.email }}</td>
           <td>{{ chofer.telefono }}</td>
           <td>{{ chofer.licencia }}</td>
           <td>
@@ -38,11 +42,20 @@
   <div class="modal">
     <h2>Agregar Nuevo Chofer</h2>
     <form (ngSubmit)="agregarChofer()" #choferForm="ngForm">
+      <label for="rut">RUT</label>
+      <input type="text" id="rut" placeholder="RUT" [(ngModel)]="nuevoChofer.rut" name="rut" required />
+
       <label for="nombre">Nombre</label>
       <input type="text" id="nombre" placeholder="Nombre" [(ngModel)]="nuevoChofer.nombre" name="nombre" required />
 
-      <label for="apellido">Apellido</label>
-      <input type="text" id="apellido" placeholder="Apellido" [(ngModel)]="nuevoChofer.apellido" name="apellido" required />
+      <label for="p_apellido">Apellido</label>
+      <input type="text" id="p_apellido" placeholder="Apellido" [(ngModel)]="nuevoChofer.p_apellido" name="p_apellido" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Email" [(ngModel)]="nuevoChofer.email" name="email" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Password" [(ngModel)]="nuevoChofer.password" name="password" required />
 
       <label for="telefono">Teléfono</label>
       <input type="text" id="telefono" placeholder="Teléfono" [(ngModel)]="nuevoChofer.telefono" name="telefono" required />
@@ -63,11 +76,20 @@
   <div class="modal">
     <h2>Editar Chofer</h2>
     <form (ngSubmit)="guardarEdicion()">
+      <label for="rutEdit">RUT</label>
+      <input type="text" id="rutEdit" [(ngModel)]="choferEditado.rut" name="rut" readonly />
+
       <label for="nombreEdit">Nombre</label>
       <input type="text" id="nombreEdit" [(ngModel)]="choferEditado.nombre" name="nombre" required />
 
-      <label for="apellidoEdit">Apellido</label>
-      <input type="text" id="apellidoEdit" [(ngModel)]="choferEditado.apellido" name="apellido" required />
+      <label for="p_apellidoEdit">Apellido</label>
+      <input type="text" id="p_apellidoEdit" [(ngModel)]="choferEditado.p_apellido" name="p_apellido" required />
+
+      <label for="emailEdit">Email</label>
+      <input type="email" id="emailEdit" [(ngModel)]="choferEditado.email" name="email" required />
+
+      <label for="passwordEdit">Password</label>
+      <input type="password" id="passwordEdit" [(ngModel)]="choferEditado.password" name="password" />
 
       <label for="telefonoEdit">Teléfono</label>
       <input type="text" id="telefonoEdit" [(ngModel)]="choferEditado.telefono" name="telefono" required />
