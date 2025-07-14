@@ -1,0 +1,431 @@
+/* ====== CONTENEDOR PRINCIPAL ====== */
+.historial-container {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  padding: 24px;
+  min-height: 100vh;
+}
+
+/* ====== HEADER ====== */
+.historial-header {
+  margin-bottom: 40px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background: var(--primary-dark);
+}
+
+.back-icon {
+  font-size: 1.2rem;
+}
+
+.historial-header h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-color);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* ====== FILTROS ====== */
+.filtros-section {
+  margin-bottom: 32px;
+}
+
+.filtros-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: end;
+  padding: 24px;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.filtro-grupo label {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.filtro-select {
+  padding: 10px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.filtro-acciones {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-limpiar {
+  padding: 10px 16px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-limpiar:hover {
+  background: #5a6268;
+}
+
+.btn-exportar {
+  padding: 10px 16px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-exportar:hover {
+  background: #218838;
+}
+
+/* ====== ESTADÍSTICAS ====== */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  padding: 24px;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.stat-number {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* ====== MANTENCIONES ====== */
+.mantenciones-section {
+  margin-bottom: 40px;
+}
+
+/* ====== CONTROLES DE TABLA ====== */
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--card-background);
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+}
+
+.ordenamiento {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ordenamiento label {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.orden-select {
+  padding: 8px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.resultados-info {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+/* ====== TABLA ====== */
+.table-container {
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.mantenciones-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.mantenciones-table th {
+  background: var(--primary-color);
+  color: white;
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.mantenciones-table th span {
+  display: block;
+}
+
+.mantenciones-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--card-border);
+  vertical-align: middle;
+}
+
+.mantencion-row {
+  transition: background-color 0.2s ease;
+}
+
+.mantencion-row:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.mantencion-row:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+/* ====== COLUMNAS ====== */
+.col-fecha {
+  width: 140px;
+  min-width: 140px;
+}
+
+.col-camion {
+  width: 200px;
+  min-width: 200px;
+}
+
+.col-patente {
+  width: 120px;
+  min-width: 120px;
+}
+
+.col-mantencion {
+  width: 180px;
+  min-width: 180px;
+}
+
+.col-accion {
+  width: 200px;
+  min-width: 200px;
+}
+
+.col-kilometraje {
+  width: 120px;
+  min-width: 120px;
+  text-align: right;
+}
+
+/* ====== CELDAS ESPECIALES ====== */
+.fecha-hora-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fecha-hora-cell .fecha {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.85rem;
+}
+
+.fecha-hora-cell .hora {
+  font-size: 0.75rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.patente-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+/* ====== ESTADO VACÍO ====== */
+.no-mantenciones {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 2px dashed var(--card-border);
+}
+
+.no-mantenciones-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.no-mantenciones h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.4rem;
+  color: var(--text-color);
+}
+
+.no-mantenciones p {
+  margin: 0 0 24px 0;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .historial-container {
+    padding: 16px;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .historial-header h1 {
+    font-size: 2rem;
+  }
+  
+  .filtros-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filtro-acciones {
+    justify-content: center;
+  }
+  
+  .stats-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .table-controls {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .ordenamiento {
+    justify-content: center;
+  }
+  
+  .resultados-info {
+    text-align: center;
+  }
+  
+  .mantenciones-table {
+    font-size: 0.8rem;
+  }
+  
+  .mantenciones-table th,
+  .mantenciones-table td {
+    padding: 8px 6px;
+  }
+  
+  .col-fecha {
+    width: 100px;
+    min-width: 100px;
+  }
+  
+  .col-camion {
+    width: 120px;
+    min-width: 120px;
+  }
+  
+  .col-patente {
+    width: 80px;
+    min-width: 80px;
+  }
+  
+  .col-mantencion {
+    width: 100px;
+    min-width: 100px;
+  }
+  
+  .col-accion {
+    width: 120px;
+    min-width: 120px;
+  }
+  
+  .col-kilometraje {
+    width: 80px;
+    min-width: 80px;
+  }
+} 

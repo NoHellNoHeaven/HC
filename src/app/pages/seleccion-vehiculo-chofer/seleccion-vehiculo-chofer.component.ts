@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy, AfterViewInit } from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CamionService } from '../../servicios/camion.service';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { CommonModule } from '@angular/common';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-seleccion-vehiculo-chofer',
@@ -15,11 +16,12 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./seleccion-vehiculo-chofer.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class SeleccionVehiculoChoferComponent implements OnInit {
+export class SeleccionVehiculoChoferComponent implements OnInit, OnDestroy, AfterViewInit {
   camionesLocales: any[] = [];
   camionSeleccionado: any = null;
   nuevoKilometraje: number | null = null;
   errorMessage: string = "";
+  private updateSubscription: Subscription | null = null;
 
   constructor(
     private router: Router,
@@ -27,11 +29,78 @@ export class SeleccionVehiculoChoferComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.cargarCamionesYActualizarMantenciones();
+    
+    // Actualizar mantenciones cada 30 segundos para mantener el contador siempre actualizado
+    this.updateSubscription = interval(30000).subscribe(() => {
+      this.actualizarEstadoMantenciones();
+    });
+
+    // Actualizar cuando la ventana vuelve a estar activa
+    window.addEventListener('focus', () => {
+      this.cargarCamionesYActualizarMantenciones();
+    });
+  }
+
+  ngAfterViewInit() {
+    // Actualizar mantenciones después de que la vista se haya inicializado
+    setTimeout(() => {
+      this.actualizarEstadoMantenciones();
+    }, 100);
+  }
+
+  // Método para actualizar cuando el usuario regresa a esta pantalla
+  ionViewWillEnter() {
+    this.cargarCamionesYActualizarMantenciones();
+  }
+
+  ngOnDestroy() {
+    if (this.updateSubscription) {
+      this.updateSubscription.unsubscribe();
+    }
+    // Remover el event listener
+    window.removeEventListener('focus', () => {
+      this.cargarCamionesYActualizarMantenciones();
+    });
+  }
+
+  cargarCamionesYActualizarMantenciones() {
     this.camionesLocales = this.obtenerCamionesLocales();
+    this.actualizarEstadoMantenciones();
+  }
+
+  actualizarEstadoMantenciones() {
+    let hayCambios = false;
+    
+    this.camionesLocales = this.camionesLocales.map(camion => {
+      const mantencionesActualizadas = camion.mantenciones.map((m: any) => {
+        const proximoKm = Number(m.proximoKilometraje);
+        const fechaBase = new Date(camion.fecha_revision_tecnica + '-01');
+        const fechaVencimiento = new Date(fechaBase);
+        fechaVencimiento.setMonth(fechaVencimiento.getMonth() + Number(m.meses));
+        
+        const vencida = camion.kilometraje_camion >= proximoKm || fechaVencimiento <= new Date();
+        
+        // Si el estado cambió, marcamos que hay cambios
+        if (m.vencida !== vencida) {
+          hayCambios = true;
+        }
+        
+        return { ...m, vencida };
+      });
+      
+      return { ...camion, mantenciones: mantencionesActualizadas };
+    });
+    
+    // Si hubo cambios, actualizar localStorage
+    if (hayCambios) {
+      localStorage.setItem('camiones', JSON.stringify(this.camionesLocales));
+    }
   }
 
   obtenerCamionesLocales(): any[] {
-    return JSON.parse(localStorage.getItem('camiones') || '[]');
+    const camiones = JSON.parse(localStorage.getItem('camiones') || '[]');
+    return camiones;
   }
 
   seleccionarCamion(camion: any) {
@@ -134,6 +203,14 @@ export class SeleccionVehiculoChoferComponent implements OnInit {
   }
 
   getExpiredMaintenanceCount(camion: any): number {
-    return camion.mantenciones.filter((m: any) => m.vencida).length;
+    // Calcular en tiempo real el estado de las mantenciones
+    return camion.mantenciones.filter((m: any) => {
+      const proximoKm = Number(m.proximoKilometraje);
+      const fechaBase = new Date(camion.fecha_revision_tecnica + '-01');
+      const fechaVencimiento = new Date(fechaBase);
+      fechaVencimiento.setMonth(fechaVencimiento.getMonth() + Number(m.meses));
+      
+      return camion.kilometraje_camion >= proximoKm || fechaVencimiento <= new Date();
+    }).length;
   }
 }

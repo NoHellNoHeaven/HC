@@ -233,3 +233,26 @@
   margin-top: 20px;
 }
 
+/* Mensajes cuando no hay mantenciones */
+.no-mantenciones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  margin: 8px 0;
+}
+
+.no-mantenciones-content {
+  text-align: center;
+  color: #64748b;
+}
+
+.no-mantenciones-text {
+  font-size: 14px;
+  margin: 0;
+  font-weight: 400;
+}
+

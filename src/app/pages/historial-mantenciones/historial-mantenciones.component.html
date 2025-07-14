@@ -1,0 +1,140 @@
+<app-navbar></app-navbar>
+
+<div class="historial-container">
+  <!-- Header -->
+  <header class="historial-header">
+    <div class="header-content">
+      <div class="back-button" (click)="volverAHome()">
+        <span class="back-icon">←</span>
+        <span>Volver</span>
+      </div>
+      <h1>Historial Completo de Mantenciones</h1>
+    </div>
+    <p class="subtitle">Registro detallado de todas las mantenciones realizadas</p>
+  </header>
+
+  <!-- Filtros -->
+  <section class="filtros-section">
+    <div class="filtros-container">
+      <div class="filtro-grupo">
+        <label for="filtro-camion">Filtrar por Camión:</label>
+        <select id="filtro-camion" [(ngModel)]="filtroCamion" class="filtro-select">
+          <option value="">Todos los camiones</option>
+          <option *ngFor="let camion of camionesDisponibles" [value]="camion">
+            {{ camion }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filtro-grupo">
+        <label for="filtro-mantencion">Filtrar por Mantención:</label>
+        <select id="filtro-mantencion" [(ngModel)]="filtroMantencion" class="filtro-select">
+          <option value="">Todas las mantenciones</option>
+          <option *ngFor="let mantencion of mantencionesDisponibles" [value]="mantencion">
+            {{ mantencion }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filtro-acciones">
+        <button class="btn-limpiar" (click)="limpiarFiltros()">
+          Limpiar Filtros
+        </button>
+        <button class="btn-exportar" (click)="exportarHistorial()">
+          📊 Exportar CSV
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Estadísticas -->
+  <section class="stats-section">
+    <div class="stat-card">
+      <h3>Total de Mantenciones</h3>
+      <p class="stat-number">{{ historialFiltrado.length }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Camiones Involucrados</h3>
+      <p class="stat-number">{{ camionesDisponibles.length }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Tipos de Mantención</h3>
+      <p class="stat-number">{{ mantencionesDisponibles.length }}</p>
+    </div>
+  </section>
+
+  <!-- Lista de mantenciones -->
+  <section class="mantenciones-section">
+    <div *ngIf="historialFiltrado.length > 0; else sinMantenciones" class="table-container">
+      <!-- Controles de ordenamiento -->
+      <div class="table-controls">
+        <div class="ordenamiento">
+          <label for="orden-fecha">Ordenar por fecha:</label>
+          <select id="orden-fecha" [(ngModel)]="ordenFecha" (change)="aplicarOrdenamiento()" class="orden-select">
+            <option value="descendente">Más recientes primero</option>
+            <option value="ascendente">Más antiguos primero</option>
+          </select>
+        </div>
+        <div class="resultados-info">
+          Mostrando {{ historialFiltrado.length }} de {{ historialCompleto.length }} mantenciones
+        </div>
+      </div>
+
+      <!-- Tabla de mantenciones -->
+      <div class="table-wrapper">
+        <table class="mantenciones-table">
+          <thead>
+            <tr>
+              <th class="col-fecha">
+                <span>Fecha y Hora</span>
+              </th>
+              <th class="col-camion">
+                <span>Camión</span>
+              </th>
+              <th class="col-patente">
+                <span>Patente</span>
+              </th>
+              <th class="col-mantencion">
+                <span>Mantención</span>
+              </th>
+              <th class="col-accion">
+                <span>Acción</span>
+              </th>
+              <th class="col-kilometraje">
+                <span>Kilometraje de realización</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mantencion of historialFiltrado" class="mantencion-row">
+              <td class="col-fecha">
+                <div class="fecha-hora-cell">
+                  <div class="fecha">{{ mantencion.fecha.split(' ')[0] }}</div>
+                  <div class="hora">{{ mantencion.fecha.split(' ')[1] }}</div>
+                </div>
+              </td>
+              <td class="col-camion">{{ mantencion.camion }}</td>
+              <td class="col-patente">
+                <span class="patente-badge">{{ mantencion.patente }}</span>
+              </td>
+              <td class="col-mantencion">{{ mantencion.nombre }}</td>
+              <td class="col-accion">{{ mantencion.accion }}</td>
+              <td class="col-kilometraje">{{ mantencion.kilometraje }} km</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ng-template #sinMantenciones>
+      <div class="no-mantenciones">
+        <div class="no-mantenciones-icon">📋</div>
+        <h3>No hay mantenciones que coincidan con los filtros</h3>
+        <p>Intenta ajustar los filtros o verifica que haya datos de mantenciones.</p>
+        <button class="btn-limpiar" (click)="limpiarFiltros()">
+          Limpiar Filtros
+        </button>
+      </div>
+    </ng-template>
+  </section>
+</div> 

@@ -30,8 +30,13 @@
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --shadow-hover: 0 6px 8px rgba(0, 0, 0, 0.1);
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: 0 6px 10px rgba(0, 0, 0, 0.15);
+  --primary-color-rgb: 51, 51, 51;
+  --text-secondary-rgb: 107, 114, 128;
 
   --border-radius: 0.5rem;
+  --card-border: #E5E7EB;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -172,6 +177,11 @@
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
   --shadow-hover: 0 6px 8px rgba(0, 0, 0, 0.4);
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 6px 10px rgba(0, 0, 0, 0.5);
+  --primary-color-rgb: 209, 213, 219;
+  --text-secondary-rgb: 156, 163, 175;
+  --card-border: #374151;
 
   /* Variables específicas para tema oscuro */
   --input-background: #374151;

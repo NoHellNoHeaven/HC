@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,10 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
   menuOpen = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private themeService: ThemeService
+  ) {}
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;

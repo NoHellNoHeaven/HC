@@ -11,8 +11,12 @@ import { SeleccionVehiculoChoferComponent } from './pages/seleccion-vehiculo-cho
 import { ReportesComponent } from './pages/admin/reportes/reportes.component';
 import { AlertasComponent } from './pages/chofer/alertas/alertas.component';
 import { MantencionesPendientesComponent } from './pages/mantenciones-pendientes/mantenciones-pendientes.component';
+import { HomeComponent } from './pages/home/home.component';
+import { HistorialMantencionesComponent } from './pages/historial-mantenciones/historial-mantenciones.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
@@ -25,5 +29,6 @@ export const routes: Routes = [
   { path: 'reportes', component: ReportesComponent },
   { path: 'alertas', component: AlertasComponent },
   { path: 'mantenciones-pendientes', component: MantencionesPendientesComponent },
-
+  { path: 'historial-mantenciones', component: HistorialMantencionesComponent },
+  { path: '**', redirectTo: '/home' }
 ];

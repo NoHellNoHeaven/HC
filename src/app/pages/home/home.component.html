@@ -38,7 +38,6 @@
         'badge badge-blue': camion.estado === 'en mantencion'
       }">{{ camion.estado }}</span>
     </div>
-    <p><strong>ID:</strong> {{ camion.id }}</p>
     <p><strong>Patente:</strong> {{ camion.patente }}</p>
     <p><strong>Año:</strong> {{ camion.anio }}</p>
     <p><strong>Alertas:</strong> <span class="alert-count">{{ camion.alertas }}</span></p>
@@ -60,22 +59,39 @@
         <span>{{ camion.kmMeta }} km</span>
       </div>
     </div>
-    <button class="details-btn" (click)="navegar('/camion-detalles/' + camion.id)">Ver Detalles</button>
+    <button class="details-btn" (click)="verDetallesCamion(camion)">Ver Detalles</button>
   </div>
 </section>
 
-    <!-- Lista de mantenimientos -->
+    <!-- Historial de mantenciones -->
     <section class="maintenance-list">
-      <h2>Mantenimientos</h2>
-      <div class="maintenance-card"
-           *ngFor="let mantencion of listaMantenciones"
-           [ngClass]="{
-             'mantenimiento-rojo': mantencion.nivel === 'critica',
-             'mantenimiento-amarillo': mantencion.nivel === 'advertencia',
-             'mantenimiento-verde': mantencion.nivel === 'normal'
-           }">
-        <strong>{{ mantencion.fecha }}:</strong> {{ mantencion.camion }} - {{ mantencion.nombre }}
+      <div class="section-header">
+        <h2>Últimas Mantenciones</h2>
+        <button class="btn-ver-completo" (click)="verHistorialCompleto()">
+          Ver Historial Completo
+        </button>
       </div>
+      <div *ngIf="historialMantenciones.length > 0; else sinHistorial">
+        <div class="maintenance-card historial-card"
+             *ngFor="let mantencion of historialMantenciones">
+          <div class="historial-header">
+            <span class="historial-icon">🔧</span>
+            <div class="fecha-hora">
+              <strong>{{ mantencion.fecha.split(' ')[0] }}</strong>
+              <span class="hora">{{ mantencion.fecha.split(' ')[1] }}</span>
+            </div>
+          </div>
+          <p><strong>Camión:</strong> {{ mantencion.camion }} ({{ mantencion.patente }})</p>
+          <p><strong>Mantención:</strong> {{ mantencion.nombre }}</p>
+          <p><strong>Acción:</strong> {{ mantencion.accion }}</p>
+          <p><strong>Kilometraje:</strong> {{ mantencion.kilometraje }} km</p>
+        </div>
+      </div>
+      <ng-template #sinHistorial>
+        <div class="no-history">
+          <p>No hay historial de mantenciones registrado.</p>
+        </div>
+      </ng-template>
     </section>
 
     <!-- Lista de alertas -->
@@ -90,7 +106,6 @@
                   'reconocida': alerta.estado === 'Reconocida'
                 }">{{ alerta.estado }}</span>
         </div>
-        <p><strong>ID:</strong> {{ alerta.id }}</p>
         <p><strong>Tipo:</strong> {{ alerta.tipo }}</p>
         <p><strong>Descripción:</strong> {{ alerta.descripcion }}</p>
         <p><strong>Fecha límite:</strong> {{ alerta.fechaLimite }}</p>

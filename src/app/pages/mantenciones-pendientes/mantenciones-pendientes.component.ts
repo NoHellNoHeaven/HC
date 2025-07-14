@@ -43,11 +43,17 @@ export class MantencionesPendientesComponent implements OnInit {
       const proximoKm = Number(mantencion.proximoKilometraje)
       const meses = Number(mantencion.meses)
 
-      const fechaBase = new Date(this.camion.fecha_revision_tecnica + "-01")
-      const fechaVencimiento = new Date(fechaBase)
-      fechaVencimiento.setMonth(fechaVencimiento.getMonth() + meses)
+      // Calcular fecha de vencimiento basada en el mes actual + meses asignados
+      let fechaVencimiento = null
+      if (meses > 0) {
+        const fechaBase = new Date()
+        fechaBase.setDate(1) // Primer día del mes actual
+        fechaVencimiento = new Date(fechaBase)
+        fechaVencimiento.setMonth(fechaVencimiento.getMonth() + meses)
+      }
 
-      const vencida = kmActual >= proximoKm || fechaVencimiento <= hoy
+      // Una mantención está vencida si supera el kilometraje O si tiene fecha y ya venció
+      const vencida = kmActual >= proximoKm || (fechaVencimiento && fechaVencimiento <= hoy)
 
       const item = {
         nombre: this.camion.patente,
@@ -81,6 +87,7 @@ export class MantencionesPendientesComponent implements OnInit {
 completarMantencion() {
   const kmActual = Number(this.camion.kilometraje_camion)
   const mantencion = this.mantencionAConfirmar
+  const fechaRealizacion = new Date()
 
   if (!this.camion.historialMantenciones) {
     this.camion.historialMantenciones = []
@@ -89,13 +96,24 @@ completarMantencion() {
   this.camion.historialMantenciones.push({
     nombre: mantencion.mantencionOriginal.nombre,
     accion: mantencion.mantencionOriginal.accion || "Mantenimiento realizado",
-    fechaRealizada: new Date().toISOString(),
+    fechaRealizada: fechaRealizacion.toISOString(),
     kilometrajeRealizado: kmActual,
   })
+
+  // Calcular nueva fecha de vencimiento basada en la fecha de realización
+  let nuevaFechaVencimiento = null
+  const meses = Number(mantencion.mantencionOriginal.meses)
+  if (meses > 0) {
+    const fechaBase = new Date(fechaRealizacion)
+    fechaBase.setDate(1) // Primer día del mes de realización
+    nuevaFechaVencimiento = new Date(fechaBase)
+    nuevaFechaVencimiento.setMonth(nuevaFechaVencimiento.getMonth() + meses)
+  }
 
   const nuevaMantencion = {
     ...mantencion.mantencionOriginal,
     proximoKilometraje: kmActual + Number(mantencion.mantencionOriginal.kilometraje),
+    fechaVencimiento: nuevaFechaVencimiento ? nuevaFechaVencimiento.toISOString() : null,
   }
 
   this.camion.kilometraje_camion = kmActual

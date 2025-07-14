@@ -10,6 +10,11 @@
 <!-- 🔴 Mantenciones Pendientes -->
 <h2>Mantenciones Pendientes</h2>
 <div class="mantenciones-list">
+  <div *ngIf="mantencionesPendientes.length === 0" class="no-mantenciones">
+    <div class="no-mantenciones-content">
+      <p class="no-mantenciones-text">No hay mantenciones pendientes por el momento</p>
+    </div>
+  </div>
   <div *ngFor="let mantencion of mantencionesPendientes" class="mantencion-item critica">
     <div class="mantencion-top">
       <div class="mantencion-info">
@@ -29,7 +34,7 @@
           </span>
         </div>
       </div>
-      <div class="mantencion-fecha">
+      <div class="mantencion-fecha" *ngIf="mantencion.fecha">
         <strong>Vencimiento</strong><br />
         <span>{{ mantencion.fecha | date:'d/M/yyyy' }}</span>
       </div>
@@ -49,6 +54,11 @@
 <!-- 🟡 Mantenciones Próximas -->
 <h2>Mantenciones Próximas</h2>
 <div class="mantenciones-list">
+  <div *ngIf="mantencionesProximas.length === 0" class="no-mantenciones">
+    <div class="no-mantenciones-content">
+      <p class="no-mantenciones-text">No hay mantenciones próximas programadas</p>
+    </div>
+  </div>
   <div *ngFor="let mantencion of mantencionesProximas" class="mantencion-item proxima">
     <div class="mantencion-top">
       <div class="mantencion-info">
@@ -67,7 +77,7 @@
           </span>
         </div>
       </div>
-      <div class="mantencion-fecha">
+      <div class="mantencion-fecha" *ngIf="mantencion.fecha">
         <strong>Fecha</strong><br />
         <span>{{ mantencion.fecha | date:'d/M/yyyy' }}</span>
       </div>

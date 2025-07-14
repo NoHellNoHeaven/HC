@@ -1,9 +1,10 @@
 .navbar {
   position: relative;
-  background: #fafa08fb;
-  color: #000;
+  background: var(--card-background);
+  color: var(--text-color);
   padding: 1rem;
   z-index: 1000;
+  border-bottom: 1px solid var(--card-border);
 }
 
 /* Botón hamburguesa */
@@ -49,13 +50,13 @@
   margin: 0;
   display: none;
   flex-direction: column;
-  background: #fafa08fb;
+  background: var(--card-background);
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
   z-index: 1020;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--card-shadow);
   gap: 8px; /* Espacio entre botones */
 }
 
@@ -75,8 +76,8 @@
 
 /* Estilo de los botones */
 .menu li button {
-  background-color: #fafa08;
-  color: #000;
+  background-color: var(--card-background);
+  color: var(--text-color);
   border: none;
   width: 100%;
   padding: 1rem;
@@ -88,8 +89,10 @@
 }
 
 .menu li button:hover {
-  background-color: #e0e005;
+  background-color: var(--background-color-focus);
 }
+
+
 
 /* Overlay para oscurecer fondo */
 .overlay {
@@ -124,13 +127,13 @@
 
   .menu li button {
     background: transparent;
-    color: #000;
+    color: var(--text-color);
     padding: 0.5rem 1rem;
     border-radius: 4px;
   }
 
   .menu li button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--background-color-focus);
   }
 
   .overlay {
