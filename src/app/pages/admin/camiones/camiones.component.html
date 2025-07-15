@@ -62,7 +62,7 @@
                   id="tipo_vehiculo"
                   name="tipo_vehiculo"
                   class="form-select"
-                  [(ngModel)]="camion.tipo_vehiculo"
+                  [(ngModel)]="camion.tipoCamion"
                   required>
                   <option value="" disabled selected hidden>Selecciona tipo</option>
                   <option *ngFor="let tipo of tipoVehiculo" [value]="tipo">{{ tipo }}</option>
@@ -97,10 +97,10 @@
                 <label for="anno" class="form-label">Año *</label>
                 <input
                   type="number"
-                  id="anno"
-                  name="anno"
+                  id="anio"
+                  name="anio"
                   class="form-input"
-                  [(ngModel)]="camion.anno"
+                  [(ngModel)]="camion.anio"
                   required
                   placeholder="Ej: 2009"
                   min="1900"
@@ -126,7 +126,7 @@
                   id="nro_motor"
                   name="nro_motor"
                   class="form-input"
-                  [(ngModel)]="camion.nro_motor"
+                  [(ngModel)]="camion.nroMotor"
                   required
                   placeholder="Ej: 4M50 D11124" />
               </div>
@@ -138,7 +138,7 @@
                   id="nro_chasis"
                   name="nro_chasis"
                   class="form-input"
-                  [(ngModel)]="camion.nro_chasis"
+                  [(ngModel)]="camion.nroChasis"
                   required
                   placeholder="Ej: FE85DGA00785" />
               </div>
@@ -150,7 +150,7 @@
                   id="fabricante"
                   name="fabricante"
                   class="form-input"
-                  [(ngModel)]="camion.fabricante"
+                  [(ngModel)]="camion.fabrica"
                   required
                   placeholder="Ej: Mitsubishi Fuso" />
               </div>
@@ -173,7 +173,7 @@
                   id="tipo_sello"
                   name="tipo_sello"
                   class="form-select"
-                  [(ngModel)]="camion.tipo_sello"
+                  [(ngModel)]="camion.tipoSello"
                   required>
                   <option value="" disabled selected hidden>Selecciona sello</option>
                   <option *ngFor="let sello of tiposSello" [value]="sello">{{ sello }}</option>
@@ -200,7 +200,7 @@
                   id="kilometraje_camion"
                   name="kilometraje_camion"
                   class="form-input"
-                  [(ngModel)]="camion.kilometraje_camion"
+                  [(ngModel)]="camion.kilometraje"
                   required
                   placeholder="Ej: 150000" />
               </div>
@@ -212,7 +212,7 @@
                   id="fecha_revision_tecnica"
                   name="fecha_revision_tecnica"
                   class="form-input"
-                  [(ngModel)]="camion.fecha_revision_tecnica"
+                  [(ngModel)]="camion.fRevisionTecnica"
                   required/>
               </div>
             </div>
