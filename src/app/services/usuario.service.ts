@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-// Define la interfaz del usuario (ajústala según tu modelo)
 export interface Usuario {
   rut: string;
   nombre: string;
@@ -27,33 +26,34 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) {}
 
-  // Obtener todos los usuarios
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token') || '';
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
+
   getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(this.apiUrl);
+    return this.http.get<Usuario[]>(this.apiUrl, { headers: this.getAuthHeaders() });
   }
 
-  // Obtener un usuario por RUT
   getUsuario(rut: string): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.apiUrl}/${rut}`);
+    return this.http.get<Usuario>(`${this.apiUrl}/${rut}`, { headers: this.getAuthHeaders() });
   }
 
-  // Crear un nuevo usuario
   crearUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(this.apiUrl, usuario);
+    return this.http.post<Usuario>(this.apiUrl, usuario, { headers: this.getAuthHeaders() });
   }
 
-  // Actualizar un usuario completo (PUT)
   actualizarUsuario(rut: string, usuario: Usuario): Observable<Usuario> {
-    return this.http.put<Usuario>(`${this.apiUrl}/${rut}`, usuario);
+    return this.http.put<Usuario>(`${this.apiUrl}/${rut}`, usuario, { headers: this.getAuthHeaders() });
   }
 
-  // Actualizar parcialmente un usuario (PATCH)
   patchUsuario(rut: string, partialData: Partial<Usuario>): Observable<Usuario> {
-    return this.http.patch<Usuario>(`${this.apiUrl}/${rut}`, partialData);
+    return this.http.patch<Usuario>(`${this.apiUrl}/${rut}`, partialData, { headers: this.getAuthHeaders() });
   }
 
-  // Eliminar un usuario
   eliminarUsuario(rut: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${rut}`);
+    return this.http.delete<void>(`${this.apiUrl}/${rut}`, { headers: this.getAuthHeaders() });
   }
 }
