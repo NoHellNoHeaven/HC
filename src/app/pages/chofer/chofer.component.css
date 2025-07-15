@@ -7,12 +7,13 @@ body {
   font-family: Arial, sans-serif;
   background-color: var(--color-background);
   margin: 0;
-  padding-top: 100px;
+  padding: 0;
   color: var(--color-text);
 }
 
 /* Header fijo */
 header {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -24,7 +25,7 @@ header {
   align-items: center;
   padding: 20px;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 header h1 {
@@ -51,13 +52,21 @@ button.configuracion:hover {
 
 /* Contenedor principal */
 .choferes-container {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 1100px;
+  margin: 100px auto 0 auto; /* separación del navbar */
   padding: 20px;
   background-color: var(--card-background);
   color: var(--color-text);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-sm);
+}
+
+/* Tabla Wrapper para bordes redondeados */
+.table-wrapper {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-top: 20px;
 }
 
 .title {
@@ -111,7 +120,7 @@ form button:hover {
   background-color: var(--color-primary-hover);
 }
 
-/* Tabla */
+/* Lista de Choferes */
 .choferes-list {
   margin-top: 20px;
 }
@@ -121,53 +130,92 @@ form button:hover {
   color: var(--color-primary);
 }
 
+/* Tabla moderna */
 table {
   width: 100%;
-  border-collapse: collapse;
-  background-color: var(--card-background);
+  border-collapse: collapse; /* Cambiado a collapse para evitar picos */
+  background-color: transparent;
   color: var(--color-text);
-  border-radius: var(--border-radius);
 }
 
 th {
   background-color: var(--color-primary);
   color: var(--color-surface);
-}
-
-th, td {
-  padding: 12px;
+  padding: 14px;
   text-align: left;
+  border-bottom: 2px solid var(--color-border);
+  user-select: none;
+}
+
+td {
+  background-color: var(--card-background);
+  padding: 14px;
   border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  transition: background-color 0.3s ease;
 }
 
-/* Botones acciones */
+tbody tr {
+  /* Sombra ligera para simular separación entre filas */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+tbody tr:hover td {
+  background-color: var(--hover-color, #2a2a2a);
+}
+
+/* Botones de acción */
 .choferes-list button {
-  margin-right: 5px;
-  padding: 6px 12px;
+  margin: 4px 4px 4px 0;
+  padding: 8px 14px;
+  font-weight: bold;
+  font-size: 13px;
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.choferes-list button:first-child {
-  background-color: #ffc107;
+.choferes-list button:hover {
+  transform: translateY(-1px);
+}
+
+.choferes-list .btn-editar {
+  background-color: var(--btn-edit-bg, #ffc107);
   color: #000;
 }
 
-.choferes-list button:first-child:hover {
+.choferes-list .btn-editar:hover {
   background-color: #e0a800;
 }
 
-.choferes-list button:last-child {
-  background-color: #dc3545;
+.choferes-list .btn-eliminar {
+  background-color: var(--btn-delete-bg, #dc3545);
   color: #fff;
 }
 
-.choferes-list button:last-child:hover {
+.choferes-list .btn-eliminar:hover {
   background-color: #c82333;
 }
 
-/* MODAL */
+/* Botón agregar chofer */
+.btn-agregar {
+  background-color: var(--btn-add-bg, #e63946);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-agregar:hover {
+  background-color: #c92a37;
+}
+
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -241,7 +289,7 @@ th, td {
   background-color: #aaa;
 }
 
-/* Media queries para dispositivos móviles */
+/* Responsive */
 @media (max-width: 768px) {
   header {
     flex-direction: column;
@@ -263,7 +311,12 @@ th, td {
   .choferes-container {
     padding: 10px;
     max-width: 100%;
-    margin: 0 10px;
+    margin: 100px 10px 0 10px;
+  }
+
+  .table-wrapper {
+    box-shadow: none;
+    border-radius: 0;
   }
 
   table, thead, tbody, th, td, tr {
@@ -272,7 +325,7 @@ th, td {
   }
 
   thead tr {
-    display: none; /* ocultamos encabezado en móviles */
+    display: none;
   }
 
   tbody tr {
@@ -281,6 +334,7 @@ th, td {
     border-radius: var(--border-radius);
     padding: 10px;
     background: var(--card-background);
+    box-shadow: none;
   }
 
   tbody td {

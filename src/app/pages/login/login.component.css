@@ -48,7 +48,8 @@ h1 {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"] {
   width: 100%;
   padding: 12px;
   border: 1px solid var(--color-border);
@@ -60,7 +61,8 @@ input[type="password"] {
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="email"]:focus {
   border-color: var(--color-primary);
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* azul ligero */
