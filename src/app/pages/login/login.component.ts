@@ -1,24 +1,35 @@
 import { Component } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { ConfiguracionesComponent } from '../configuraciones/configuraciones.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NavbarComponent } from "../navbar/navbar.component";
-
-const routes: Routes = [
-  { path: 'configuraciones', component: ConfiguracionesComponent }
-];
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  constructor(private router: Router) {}
+  email = '';
+  password = '';
+  rememberMe = false;
+  errorMessage = '';
 
-  navegar() {
-    this.router.navigate(['/configuraciones']);
+  constructor(private router: Router, private authService: AuthService) {}
+
+  onLogin(event: Event) {
+    event.preventDefault();
+    this.errorMessage = '';
+
+    this.authService.login(this.email, this.password, this.rememberMe).subscribe({
+      next: () => {
+        this.router.navigate(['/configuraciones']);
+      },
+      error: (err) => {
+        this.errorMessage = 'Email o contraseña incorrectos';
+      },
+    });
   }
 }
