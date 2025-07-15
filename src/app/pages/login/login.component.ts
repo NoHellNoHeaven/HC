@@ -25,7 +25,7 @@ export class LoginComponent {
 
     this.authService.login(this.email, this.password, this.rememberMe).subscribe({
       next: () => {
-        this.router.navigate(['/configuraciones']);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         this.errorMessage = 'Email o contraseña incorrectos';
