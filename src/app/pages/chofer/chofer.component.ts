@@ -19,16 +19,21 @@ export class ChoferesComponent implements OnInit {
   mostrarFormularioAgregar = false;
   mostrarFormularioEdicion = false;
 
-  nuevoChofer: Partial<Usuario> = {
-    rut: '',
-    nombre: '',
-    p_apellido: '',
-    telefono: '',
-    licencia: '',
-    email: '',
-    password: '',
-    rol: 'Chofer'
-  };
+  nuevoChofer = {
+  rut: '',
+  nombre: '',
+  p_apellido: '',
+  m_apellido: '',
+  email: '',
+  password: '',
+  telefono: '',
+  rol: 'Chofer',
+  licencia: '',
+  vencLicencia: '',
+  telEmergencia: undefined,
+  direccion: '',
+  estado: 'ACTIVO', // <-- importante
+};
 
   choferEditado: Partial<Usuario> = {};
 
@@ -59,11 +64,16 @@ export class ChoferesComponent implements OnInit {
       rut: '',
       nombre: '',
       p_apellido: '',
-      telefono: '',
-      licencia: '',
+      m_apellido: '',
       email: '',
       password: '',
-      rol: 'Chofer'
+      telefono: '',
+      rol: 'Chofer',
+      licencia: '',
+      vencLicencia: '',
+      telEmergencia: undefined,
+      direccion: '',
+      estado: 'ACTIVO'
     };
   }
 
