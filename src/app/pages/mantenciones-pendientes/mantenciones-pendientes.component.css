@@ -9,7 +9,7 @@
 
 .alert-subtext {
   text-align: center;
-  color: gray;
+  color: var(--text-secondary);
   margin-bottom: 24px;
 }
 
@@ -23,27 +23,27 @@
 
 /* Tarjeta */
 .mantencion-item {
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--mp-card-border);
   border-radius: 8px;
   padding: 16px;
-  background-color: var(--card-background);
-  box-shadow: var(--card-shadow);
+  background-color: var(--mp-card-bg);
+  box-shadow: var(--mp-card-shadow);
   transition: 0.3s ease;
 }
 
 .mantencion-item:hover {
   transform: translateY(-3px);
-  box-shadow: var(--card-shadow-hover);
+  box-shadow: var(--mp-card-shadow-hover);
 }
 
 .critica {
-  background-color: #ffecec;
-  border-left: 4px solid #dc2626;
+  background-color: var(--mp-critical-bg);
+  border-left: 4px solid var(--mp-critical-border);
 }
 
 .proxima {
-  background-color: #fffbeb;
-  border-left: 4px solid #f59e0b;
+  background-color: var(--mp-warning-bg);
+  border-left: 4px solid var(--mp-warning-border);
 }
 
 /* Contenido */
@@ -59,10 +59,11 @@
 
 .patente {
   margin: 0;
+  color: var(--mp-text-primary);
 }
 
 .tipo {
-  color: gray;
+  color: var(--mp-text-secondary);
   font-size: 14px;
   margin-left: 4px;
 }
@@ -75,18 +76,20 @@
 }
 
 .badge-critico {
-  background-color: red;
-  color: white;
+  background-color: var(--mp-badge-bg);
+  color: var(--mp-badge-color);
 }
 
 .mantencion-fecha {
   text-align: right;
   min-width: 120px;
+  color: var(--mp-text-primary);
 }
 
 .descripcion {
   margin-top: 8px;
   margin-bottom: 12px;
+  color: var(--mp-text-primary);
 }
 
 /* Nueva línea minimalista de kilometraje */
@@ -95,19 +98,19 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #6b7280;
+  color: var(--mp-text-secondary);
   margin-top: 8px;
   padding: 8px 0;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid var(--mp-card-border);
 }
 
 .km-text {
-  color: #6b7280;
+  color: var(--mp-text-secondary);
   font-weight: 400;
 }
 
 .km-separator {
-  color: #d1d5db;
+  color: var(--mp-text-secondary);
   font-weight: bold;
 }
 
@@ -116,15 +119,15 @@
 }
 
 .km-status-exceeded {
-  color: #dc2626;
+  color: var(--mp-status-exceeded);
 }
 
 .km-status-reached {
-  color: #d97706;
+  color: var(--mp-status-reached);
 }
 
 .km-status-pending {
-  color: #0369a1;
+  color: var(--mp-status-pending);
 }
 
 /* Botones */
@@ -139,27 +142,29 @@
   padding: 10px 16px;
   font-size: 14px;
   font-weight: bold;
-  color: white;
-  background-color: var(--primary-color);
-  border: none;
+  color: var(--mp-button-primary-color);
+  background-color: var(--mp-button-primary-bg);
+  border: 1px solid var(--mp-button-primary-border);
   border-radius: 4px;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .button:hover {
-  background-color: var(--primary-dark);
+  background-color: var(--mp-button-secondary-bg);
   transform: scale(1.03);
 }
 
 .button-light {
-  background-color: #ccc;
-  color: #000;
+  background-color: var(--mp-button-secondary-bg);
+  color: var(--mp-button-secondary-color);
+  border: 1px solid var(--mp-button-secondary-border);
 }
 
 .button-outline {
-  background-color: #eee;
-  color: #000;
+  background-color: transparent;
+  color: var(--mp-text-primary);
+  border: 1px solid var(--mp-card-border);
 }
 
 /* Responsive */
@@ -213,17 +218,19 @@
 }
 
 .modal {
-  background: white;
+  background: var(--mp-card-bg);
   padding: 24px;
   border-radius: 8px;
   max-width: 400px;
   width: 90%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--mp-card-shadow);
+  border: 1px solid var(--mp-card-border);
 }
 
 .modal h3 {
   margin-top: 0;
   font-size: 20px;
+  color: var(--mp-text-primary);
 }
 
 .modal .acciones {
@@ -239,20 +246,21 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background-color: var(--mp-card-bg);
+  border: 1px solid var(--mp-card-border);
   border-radius: 6px;
   margin: 8px 0;
 }
 
 .no-mantenciones-content {
   text-align: center;
-  color: #64748b;
+  color: var(--mp-text-secondary);
 }
 
 .no-mantenciones-text {
   font-size: 14px;
   margin: 0;
   font-weight: 400;
+  color: var(--mp-text-secondary);
 }
 
