@@ -25,7 +25,12 @@ export class LoginComponent {
 
     this.authService.login(this.email, this.password, this.rememberMe).subscribe({
       next: () => {
-        this.router.navigate(['/home']);
+        const usuario = this.authService.getUsuario();
+        if (usuario?.rol === 'Chofer') {
+          this.router.navigate(['/seleccion-vehiculo-chofer']);
+        } else {
+          this.router.navigate(['/home']);
+        }
       },
       error: (err) => {
         this.errorMessage = 'Email o contraseña incorrectos';

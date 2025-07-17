@@ -3,6 +3,8 @@ import { CommonModule } from "@angular/common";
 import { CamionService, Camion } from "../../servicios/camion.service";
 import { NavbarComponent } from "../navbar/navbar.component";
 import { HttpClient } from '@angular/common/http';
+import { Router, NavigationStart } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-mantenciones-pendientes",
@@ -14,10 +16,12 @@ import { HttpClient } from '@angular/common/http';
 export class MantencionesPendientesComponent implements OnInit, OnDestroy {
   camionService = inject(CamionService);
   http = inject(HttpClient);
+  router = inject(Router);
 
   camion: Camion | null = null;
   mantencionesPendientes: any[] = [];
   mantencionesProximas: any[] = [];
+  private navSub: Subscription | null = null;
 
   ngOnInit() {
     // Primero intentar obtener el camión seleccionado del localStorage
@@ -50,6 +54,16 @@ export class MantencionesPendientesComponent implements OnInit, OnDestroy {
     window.addEventListener('focus', () => {
       this.recargarDatosFrescos();
     });
+
+    // Limpiar selección de camión si se navega fuera de esta ruta
+    this.navSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        if (!event.url.includes('mantenciones-pendientes')) {
+          this.camionService.setCamionSeleccionado(null);
+          sessionStorage.removeItem('vehiculoSeleccionado');
+        }
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -57,6 +71,13 @@ export class MantencionesPendientesComponent implements OnInit, OnDestroy {
     window.removeEventListener('focus', () => {
       this.recargarDatosFrescos();
     });
+    // Limpiar la selección de camión al salir de la página
+    this.camionService.setCamionSeleccionado(null);
+    sessionStorage.removeItem('vehiculoSeleccionado');
+    // Cancelar la suscripción al router
+    if (this.navSub) {
+      this.navSub.unsubscribe();
+    }
   }
 
   // Método para recargar datos frescos desde la base de datos

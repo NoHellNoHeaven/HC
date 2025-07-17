@@ -6,12 +6,27 @@
   </button>
 
   <ul [class.open]="menuOpen" class="menu">
-    <li><button class="home" (click)="navegar('/home')">Home</button></li>
-    <li><button class="mantenciones-pendientes" (click)="navegar('/mantenciones-pendientes')">Mantenciones</button></li>
-    <li><button class="choferes" (click)="navegar('/choferes')">Choferes</button></li>
-    <li><button class="dashboard" (click)="navegar('/dashboard')">Reportes</button></li>
-    <li><button class="configuraciones" (click)="navegar('/configuraciones')">Configuración</button></li>
+    <ng-container *ngIf="usuario?.rol === 'Chofer'; else menuAdmin">
+      <li><button class="seleccion-vehiculo" (click)="navegar('/seleccion-vehiculo-chofer')">Selección de Vehículo</button></li>
+      <li><button class="configuraciones" (click)="navegar('/configuraciones')">Configuración</button></li>
+    </ng-container>
+    <ng-template #menuAdmin>
+      <li><button class="home" (click)="navegar('/home')">Home</button></li>
+      <li><button class="mantenciones-pendientes" (click)="navegar('/mantenciones-pendientes')">Mantenciones</button></li>
+      <li><button class="choferes" (click)="navegar('/choferes')">Choferes</button></li>
+      <li><button class="dashboard" (click)="navegar('/dashboard')">Reportes</button></li>
+      <li><button class="configuraciones" (click)="navegar('/configuraciones')">Configuración</button></li>
+    </ng-template>
   </ul>
+
+  <div class="user-info" *ngIf="isLoggedIn && usuario">
+    <span class="user-name">{{ usuario.nombre }}</span>
+    <span class="user-role">({{ usuario.rol }})</span>
+    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+  </div>
+  <div class="user-info" *ngIf="!isLoggedIn">
+    <button class="login-btn" (click)="login()">Login</button>
+  </div>
 
   <!-- Overlay -->
   <div class="overlay" *ngIf="menuOpen" (click)="closeMenu()" aria-hidden="true"></div>

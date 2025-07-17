@@ -32,7 +32,7 @@ export class ChoferesComponent implements OnInit {
   vencLicencia: '',
   telEmergencia: undefined,
   direccion: '',
-  estado: 'ACTIVO', // <-- importante
+  estado: 'Activo', // <-- importante, corregido
 };
 
   choferEditado: Partial<Usuario> = {};
@@ -73,7 +73,7 @@ export class ChoferesComponent implements OnInit {
       vencLicencia: '',
       telEmergencia: undefined,
       direccion: '',
-      estado: 'Activo'
+      estado: 'Activo' // <-- importante, corregido
     };
   }
 

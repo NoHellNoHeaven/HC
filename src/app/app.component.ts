@@ -9,7 +9,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
   standalone: true,
   imports: [RouterOutlet, FullCalendarModule],
   template: `
-    <h1>Hello, {{ title }}</h1>
     <router-outlet></router-outlet>
   `,
 })

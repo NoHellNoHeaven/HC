@@ -11,7 +11,7 @@ import { interval, Subscription } from 'rxjs';
 @Component({
   selector: 'app-seleccion-vehiculo-chofer',
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, CommonModule ],
+  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, CommonModule, NavbarComponent ],
   templateUrl: './seleccion-vehiculo-chofer.component.html',
   styleUrls: ['./seleccion-vehiculo-chofer.component.css'],
   encapsulation: ViewEncapsulation.None,
@@ -99,6 +99,9 @@ export class SeleccionVehiculoChoferComponent implements OnInit, OnDestroy, Afte
         // El backend ahora retorna { message, data }, donde data incluye mantenciones
         const camionActualizado = ((respuesta && typeof respuesta === 'object' && 'data' in respuesta) ? (respuesta as any).data : respuesta) as any;
         this.camionDataService.setCamionSeleccionado(camionActualizado);
+
+        // Guardar bandera de selección en sessionStorage
+        sessionStorage.setItem('vehiculoSeleccionado', 'true');
 
         // Calcula mantenciones vencidas y muestra alerta si corresponde
         const mantencionesVencidas = (camionActualizado.mantenciones || []).filter((m: any) => {

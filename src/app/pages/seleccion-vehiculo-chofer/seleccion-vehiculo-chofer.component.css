@@ -384,3 +384,8 @@
     width: 100%;
   }
 }
+
+:root[data-theme="dark"] .container,
+:root[data-theme="dark"] .container .header {
+  border-top: none !important;
+}
