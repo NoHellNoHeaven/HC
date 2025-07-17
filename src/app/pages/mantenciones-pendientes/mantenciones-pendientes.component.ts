@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, inject, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CamionService, Camion } from "../../servicios/camion.service";
 import { NavbarComponent } from "../navbar/navbar.component";
@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './mantenciones-pendientes.component.html',
   styleUrls: ['./mantenciones-pendientes.component.css']
 })
-export class MantencionesPendientesComponent implements OnInit {
+export class MantencionesPendientesComponent implements OnInit, OnDestroy {
   camionService = inject(CamionService);
   http = inject(HttpClient);
 
@@ -20,10 +20,60 @@ export class MantencionesPendientesComponent implements OnInit {
   mantencionesProximas: any[] = [];
 
   ngOnInit() {
-    this.camionService.camionSeleccionado$.subscribe((camion) => {
-      this.camion = camion;
-      this.procesarMantenciones();
+    // Primero intentar obtener el camión seleccionado del localStorage
+    const camionLocal = this.camionService.getCamionSeleccionadoLocal();
+    
+    if (camionLocal && camionLocal.patente) {
+      // Cargar datos frescos desde la base de datos
+      this.camionService.obtenerCamion(camionLocal.patente).subscribe({
+        next: (camionActualizado) => {
+          this.camion = camionActualizado;
+          this.camionService.setCamionSeleccionado(camionActualizado);
+          this.procesarMantenciones();
+        },
+        error: (error) => {
+          console.error('Error al cargar camión desde BD:', error);
+          // Si falla, usar los datos locales como fallback
+          this.camion = camionLocal;
+          this.procesarMantenciones();
+        }
+      });
+    } else {
+      // Si no hay camión seleccionado, suscribirse a cambios
+      this.camionService.camionSeleccionado$.subscribe((camion) => {
+        this.camion = camion;
+        this.procesarMantenciones();
+      });
+    }
+
+    // Agregar listener para recargar datos cuando la ventana recupera el foco
+    window.addEventListener('focus', () => {
+      this.recargarDatosFrescos();
     });
+  }
+
+  ngOnDestroy() {
+    // Remover el event listener cuando el componente se destruye
+    window.removeEventListener('focus', () => {
+      this.recargarDatosFrescos();
+    });
+  }
+
+  // Método para recargar datos frescos desde la base de datos
+  private recargarDatosFrescos() {
+    if (this.camion && this.camion.patente) {
+      this.camionService.obtenerCamion(this.camion.patente).subscribe({
+        next: (camionActualizado) => {
+          this.camion = camionActualizado;
+          this.camionService.setCamionSeleccionado(camionActualizado);
+          this.procesarMantenciones();
+          console.log('Datos recargados al recuperar foco:', camionActualizado);
+        },
+        error: (error) => {
+          console.error('Error al recargar datos al recuperar foco:', error);
+        }
+      });
+    }
   }
 
   procesarMantenciones() {
@@ -82,9 +132,19 @@ export class MantencionesPendientesComponent implements OnInit {
         console.log('Mantención completada y registrada en historial:', resp);
         
         // Vuelve a cargar el camión actualizado y reprocesa las mantenciones
-        this.camionService.obtenerCamion(this.camion?.patente!).subscribe((camionActualizado) => {
-          this.camion = camionActualizado;
-          this.procesarMantenciones();
+        this.camionService.obtenerCamion(this.camion?.patente!).subscribe({
+          next: (camionActualizado) => {
+            this.camion = camionActualizado;
+            // Actualizar también el camión seleccionado en el servicio y localStorage
+            this.camionService.setCamionSeleccionado(camionActualizado);
+            this.procesarMantenciones();
+            console.log('Camión actualizado después de completar mantención:', camionActualizado);
+          },
+          error: (error) => {
+            console.error('Error al recargar camión después de completar mantención:', error);
+            // Aún así procesar las mantenciones con los datos actuales
+            this.procesarMantenciones();
+          }
         });
       },
       error: (err) => {

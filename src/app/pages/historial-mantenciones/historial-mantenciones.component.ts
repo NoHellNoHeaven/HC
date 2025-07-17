@@ -17,6 +17,8 @@ export class HistorialMantencionesComponent implements OnInit, OnDestroy {
   historialFiltrado: HistorialMantencion[] = [];
   filtroCamion: string = '';
   filtroMantencion: string = '';
+  filtroFechaDesde: string = '';
+  filtroFechaHasta: string = '';
   camionesDisponibles: string[] = [];
   mantencionesDisponibles: string[] = [];
   ordenFecha: string = 'descendente';
@@ -67,21 +69,47 @@ export class HistorialMantencionesComponent implements OnInit, OnDestroy {
     // Obtener camiones únicos (marca + modelo)
     this.camionesDisponibles = [...new Set(
       this.historialCompleto.map(item => `${item.camionMarca} ${item.camionModelo}`)
-    )];
+    )].sort();
     
     // Obtener tipos de mantención únicos
     this.mantencionesDisponibles = [...new Set(
       this.historialCompleto.map(item => item.mantencionNombre)
-    )];
+    )].sort();
   }
 
   aplicarFiltros() {
+    console.log('Aplicando filtros:', { 
+      filtroCamion: this.filtroCamion, 
+      filtroMantencion: this.filtroMantencion,
+      filtroFechaDesde: this.filtroFechaDesde,
+      filtroFechaHasta: this.filtroFechaHasta,
+      totalRegistros: this.historialCompleto.length 
+    });
+
     let filtrado = this.historialCompleto.filter(item => {
       const camionCompleto = `${item.camionMarca} ${item.camionModelo}`;
       const cumpleCamion = !this.filtroCamion || camionCompleto === this.filtroCamion;
       const cumpleMantencion = !this.filtroMantencion || item.mantencionNombre === this.filtroMantencion;
-      return cumpleCamion && cumpleMantencion;
+      
+      // Filtro por fecha
+      let cumpleFecha = true;
+      if (this.filtroFechaDesde || this.filtroFechaHasta) {
+        const fechaItem = new Date(item.fechaRealizada);
+        const fechaDesde = this.filtroFechaDesde ? new Date(this.filtroFechaDesde) : null;
+        const fechaHasta = this.filtroFechaHasta ? new Date(this.filtroFechaHasta + 'T23:59:59') : null;
+        
+        if (fechaDesde && fechaItem < fechaDesde) {
+          cumpleFecha = false;
+        }
+        if (fechaHasta && fechaItem > fechaHasta) {
+          cumpleFecha = false;
+        }
+      }
+      
+      return cumpleCamion && cumpleMantencion && cumpleFecha;
     });
+
+    console.log('Registros filtrados:', filtrado.length);
 
     // Aplicar ordenamiento
     this.historialFiltrado = this.ordenarPorFecha(filtrado);
@@ -104,9 +132,28 @@ export class HistorialMantencionesComponent implements OnInit, OnDestroy {
     this.aplicarFiltros();
   }
 
+  // Métodos para manejar cambios en filtros
+  onFiltroCamionChange() {
+    this.aplicarFiltros();
+  }
+
+  onFiltroMantencionChange() {
+    this.aplicarFiltros();
+  }
+
+  onFiltroFechaDesdeChange() {
+    this.aplicarFiltros();
+  }
+
+  onFiltroFechaHastaChange() {
+    this.aplicarFiltros();
+  }
+
   limpiarFiltros() {
     this.filtroCamion = '';
     this.filtroMantencion = '';
+    this.filtroFechaDesde = '';
+    this.filtroFechaHasta = '';
     this.aplicarFiltros();
   }
 

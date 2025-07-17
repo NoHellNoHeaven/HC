@@ -18,7 +18,7 @@
     <div class="filtros-container">
       <div class="filtro-grupo">
         <label for="filtro-camion">Filtrar por Camión:</label>
-        <select id="filtro-camion" [(ngModel)]="filtroCamion" class="filtro-select">
+        <select id="filtro-camion" [(ngModel)]="filtroCamion" (ngModelChange)="onFiltroCamionChange()" class="filtro-select">
           <option value="">Todos los camiones</option>
           <option *ngFor="let camion of camionesDisponibles" [value]="camion">
             {{ camion }}
@@ -28,12 +28,22 @@
 
       <div class="filtro-grupo">
         <label for="filtro-mantencion">Filtrar por Mantención:</label>
-        <select id="filtro-mantencion" [(ngModel)]="filtroMantencion" class="filtro-select">
+        <select id="filtro-mantencion" [(ngModel)]="filtroMantencion" (ngModelChange)="onFiltroMantencionChange()" class="filtro-select">
           <option value="">Todas las mantenciones</option>
           <option *ngFor="let mantencion of mantencionesDisponibles" [value]="mantencion">
             {{ mantencion }}
           </option>
         </select>
+      </div>
+
+      <div class="filtro-grupo">
+        <label for="filtro-fecha-desde">Fecha desde:</label>
+        <input type="date" id="filtro-fecha-desde" [(ngModel)]="filtroFechaDesde" (ngModelChange)="onFiltroFechaDesdeChange()" class="filtro-input">
+      </div>
+
+      <div class="filtro-grupo">
+        <label for="filtro-fecha-hasta">Fecha hasta:</label>
+        <input type="date" id="filtro-fecha-hasta" [(ngModel)]="filtroFechaHasta" (ngModelChange)="onFiltroFechaHastaChange()" class="filtro-input">
       </div>
 
       <div class="filtro-acciones">

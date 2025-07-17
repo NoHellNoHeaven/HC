@@ -94,6 +94,22 @@
   font-size: 0.9rem;
 }
 
+.filtro-input {
+  padding: 10px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.filtro-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+}
+
 .filtro-acciones {
   display: flex;
   gap: 12px;
@@ -462,6 +478,11 @@
   .filtros-container {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .filtro-grupo {
+    min-width: auto;
+    width: 100%;
   }
   
   .filtro-acciones {
