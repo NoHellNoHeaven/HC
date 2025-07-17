@@ -473,4 +473,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   obtenerMantencionesPendientes(): any[] {
     return this.mantencionesPendientes;
   }
+
+  irAMantencionesPendientes(item: any) {
+    // Guardar el camión seleccionado en el servicio y redirigir
+    this.camionDataService.obtenerCamion(item.patente).subscribe({
+      next: (camion) => {
+        this.camionDataService.setCamionSeleccionado(camion);
+        this.router.navigate(['/mantenciones-pendientes']);
+      },
+      error: (error) => {
+        alert('No se pudo cargar el camión para mostrar sus mantenciones.');
+      }
+    });
+  }
 }
