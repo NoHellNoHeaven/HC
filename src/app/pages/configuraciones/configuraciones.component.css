@@ -250,3 +250,75 @@ footer {
   border-color: var(--color-primary);
   box-shadow: 0 4px 16px rgba(76,110,245,0.13);
 }
+
+@media (max-width: 500px) {
+  .main-container {
+    padding: 16px 4px;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 0;
+    margin: 0;
+    min-height: unset;
+    box-shadow: none;
+  }
+  main {
+    padding: 10px 2px;
+    border-radius: 0;
+    max-width: 100% !important;
+    box-shadow: none;
+  }
+  .settings-header {
+    margin-bottom: 1rem;
+  }
+  .settings-icon {
+    font-size: 2rem;
+  }
+  .settings-desc {
+    font-size: 0.95rem;
+    max-width: 100%;
+    margin-bottom: 0.3rem;
+  }
+  .theme-options {
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+  }
+  .theme-btn {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+  }
+  .settings-list {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .settings-list li {
+    margin-bottom: 0.7rem;
+  }
+  .save-button {
+    font-size: 1rem;
+    padding: 0.7rem;
+    border-radius: 8px;
+    margin-top: 0.7rem;
+  }
+  .choferes {
+    top: 8px;
+    right: 8px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    border-radius: 5px;
+  }
+  header {
+    padding: 0.7rem 0.5rem;
+    font-size: 1rem;
+  }
+  header h1 {
+    font-size: 1.2rem;
+  }
+  footer {
+    padding: 0.7rem;
+    font-size: 0.75rem;
+  }
+}

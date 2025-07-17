@@ -385,6 +385,115 @@
   }
 }
 
+@media (max-width: 340px) {
+  .container {
+    padding: 8px 2px;
+  }
+  .header {
+    margin-bottom: 16px;
+  }
+  .header-content {
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .truck-icon {
+    font-size: 28px;
+  }
+  .header h1 {
+    font-size: 1.3rem;
+  }
+  .subtitle {
+    font-size: 0.95rem;
+  }
+  .trucks-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    max-width: 100%;
+  }
+  .truck-card {
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+  }
+  .card-header {
+    padding: 12px 8px 8px 8px;
+  }
+  .truck-plate {
+    font-size: 1rem;
+  }
+  .truck-icon-small {
+    font-size: 18px;
+  }
+  .card-content {
+    padding: 12px 8px;
+  }
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .info-item {
+    font-size: 0.8rem;
+    gap: 4px;
+  }
+  .kilometers-section {
+    padding-top: 12px;
+    margin-bottom: 12px;
+  }
+  .kilometers-value {
+    font-size: 1rem;
+  }
+  .maintenance-status {
+    font-size: 0.8rem;
+  }
+  .status-expired, .status-ok {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+  .expired-badge {
+    font-size: 0.65rem;
+    padding: 2px 4px;
+    top: -2px;
+    right: 0px;
+  }
+  .warning-icon {
+    font-size: 10px;
+  }
+  .no-trucks {
+    padding: 24px 8px;
+  }
+  .no-trucks-icon {
+    font-size: 48px;
+  }
+  .no-trucks p {
+    font-size: 1rem;
+  }
+  .modal {
+    margin: 4px;
+    border-radius: 6px;
+  }
+  .modal-header {
+    padding: 16px 12px 12px 12px;
+  }
+  .modal-header h3 {
+    font-size: 1.1rem;
+  }
+  .modal-content {
+    padding: 16px 12px;
+  }
+  .kilometers-input {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+  .modal-footer {
+    padding: 12px 12px 16px 12px;
+    gap: 8px;
+  }
+  .btn-cancel, .btn-save {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
 :root[data-theme="dark"] .container,
 :root[data-theme="dark"] .container .header {
   border-top: none !important;
