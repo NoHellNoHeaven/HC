@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="registro-camiones-theme">
   <div class="page-container">
     <div class="form-card">
@@ -50,9 +51,11 @@
                   [(ngModel)]="camion.patente"
                   required
                   #patente="ngModel"
+                  pattern="^([A-Z]{2}\d{4}|[A-Z]{4}\d{2})$"
+                  maxlength="6"
                   placeholder="Ej: ABCD12" />
                 <div *ngIf="patente.invalid && patente.touched" class="error-message">
-                  La patente es obligatoria
+                  La patente es obligatoria y debe tener formato válido (AA1010 o AABB10)
                 </div>
               </div>
               

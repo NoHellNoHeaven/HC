@@ -2,6 +2,7 @@ import { Component, inject } from "@angular/core"
 import { FormsModule } from "@angular/forms"
 import { NgIf, NgFor } from "@angular/common"
 import { CamionService } from "../../../servicios/camion.service"
+import { NavbarComponent } from '../../navbar/navbar.component';
 
 type Mantencion = {
   nombre: string
@@ -14,7 +15,7 @@ type Mantencion = {
 @Component({
   selector: "app-camiones",
   standalone: true,
-  imports: [FormsModule, NgIf, NgFor],
+  imports: [FormsModule, NgIf, NgFor, NavbarComponent],
   templateUrl: "./camiones.component.html",
   styleUrls: ["./camiones.component.css"],
 })

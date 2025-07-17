@@ -8,7 +8,6 @@ import { CamionesComponent } from './pages/admin/camiones/camiones.component';
 import { FormularioComponent } from './pages/contacto/contacto.component';
 import { ChoferesComponent } from './pages/chofer/chofer.component';
 import { SeleccionVehiculoChoferComponent } from './pages/seleccion-vehiculo-chofer/seleccion-vehiculo-chofer.component';
-import { ReportesComponent } from './pages/admin/reportes/reportes.component';
 import { AlertasComponent } from './pages/chofer/alertas/alertas.component';
 import { MantencionesPendientesComponent } from './pages/mantenciones-pendientes/mantenciones-pendientes.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -28,7 +27,6 @@ export const routes: Routes = [
   { path: 'contacto', component: FormularioComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
   { path: 'choferes', component: ChoferesComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
   { path: 'seleccion-vehiculo-chofer', component: SeleccionVehiculoChoferComponent, canActivate: [AuthGuard], data: { roles: ['Chofer'] } },
-  { path: 'reportes', component: ReportesComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
   { path: 'alertas', component: AlertasComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
   { path: 'mantenciones-pendientes', component: MantencionesPendientesComponent, canActivate: [AuthGuard, CamionSeleccionadoGuard], data: { roles: ['Chofer'] } },
   { path: 'historial-mantenciones', component: HistorialMantencionesComponent, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
