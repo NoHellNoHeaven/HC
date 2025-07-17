@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class ChoferesComponent implements OnInit {
   choferes: Usuario[] = [];
+  busqueda: string = '';
 
   mostrarFormularioAgregar = false;
   mostrarFormularioEdicion = false;
@@ -46,7 +47,7 @@ export class ChoferesComponent implements OnInit {
   cargarChoferes() {
     this.usuarioService.getUsuarios().subscribe({
       next: (data) => {
-        this.choferes = data;
+        this.choferes = data.filter(u => u.rol === 'Chofer');
       },
       error: (err) => {
         console.error('Error al cargar choferes', err);
@@ -149,5 +150,15 @@ export class ChoferesComponent implements OnInit {
         }
       });
     }
+  }
+
+  get choferesFiltrados(): Usuario[] {
+    const filtro = this.busqueda.trim().toLowerCase();
+    if (!filtro) return this.choferes;
+    return this.choferes.filter(c =>
+      c.rut.toLowerCase().includes(filtro) ||
+      c.nombre.toLowerCase().includes(filtro) ||
+      (c.p_apellido && c.p_apellido.toLowerCase().includes(filtro))
+    );
   }
 }

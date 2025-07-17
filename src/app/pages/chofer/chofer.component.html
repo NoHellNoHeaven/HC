@@ -5,6 +5,8 @@
   <div class="choferes-list">
     <h2>Lista de Choferes</h2>
 
+    <input type="text" class="buscador" placeholder="Buscar por RUT o nombre..." [(ngModel)]="busqueda" />
+
     <table>
       <thead>
         <tr>
@@ -18,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let chofer of choferes">
+        <tr *ngFor="let chofer of choferesFiltrados">
           <td>{{ chofer.rut }}</td>
           <td>{{ chofer.nombre }}</td>
           <td>{{ chofer.p_apellido }}</td>

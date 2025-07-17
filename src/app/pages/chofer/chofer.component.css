@@ -377,3 +377,22 @@ tbody tr:hover td {
     padding: 20px;
   }
 }
+
+.buscador {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 0 18px 0;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--card-background);
+  color: var(--color-text);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.buscador:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 8px var(--color-primary);
+}

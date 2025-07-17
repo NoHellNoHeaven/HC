@@ -2,28 +2,22 @@
 
 <div class="main-container">
   <main>
-    <h2>Configuraciones</h2>
+    <div class="settings-header">
+      <span class="settings-icon">⚙️</span>
+      <h2>Configuraciones</h2>
+      <p class="settings-desc">Personaliza el aspecto de la aplicación según tu preferencia.</p>
+    </div>
     <ul class="settings-list">
       <li>
-        <label for="language">Idioma:</label>
-        <select id="language" (change)="guardarConfiguracion('language', $event)">
-          <option value="es">Español</option>
-          <option value="en">Inglés</option>
-        </select>
-      </li>
-      <li>
-        <label for="theme">Tema:</label>
-        <select id="theme" [value]="theme" (change)="onThemeChange($event)">
-          <option value="light">Claro</option>
-          <option value="dark">Oscuro</option>
-        </select>
-      </li>
-      <li>
-        <label for="privacy">Privacidad:</label>
-        <select id="privacy" (change)="guardarConfiguracion('privacy', $event)">
-          <option value="public">Público</option>
-          <option value="private">Privado</option>
-        </select>
+        <label>Tema:</label>
+        <div class="theme-options">
+          <button type="button" class="theme-btn" [class.active]="theme === 'light'" (click)="onThemeChangeManual('light')">
+            <span class="theme-btn-icon">🌞</span> Claro
+          </button>
+          <button type="button" class="theme-btn" [class.active]="theme === 'dark'" (click)="onThemeChangeManual('dark')">
+            <span class="theme-btn-icon">🌙</span> Oscuro
+          </button>
+        </div>
       </li>
     </ul>
     <button class="save-button" (click)="mostrarMensaje()">Guardar Cambios</button>

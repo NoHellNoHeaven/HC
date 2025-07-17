@@ -74,6 +74,7 @@ header h1 {
   position: relative;
   z-index: 10;
   transition: box-shadow 0.3s ease;
+  background: linear-gradient(135deg, rgba(76,110,245,0.07) 0%, rgba(30,41,59,0.12) 100%);
 }
 
 .main-container:hover {
@@ -190,4 +191,62 @@ footer {
   font-weight: 500;
   letter-spacing: 0.02em;
   user-select: none;
+}
+
+.settings-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.settings-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+}
+
+.settings-desc {
+  color: var(--color-text-alt);
+  font-size: 1.05rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  max-width: 350px;
+}
+
+.theme-options {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  justify-content: center;
+}
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  padding: 1.1rem 2.2rem;
+  border-radius: 14px;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.theme-btn .theme-btn-icon {
+  font-size: 1.7rem;
+}
+
+.theme-btn.active, .theme-btn:hover {
+  background: var(--color-primary);
+  color: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 16px rgba(76,110,245,0.13);
 }

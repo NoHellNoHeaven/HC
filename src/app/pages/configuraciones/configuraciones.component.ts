@@ -13,8 +13,6 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class ConfiguracionesComponent implements OnInit {
   theme: 'light' | 'dark' = 'light';
-  language: string = 'es';
-  privacy: string = 'public';
 
   constructor(
     private themeService: ThemeService,
@@ -23,8 +21,6 @@ export class ConfiguracionesComponent implements OnInit {
 
   ngOnInit(): void {
     this.theme = this.themeService.getCurrentTheme() as 'light' | 'dark';
-    this.language = localStorage.getItem('language') || 'es';
-    this.privacy = localStorage.getItem('privacy') || 'public';
   }
 
   onThemeChange(event: Event): void {
@@ -34,15 +30,9 @@ export class ConfiguracionesComponent implements OnInit {
     this.themeService.setTheme(selectedTheme);
   }
 
-  guardarConfiguracion(key: string, event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    const value = select?.value;
-    if (value) {
-      localStorage.setItem(key, value);
-
-      if (key === 'language') this.language = value;
-      if (key === 'privacy') this.privacy = value;
-    }
+  onThemeChangeManual(theme: 'light' | 'dark') {
+    this.theme = theme;
+    this.themeService.setTheme(theme);
   }
 
   toggleTheme(): void {
