@@ -57,6 +57,20 @@
   flex: 1;
 }
 
+.mantencion-info-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+.camion-info-inline {
+  font-size: 1rem;
+  color: var(--mp-text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
 .patente {
   margin: 0;
   color: var(--mp-text-primary);
@@ -262,5 +276,27 @@
   margin: 0;
   font-weight: 400;
   color: var(--mp-text-secondary);
+}
+
+.criticidad-baja {
+  color: #27ae60;
+  background: rgba(39, 174, 96, 0.08);
+  border-radius: 8px;
+  padding: 2px 10px;
+  font-weight: bold;
+}
+.criticidad-alta {
+  color: #f39c12;
+  background: rgba(243, 156, 18, 0.10);
+  border-radius: 8px;
+  padding: 2px 10px;
+  font-weight: bold;
+}
+.criticidad-critica {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.10);
+  border-radius: 8px;
+  padding: 2px 10px;
+  font-weight: bold;
 }
 

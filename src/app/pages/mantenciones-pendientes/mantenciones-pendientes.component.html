@@ -18,8 +18,18 @@
   <div *ngFor="let mantencion of mantencionesPendientes" class="mantencion-item critica">
     <div class="mantencion-top">
       <div class="mantencion-info">
-        <h3 class="patente">{{ mantencion.nombre }}</h3>
-        <span class="badge badge-critico" *ngIf="mantencion.criticidad">{{ mantencion.criticidad }}</span>
+        <div class="mantencion-info-row">
+          <h3 class="patente">{{ mantencion.nombre }}</h3>
+          <span class="camion-info-inline">{{ mantencion.camionMarca }} {{ mantencion.camionModelo }} ({{ mantencion.camionPatente }})</span>
+        </div>
+        <span *ngIf="mantencion.criticidad"
+              [ngClass]="{
+                'criticidad-baja': mantencion.criticidad === 'Baja',
+                'criticidad-alta': mantencion.criticidad === 'Alta',
+                'criticidad-critica': mantencion.criticidad === 'Crítica'
+              }">
+          {{ mantencion.criticidad }}
+        </span>
         <span class="tipo" *ngIf="mantencion.tipo">{{ mantencion.tipo }}</span>
         <p class="descripcion" *ngIf="mantencion.descripcion">{{ mantencion.descripcion }}</p>
         <!-- Nueva línea minimalista de kilometraje -->
@@ -58,7 +68,18 @@
   <div *ngFor="let mantencion of mantencionesProximas" class="mantencion-item proxima">
     <div class="mantencion-top">
       <div class="mantencion-info">
-        <h3 class="patente">{{ mantencion.nombre }}</h3>
+        <div class="mantencion-info-row">
+          <h3 class="patente">{{ mantencion.nombre }}</h3>
+          <span class="camion-info-inline">{{ mantencion.camionMarca }} {{ mantencion.camionModelo }} ({{ mantencion.camionPatente }})</span>
+        </div>
+        <span *ngIf="mantencion.criticidad"
+              [ngClass]="{
+                'criticidad-baja': mantencion.criticidad === 'Baja',
+                'criticidad-alta': mantencion.criticidad === 'Alta',
+                'criticidad-critica': mantencion.criticidad === 'Crítica'
+              }">
+          {{ mantencion.criticidad }}
+        </span>
         <span class="tipo" *ngIf="mantencion.tipo">{{ mantencion.tipo }}</span>
         <p class="descripcion" *ngIf="mantencion.descripcion">{{ mantencion.descripcion }}</p>
         <!-- Nueva línea minimalista de kilometraje para próximas -->

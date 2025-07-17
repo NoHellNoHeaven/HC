@@ -86,11 +86,20 @@ export class MantencionesPendientesComponent implements OnInit, OnDestroy {
     this.mantencionesProximas = [];
 
     (this.camion as any).mantenciones?.forEach((mantencion: any) => {
-      // Adaptar los datos al modelo visual esperado
+      const diferencia = kmActual - (mantencion.proximoKilometraje ?? 0);
+      let criticidad = 'Baja';
+      if (diferencia > 500) {
+        criticidad = 'Crítica';
+      } else if (diferencia > 100) {
+        criticidad = 'Alta';
+      }
       const mapeada = {
         ...mantencion,
+        camionPatente: this.camion?.patente,
+        camionMarca: this.camion?.marca,
+        camionModelo: this.camion?.modelo,
         tipo: this.obtenerCategoriaMantencion(mantencion.nombre), // Obtener categoría con icono
-        criticidad: kmActual >= (mantencion.proximoKilometraje ?? 0) ? 'Alta' : 'Baja', // Ejemplo de criticidad
+        criticidad: criticidad,
         descripcion: mantencion.descripcion || `${mantencion.nombre} (${mantencion.accion || mantencion.accionSeleccionada || ''})`,
         kmProgramado: mantencion.proximoKilometraje,
         kmActual: kmActual,
