@@ -28,7 +28,7 @@
 .hamburger span {
   display: block;
   height: 4px;
-  background: var(--navbar-hamburger-color, #fff);
+  background: var(--text-color);
   border-radius: 2px;
   transition: 0.3s;
 }
@@ -231,13 +231,5 @@
 
 /* Color del icono hamburguesa según tema */
 .hamburger span {
-  background: var(--navbar-hamburger-color, #fff);
-}
-
-:root {
-  --navbar-hamburger-color: #fff;
-}
-
-body.light-theme {
-  --navbar-hamburger-color: #222;
+  background: var(--text-color);
 }
