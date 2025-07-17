@@ -8,6 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CamionService } from '../../servicios/camion.service';
+import { HistorialMantencionesService, HistorialMantencion } from '../../services/historial-mantenciones.service';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
@@ -24,12 +25,15 @@ import { ThemeService } from '../../services/theme.service';
 export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('calendar') calendarComponent?: FullCalendarComponent;
 
-  // Datos reales calculados desde localStorage
+  // Datos reales desde la base de datos
   stats: any[] = [];
   camiones: any[] = [];
   listaMantenciones: any[] = [];
   alertas: any[] = [];
-  historialMantenciones: any[] = [];
+  historialMantenciones: HistorialMantencion[] = [];
+  mantencionesPendientes: any[] = [];
+  isLoading: boolean = false;
+  error: string = '';
 
   vistaActual: 'calendar' | 'list' = 'calendar';
   calendarOptions: CalendarOptions = {
@@ -54,6 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private camionDataService: CamionService,
+    private historialService: HistorialMantencionesService,
     private themeService: ThemeService
   ) {}
 
@@ -74,44 +79,87 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   cargarDatosReales() {
-    // Cargar camiones desde localStorage
-    const camionesData = JSON.parse(localStorage.getItem('camiones') || '[]');
-    
-    // Procesar camiones y calcular estadísticas
-    this.camiones = camionesData.map((camion: any) => {
-      const mantencionesVencidas = this.calcularMantencionesVencidas(camion);
-      const proximaMantencion = this.calcularProximaMantencion(camion);
-      const progreso = this.calcularProgresoMantencion(camion);
-      
-      return {
-        nombre: `${camion.marca} ${camion.modelo}`,
-        estado: mantencionesVencidas.length > 0 ? 'en mantencion' : 'activo',
-        patente: camion.patente,
-        anio: camion.anno,
-        alertas: mantencionesVencidas.length,
-        ultimaMantencion: this.obtenerUltimaMantencion(camion),
-        proximaMantencion: proximaMantencion,
-        progreso: progreso,
-        kmActual: camion.kilometraje_camion,
-        kmMeta: this.calcularKmMeta(camion),
-        mantencionesVencidas: mantencionesVencidas
-      };
-    });
+    this.isLoading = true;
+    this.error = '';
 
-    // Calcular estadísticas generales
-    this.calcularEstadisticas();
-    
-    // Generar lista de mantenciones
-    this.generarListaMantenciones();
-    
-    // Generar alertas
-    this.generarAlertas();
-    
-    // Cargar historial de mantenciones
-    this.cargarHistorialMantenciones();
-    
-    // Actualizar eventos del calendario
-    this.actualizarEventosCalendario();
+    // Primero cargar el historial para poder calcular el progreso correctamente
+    this.historialService.obtenerHistorialCompleto().subscribe({
+      next: (historialData) => {
+        // Ordenar por fecha (más reciente primero)
+        this.historialMantenciones = historialData
+          .sort((a, b) => new Date(b.fechaRealizada).getTime() - new Date(a.fechaRealizada).getTime());
+        
+        console.log('Historial cargado desde BD:', this.historialMantenciones);
+        
+        // Ahora cargar camiones
+        this.cargarCamiones();
+      },
+      error: (error) => {
+        console.error('Error al cargar historial:', error);
+        this.historialMantenciones = [];
+        // Continuar cargando camiones aunque falle el historial
+        this.cargarCamiones();
+      }
+    });
+  }
+
+  private cargarCamiones() {
+    // Cargar camiones desde la base de datos
+    this.camionDataService.obtenerCamiones().subscribe({
+      next: (camionesData) => {
+        console.log('=== DATOS DE CAMIONES DESDE BACKEND ===');
+        console.log('Camiones recibidos:', camionesData);
+        
+        // Procesar camiones y calcular estadísticas
+        this.camiones = camionesData.map((camion: any) => {
+          console.log(`Procesando camión: ${camion.patente}`, camion);
+          
+          const mantencionesVencidas = this.calcularMantencionesVencidas(camion);
+          const proximaMantencion = this.calcularProximaMantencion(camion);
+          const progreso = this.calcularProgresoMantencion(camion);
+          
+          console.log(`  - Mantenciones vencidas: ${mantencionesVencidas.length}`, mantencionesVencidas);
+          console.log(`  - Próxima mantención: ${proximaMantencion}`);
+          console.log(`  - Progreso: ${progreso}%`);
+          
+          return {
+            nombre: `${camion.marca} ${camion.modelo}`,
+            estado: mantencionesVencidas.length > 0 ? 'en mantencion' : 'activo',
+            patente: camion.patente,
+            anio: camion.anio,
+            alertas: mantencionesVencidas.length,
+            ultimaMantencion: this.obtenerUltimaMantencion(camion),
+            proximaMantencion: proximaMantencion,
+            progreso: progreso,
+            kmActual: camion.kilometraje,
+            kmMeta: this.calcularKmMeta(camion),
+            mantencionesVencidas: mantencionesVencidas
+          };
+        });
+
+        // Calcular estadísticas generales
+        this.calcularEstadisticas();
+        
+        // Generar lista de mantenciones
+        this.generarListaMantenciones();
+        
+        // Generar alertas
+        this.generarAlertas();
+        
+        // Actualizar mantenciones pendientes
+        this.actualizarMantencionesPendientes();
+        
+        // Actualizar eventos del calendario
+        this.actualizarEventosCalendario();
+        
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar camiones:', error);
+        this.error = 'Error al cargar los datos de camiones';
+        this.isLoading = false;
+      }
+    });
   }
 
   calcularEstadisticas() {
@@ -129,15 +177,39 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   calcularMantencionesVencidas(camion: any): any[] {
-    if (!camion.mantenciones) return [];
+    if (!camion.mantenciones) {
+      console.log(`  No hay mantenciones para ${camion.patente}`);
+      return [];
+    }
+    
+    console.log(`  Analizando ${camion.mantenciones.length} mantenciones para ${camion.patente}`);
     
     return camion.mantenciones.filter((m: any) => {
       const proximoKm = Number(m.proximoKilometraje);
-      const fechaBase = new Date(camion.fecha_revision_tecnica + '-01');
-      const fechaVencimiento = new Date(fechaBase);
-      fechaVencimiento.setMonth(fechaVencimiento.getMonth() + Number(m.meses));
+      const kmActual = Number(camion.kilometraje);
       
-      return camion.kilometraje_camion >= proximoKm || fechaVencimiento <= new Date();
+      console.log(`    Mantención: ${m.nombre} - Próximo KM: ${proximoKm}, Actual: ${kmActual}`);
+      
+      // Verificar si está vencida por kilometraje
+      if (kmActual >= proximoKm) {
+        console.log(`    ✅ VENCIDA por kilometraje`);
+        return true;
+      }
+      
+      // Verificar si está vencida por tiempo (si tiene meses configurados)
+      if (m.meses && m.meses > 0 && camion.fRevisionTecnica) {
+        const fechaBase = new Date(camion.fRevisionTecnica);
+        const fechaVencimiento = new Date(fechaBase);
+        fechaVencimiento.setMonth(fechaVencimiento.getMonth() + Number(m.meses));
+        
+        const vencidaPorTiempo = fechaVencimiento <= new Date();
+        console.log(`    Fecha vencimiento: ${fechaVencimiento.toLocaleDateString()}, Vencida por tiempo: ${vencidaPorTiempo}`);
+        
+        return vencidaPorTiempo;
+      }
+      
+      console.log(`    ✅ NO vencida`);
+      return false;
     });
   }
 
@@ -146,7 +218,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     
     const mantencionesFuturas = camion.mantenciones.filter((m: any) => {
       const proximoKm = Number(m.proximoKilometraje);
-      return camion.kilometraje_camion < proximoKm;
+      return camion.kilometraje < proximoKm;
     });
     
     if (mantencionesFuturas.length === 0) return 'Todas vencidas';
@@ -161,24 +233,29 @@ export class HomeComponent implements OnInit, OnDestroy {
   calcularProgresoMantencion(camion: any): number {
     if (!camion.mantenciones || camion.mantenciones.length === 0) return 0;
     
+    // Obtener la próxima mantención más cercana
     const mantencionesFuturas = camion.mantenciones.filter((m: any) => {
       const proximoKm = Number(m.proximoKilometraje);
-      return camion.kilometraje_camion < proximoKm;
+      return Number(camion.kilometraje) < proximoKm;
     });
     
-    if (mantencionesFuturas.length === 0) return 100;
+    if (mantencionesFuturas.length === 0) return 100; // Todas vencidas
     
     const proxima = mantencionesFuturas.reduce((min: any, m: any) => {
       return Number(m.proximoKilometraje) < Number(min.proximoKilometraje) ? m : min;
     });
     
-    const kmActual = camion.kilometraje_camion;
+    const kmActual = Number(camion.kilometraje);
     const kmMeta = Number(proxima.proximoKilometraje);
     const kmUltima = this.obtenerKmUltimaMantencion(camion);
     
-    if (kmMeta <= kmUltima) return 100;
+    // Si ya pasamos la meta, mostrar 100%
+    if (kmActual >= kmMeta) return 100;
     
-    return Math.min(100, Math.round(((kmActual - kmUltima) / (kmMeta - kmUltima)) * 100));
+    // Calcular progreso basado en el kilometraje desde la última mantención
+    const progreso = Math.min(100, Math.round(((kmActual - kmUltima) / (kmMeta - kmUltima)) * 100));
+    
+    return Math.max(0, progreso); // No mostrar progreso negativo
   }
 
   calcularKmMeta(camion: any): number {
@@ -186,10 +263,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     
     const mantencionesFuturas = camion.mantenciones.filter((m: any) => {
       const proximoKm = Number(m.proximoKilometraje);
-      return camion.kilometraje_camion < proximoKm;
+      return camion.kilometraje < proximoKm;
     });
     
-    if (mantencionesFuturas.length === 0) return camion.kilometraje_camion;
+    if (mantencionesFuturas.length === 0) return camion.kilometraje;
     
     const proxima = mantencionesFuturas.reduce((min: any, m: any) => {
       return Number(m.proximoKilometraje) < Number(min.proximoKilometraje) ? m : min;
@@ -200,16 +277,28 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   obtenerUltimaMantencion(camion: any): string {
     // Por ahora retornamos una fecha estimada basada en la fecha de revisión técnica
-    if (camion.fecha_revision_tecnica) {
-      const fecha = new Date(camion.fecha_revision_tecnica + '-01');
+    if (camion.fRevisionTecnica) {
+      const fecha = new Date(camion.fRevisionTecnica);
       return fecha.toLocaleDateString('es-ES');
     }
     return 'No disponible';
   }
 
   obtenerKmUltimaMantencion(camion: any): number {
-    // Estimación basada en el kilometraje actual y la frecuencia de mantenciones
-    return Math.max(0, camion.kilometraje_camion - 10000);
+    // Buscar en el historial la última mantención realizada para este camión
+    if (this.historialMantenciones.length > 0) {
+      const historialCamion = this.historialMantenciones
+        .filter(h => h.camionPatente === camion.patente)
+        .sort((a, b) => new Date(b.fechaRealizada).getTime() - new Date(a.fechaRealizada).getTime());
+      
+      if (historialCamion.length > 0) {
+        return Number(historialCamion[0].kilometrajeRealizado);
+      }
+    }
+    
+    // Si no hay historial, estimar basado en el kilometraje actual
+    // Asumimos que la última mantención fue hace aproximadamente 10,000 km
+    return Math.max(0, Number(camion.kilometraje) - 10000);
   }
 
   generarListaMantenciones() {
@@ -232,9 +321,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   generarAlertas() {
     this.alertas = [];
     
+    console.log('=== GENERANDO ALERTAS ===');
+    
     this.camiones.forEach(camion => {
+      console.log(`Generando alertas para ${camion.patente}: ${camion.mantencionesVencidas?.length || 0} mantenciones vencidas`);
+      
       if (camion.mantencionesVencidas && camion.mantencionesVencidas.length > 0) {
         camion.mantencionesVencidas.forEach((mantencion: any, index: number) => {
+          console.log(`  Agregando alerta: ${mantencion.nombre}`);
           this.alertas.push({
             id: `a${camion.patente}-${index}`,
             camion: camion.nombre,
@@ -249,124 +343,26 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
       }
     });
+    
+    console.log('Total de alertas generadas:', this.alertas.length);
   }
 
   cargarHistorialMantenciones() {
-    this.historialMantenciones = [];
-    
-    // Obtener datos originales de localStorage
-    const camionesData = JSON.parse(localStorage.getItem('camiones') || '[]');
-    
-    console.log('Datos de camiones en localStorage:', camionesData);
-    console.log('Número total de camiones:', camionesData.length);
-    
-    if (camionesData.length === 0) {
-      console.log('No hay camiones en localStorage');
-      return;
-    }
-    
-    let totalHistoriales = 0;
-    let camionesConHistorial = 0;
-    
-    // Procesar cada camión
-    camionesData.forEach((camion: any, index: number) => {
-      console.log(`=== Procesando camión ${index + 1}/${camionesData.length}: ${camion.patente} ===`);
-      console.log(`Camión completo:`, camion);
-      
-      // Verificar si tiene historial
-      if (camion.historialMantenciones) {
-        console.log(`Historial encontrado en ${camion.patente}:`, camion.historialMantenciones);
-        console.log(`Número de mantenciones en historial:`, camion.historialMantenciones.length);
+    // Cargar historial desde la base de datos
+    this.historialService.obtenerHistorialCompleto().subscribe({
+      next: (historialData) => {
+        // Ordenar por fecha (más reciente primero)
+        this.historialMantenciones = historialData
+          .sort((a, b) => new Date(b.fechaRealizada).getTime() - new Date(a.fechaRealizada).getTime())
+          .slice(0, 4); // Limitar a las últimas 4 mantenciones para la vista previa
         
-        if (camion.historialMantenciones.length > 0) {
-          camionesConHistorial++;
-          totalHistoriales += camion.historialMantenciones.length;
-          console.log(`✅ Procesando ${camion.historialMantenciones.length} mantenciones de ${camion.patente}`);
-          
-          // Procesar cada mantención del historial
-          camion.historialMantenciones.forEach((mantencion: any, mantIndex: number) => {
-            console.log(`  Mantención ${mantIndex + 1}:`, mantencion);
-            
-            // Manejar diferentes formatos de fecha con hora
-            let fechaFormateada = 'Fecha no disponible';
-            try {
-              if (mantencion.fechaRealizada) {
-                const fecha = new Date(mantencion.fechaRealizada);
-                fechaFormateada = fecha.toLocaleDateString('es-ES') + ' ' + fecha.toLocaleTimeString('es-ES', {
-                  hour: '2-digit',
-                  minute: '2-digit'
-                });
-              } else if (mantencion.fecha) {
-                const fecha = new Date(mantencion.fecha);
-                fechaFormateada = fecha.toLocaleDateString('es-ES') + ' ' + fecha.toLocaleTimeString('es-ES', {
-                  hour: '2-digit',
-                  minute: '2-digit'
-                });
-              }
-            } catch (error) {
-              console.error('Error al formatear fecha:', error);
-              fechaFormateada = 'Fecha inválida';
-            }
-            
-            const itemHistorial = {
-              fecha: fechaFormateada,
-              camion: `${camion.marca} ${camion.modelo}`,
-              patente: camion.patente,
-              nombre: mantencion.nombre,
-              accion: mantencion.accion || 'Mantenimiento realizado',
-              kilometraje: mantencion.kilometrajeRealizado || mantencion.kilometraje || 'N/A'
-            };
-            
-            console.log(`  ✅ Agregando al historial:`, itemHistorial);
-            this.historialMantenciones.push(itemHistorial);
-          });
-        } else {
-          console.log(`❌ ${camion.patente} tiene historial pero está vacío`);
-        }
-      } else {
-        console.log(`❌ ${camion.patente} NO tiene historial`);
+        console.log('Historial cargado desde BD:', this.historialMantenciones);
+      },
+      error: (error) => {
+        console.error('Error al cargar historial:', error);
+        this.historialMantenciones = [];
       }
     });
-    
-    console.log(`=== RESUMEN ===`);
-    console.log(`Camiones procesados: ${camionesData.length}`);
-    console.log(`Camiones con historial: ${camionesConHistorial}`);
-    console.log(`Total de mantenciones encontradas: ${totalHistoriales}`);
-    console.log(`Mantenciones agregadas al array: ${this.historialMantenciones.length}`);
-    
-    // Ordenar por fecha y hora (más reciente primero) - solo si las fechas son válidas
-    this.historialMantenciones.sort((a, b) => {
-      try {
-        // Extraer solo la parte de fecha para el ordenamiento
-        const fechaAStr = a.fecha.split(' ')[0]; // Tomar solo la fecha, no la hora
-        const fechaBStr = b.fecha.split(' ')[0];
-        
-        const fechaA = new Date(fechaAStr);
-        const fechaB = new Date(fechaBStr);
-        
-        if (isNaN(fechaA.getTime()) || isNaN(fechaB.getTime())) {
-          return 0; // Mantener orden original si las fechas no son válidas
-        }
-        
-        // Si las fechas son iguales, ordenar por hora (más reciente primero)
-        if (fechaA.getTime() === fechaB.getTime()) {
-          const horaA = a.fecha.split(' ')[1] || '00:00';
-          const horaB = b.fecha.split(' ')[1] || '00:00';
-          return horaB.localeCompare(horaA);
-        }
-        
-        return fechaB.getTime() - fechaA.getTime();
-      } catch (error) {
-        console.error('Error al ordenar fechas:', error);
-        return 0;
-      }
-    });
-    
-    // Limitar a las últimas 4 mantenciones para la vista previa
-    this.historialMantenciones = this.historialMantenciones.slice(0, 4);
-    
-    console.log('Historial final cargado:', this.historialMantenciones);
-    console.log('Número final de mantenciones en historial:', this.historialMantenciones.length);
   }
 
   actualizarEventosCalendario() {
@@ -396,19 +392,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   verDetallesCamion(camion: any): void {
-    // Buscar el camión completo en localStorage para obtener todos los datos
-    const camionesData = JSON.parse(localStorage.getItem('camiones') || '[]');
-    const camionCompleto = camionesData.find((c: any) => c.patente === camion.patente);
-    
-    if (camionCompleto) {
-      // Usar el servicio para establecer el camión seleccionado
-      this.camionDataService.setCamionSeleccionado(camionCompleto);
-      
-      // Navegar a la página de mantenciones pendientes
-      this.router.navigate(['/mantenciones-pendientes']);
-    } else {
-      alert('Error: No se encontró el camión seleccionado');
-    }
+    // Obtener el camión completo desde la base de datos
+    this.camionDataService.obtenerCamion(camion.patente).subscribe({
+      next: (camionCompleto) => {
+        // Usar el servicio para establecer el camión seleccionado
+        this.camionDataService.setCamionSeleccionado(camionCompleto);
+        
+        // Navegar a la página de mantenciones pendientes
+        this.router.navigate(['/mantenciones-pendientes']);
+      },
+      error: (error) => {
+        console.error('Error al obtener camión:', error);
+        alert('Error: No se pudo cargar el camión seleccionado');
+      }
+    });
   }
 
   handleDateClick(arg: any): void {
@@ -426,5 +423,54 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   verHistorialCompleto(): void {
     this.router.navigate(['/historial-mantenciones']);
+  }
+
+  // Método para formatear fecha en el template
+  formatearFecha(fecha: string): string {
+    try {
+      const date = new Date(fecha);
+      return date.toLocaleDateString('es-ES') + ' ' + date.toLocaleTimeString('es-ES', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      return 'Fecha inválida';
+    }
+  }
+
+  // Método para actualizar las mantenciones pendientes
+  actualizarMantencionesPendientes() {
+    this.mantencionesPendientes = [];
+    
+    console.log('=== ACTUALIZANDO MANTENCIONES PENDIENTES ===');
+    console.log('Total de camiones:', this.camiones.length);
+    console.log('Total de alertas:', this.alertas.length);
+    
+    this.camiones.forEach((camion, index) => {
+      console.log(`Camión ${index + 1}: ${camion.patente}`);
+      console.log(`  - Mantenciones vencidas: ${camion.mantencionesVencidas?.length || 0}`);
+      console.log(`  - Alertas: ${camion.alertas}`);
+      
+      if (camion.mantencionesVencidas && camion.mantencionesVencidas.length > 0) {
+        camion.mantencionesVencidas.forEach((mantencion: any) => {
+          console.log(`    Agregando mantención pendiente: ${mantencion.nombre}`);
+          this.mantencionesPendientes.push({
+            camion: camion.nombre,
+            patente: camion.patente,
+            mantencion: mantencion.nombre,
+            proximoKm: mantencion.proximoKilometraje,
+            kmActual: camion.kmActual
+          });
+        });
+      }
+    });
+    
+    console.log('Total de mantenciones pendientes encontradas:', this.mantencionesPendientes.length);
+    console.log('Mantenciones pendientes:', this.mantencionesPendientes);
+  }
+
+  // Método para obtener todas las mantenciones pendientes (para compatibilidad)
+  obtenerMantencionesPendientes(): any[] {
+    return this.mantencionesPendientes;
   }
 }

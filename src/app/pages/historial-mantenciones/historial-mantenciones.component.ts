@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { HistorialMantencionesService, HistorialMantencion } from '../../services/historial-mantenciones.service';
 
 @Component({
   selector: 'app-historial-mantenciones',
@@ -12,14 +13,20 @@ import { NavbarComponent } from '../navbar/navbar.component';
   styleUrls: ['./historial-mantenciones.component.css']
 })
 export class HistorialMantencionesComponent implements OnInit, OnDestroy {
-  historialCompleto: any[] = [];
+  historialCompleto: HistorialMantencion[] = [];
+  historialFiltrado: HistorialMantencion[] = [];
   filtroCamion: string = '';
   filtroMantencion: string = '';
   camionesDisponibles: string[] = [];
   mantencionesDisponibles: string[] = [];
   ordenFecha: string = 'descendente';
+  isLoading: boolean = false;
+  error: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private historialService: HistorialMantencionesService
+  ) {}
 
   ngOnInit() {
     this.cargarHistorialCompleto();
@@ -38,135 +45,126 @@ export class HistorialMantencionesComponent implements OnInit, OnDestroy {
   }
 
   cargarHistorialCompleto() {
-    this.historialCompleto = [];
+    this.isLoading = true;
+    this.error = '';
     
-    // Obtener datos originales de localStorage
-    const camionesData = JSON.parse(localStorage.getItem('camiones') || '[]');
-    
-    if (camionesData.length === 0) {
-      return;
-    }
-    
-    // Procesar cada camión
-    camionesData.forEach((camion: any) => {
-      if (camion.historialMantenciones && camion.historialMantenciones.length > 0) {
-        camion.historialMantenciones.forEach((mantencion: any) => {
-          // Manejar diferentes formatos de fecha con hora
-          let fechaFormateada = 'Fecha no disponible';
-          try {
-            if (mantencion.fechaRealizada) {
-              const fecha = new Date(mantencion.fechaRealizada);
-              fechaFormateada = fecha.toLocaleDateString('es-ES') + ' ' + fecha.toLocaleTimeString('es-ES', {
-                hour: '2-digit',
-                minute: '2-digit'
-              });
-            } else if (mantencion.fecha) {
-              const fecha = new Date(mantencion.fecha);
-              fechaFormateada = fecha.toLocaleDateString('es-ES') + ' ' + fecha.toLocaleTimeString('es-ES', {
-                hour: '2-digit',
-                minute: '2-digit'
-              });
-            }
-          } catch (error) {
-            console.error('Error al formatear fecha:', error);
-            fechaFormateada = 'Fecha inválida';
-          }
-          
-          const itemHistorial = {
-            fecha: fechaFormateada,
-            fechaOriginal: mantencion.fechaRealizada || mantencion.fecha,
-            camion: `${camion.marca} ${camion.modelo}`,
-            patente: camion.patente,
-            nombre: mantencion.nombre,
-            accion: mantencion.accion || 'Mantenimiento realizado',
-            kilometraje: mantencion.kilometrajeRealizado || mantencion.kilometraje || 'N/A'
-          };
-          
-          this.historialCompleto.push(itemHistorial);
-        });
+    this.historialService.obtenerHistorialCompleto().subscribe({
+      next: (data) => {
+        this.historialCompleto = data;
+        this.aplicarFiltros();
+        this.generarFiltros();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar historial:', error);
+        this.error = 'Error al cargar el historial de mantenciones';
+        this.isLoading = false;
       }
     });
-    
-    // Ordenar por fecha y hora (más reciente primero)
-    this.historialCompleto.sort((a, b) => {
-      try {
-        const fechaA = new Date(a.fechaOriginal);
-        const fechaB = new Date(b.fechaOriginal);
-        if (isNaN(fechaA.getTime()) || isNaN(fechaB.getTime())) {
-          return 0;
-        }
-        return fechaB.getTime() - fechaA.getTime();
-      } catch (error) {
-        return 0;
-      }
-    });
-    
-    // Generar listas para filtros
-    this.generarFiltros();
   }
 
   generarFiltros() {
-    // Obtener camiones únicos
-    this.camionesDisponibles = [...new Set(this.historialCompleto.map(item => item.camion))];
+    // Obtener camiones únicos (marca + modelo)
+    this.camionesDisponibles = [...new Set(
+      this.historialCompleto.map(item => `${item.camionMarca} ${item.camionModelo}`)
+    )];
     
     // Obtener tipos de mantención únicos
-    this.mantencionesDisponibles = [...new Set(this.historialCompleto.map(item => item.nombre))];
+    this.mantencionesDisponibles = [...new Set(
+      this.historialCompleto.map(item => item.mantencionNombre)
+    )];
   }
 
-  get historialFiltrado(): any[] {
+  aplicarFiltros() {
     let filtrado = this.historialCompleto.filter(item => {
-      const cumpleCamion = !this.filtroCamion || item.camion === this.filtroCamion;
-      const cumpleMantencion = !this.filtroMantencion || item.nombre === this.filtroMantencion;
+      const camionCompleto = `${item.camionMarca} ${item.camionModelo}`;
+      const cumpleCamion = !this.filtroCamion || camionCompleto === this.filtroCamion;
+      const cumpleMantencion = !this.filtroMantencion || item.mantencionNombre === this.filtroMantencion;
       return cumpleCamion && cumpleMantencion;
     });
 
     // Aplicar ordenamiento
-    return this.ordenarPorFecha(filtrado);
+    this.historialFiltrado = this.ordenarPorFecha(filtrado);
   }
 
-  ordenarPorFecha(datos: any[]): any[] {
+  ordenarPorFecha(datos: HistorialMantencion[]): HistorialMantencion[] {
     return datos.sort((a, b) => {
-      try {
-        const fechaA = new Date(a.fechaOriginal);
-        const fechaB = new Date(b.fechaOriginal);
-        
-        if (isNaN(fechaA.getTime()) || isNaN(fechaB.getTime())) {
-          return 0;
-        }
-        
-        if (this.ordenFecha === 'ascendente') {
-          return fechaA.getTime() - fechaB.getTime();
-        } else {
-          return fechaB.getTime() - fechaA.getTime();
-        }
-      } catch (error) {
-        return 0;
+      const fechaA = new Date(a.fechaRealizada);
+      const fechaB = new Date(b.fechaRealizada);
+      
+      if (this.ordenFecha === 'ascendente') {
+        return fechaA.getTime() - fechaB.getTime();
+      } else {
+        return fechaB.getTime() - fechaA.getTime();
       }
     });
   }
 
   aplicarOrdenamiento() {
-    // El getter se actualiza automáticamente cuando cambia ordenFecha
-    // Este método se puede usar para lógica adicional si es necesario
+    this.aplicarFiltros();
   }
 
   limpiarFiltros() {
     this.filtroCamion = '';
     this.filtroMantencion = '';
+    this.aplicarFiltros();
   }
 
   volverAHome() {
     this.router.navigate(['/home']);
   }
 
+  eliminarRegistro(id: number) {
+    if (confirm('¿Estás seguro de que quieres eliminar este registro?')) {
+      this.historialService.eliminarRegistro(id).subscribe({
+        next: () => {
+          // Recargar el historial después de eliminar
+          this.cargarHistorialCompleto();
+        },
+        error: (error) => {
+          console.error('Error al eliminar registro:', error);
+          alert('Error al eliminar el registro');
+        }
+      });
+    }
+  }
+
   exportarHistorial() {
+    const filtros: any = {};
+    if (this.filtroCamion) {
+      const [marca, modelo] = this.filtroCamion.split(' ');
+      filtros.marca = marca;
+      filtros.modelo = modelo;
+    }
+    if (this.filtroMantencion) {
+      filtros.tipoMantencion = this.filtroMantencion;
+    }
+
+    this.historialService.exportarHistorialCSV(filtros).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'historial_mantenciones.csv';
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Error al exportar CSV:', error);
+        // Fallback: exportar datos filtrados localmente
+        this.exportarHistorialLocal();
+      }
+    });
+  }
+
+  exportarHistorialLocal() {
     const datos = this.historialFiltrado.map(item => ({
-      Fecha: item.fecha,
-      Camión: item.camion,
-      Patente: item.patente,
-      Mantención: item.nombre,
-      Acción: item.accion,
-      Kilometraje: item.kilometraje
+      Fecha: new Date(item.fechaRealizada).toLocaleString('es-ES'),
+      Camión: `${item.camionMarca} ${item.camionModelo}`,
+      Patente: item.camionPatente,
+      Mantención: item.mantencionNombre,
+      Acción: item.mantencionAccion,
+      Kilometraje: item.kilometrajeRealizado
     }));
 
     const csv = this.convertirACSV(datos);
@@ -174,6 +172,8 @@ export class HistorialMantencionesComponent implements OnInit, OnDestroy {
   }
 
   convertirACSV(datos: any[]): string {
+    if (datos.length === 0) return '';
+    
     const headers = Object.keys(datos[0]);
     const csvContent = [
       headers.join(','),
@@ -193,5 +193,41 @@ export class HistorialMantencionesComponent implements OnInit, OnDestroy {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }
+
+  // Método para formatear fecha en el template
+  formatearFecha(fecha: string): string {
+    try {
+      const date = new Date(fecha);
+      return date.toLocaleDateString('es-ES') + ' ' + date.toLocaleTimeString('es-ES', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      return 'Fecha inválida';
+    }
+  }
+
+  // Método para obtener solo la fecha
+  obtenerSoloFecha(fecha: string): string {
+    try {
+      const date = new Date(fecha);
+      return date.toLocaleDateString('es-ES');
+    } catch (error) {
+      return 'Fecha inválida';
+    }
+  }
+
+  // Método para obtener solo la hora
+  obtenerSoloHora(fecha: string): string {
+    try {
+      const date = new Date(fecha);
+      return date.toLocaleTimeString('es-ES', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      return 'Hora inválida';
+    }
   }
 } 

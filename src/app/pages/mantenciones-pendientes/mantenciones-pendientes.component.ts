@@ -1,35 +1,19 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CamionService, Camion } from "../../servicios/camion.service";
+import { NavbarComponent } from "../navbar/navbar.component";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: "app-mantenciones-pendientes",
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <h2>Mantenciones Pendientes para Camión: {{ camion?.patente || 'Ninguno seleccionado' }}</h2>
-
-    <div *ngIf="!camion">Seleccione un camión para ver sus mantenciones</div>
-
-    <div *ngIf="camion">
-      <h3>Mantenciones Pendientes</h3>
-      <ul>
-        <li *ngFor="let m of mantencionesPendientes">
-          {{ m.nombre }} - Accion: {{ m.accionSeleccionada }} - Próximo KM: {{ m.proximoKilometraje }} - Meses: {{ m.meses }}
-        </li>
-      </ul>
-
-      <h3>Mantenciones Próximas</h3>
-      <ul>
-        <li *ngFor="let m of mantencionesProximas">
-          {{ m.nombre }} - Próximo KM: {{ m.proximoKilometraje }} - Meses: {{ m.meses }}
-        </li>
-      </ul>
-    </div>
-  `,
+  imports: [CommonModule, NavbarComponent],
+  templateUrl: './mantenciones-pendientes.component.html',
+  styleUrls: ['./mantenciones-pendientes.component.css']
 })
 export class MantencionesPendientesComponent implements OnInit {
   camionService = inject(CamionService);
+  http = inject(HttpClient);
 
   camion: Camion | null = null;
   mantencionesPendientes: any[] = [];
@@ -52,23 +36,60 @@ export class MantencionesPendientesComponent implements OnInit {
     this.mantencionesProximas = [];
 
     (this.camion as any).mantenciones?.forEach((mantencion: any) => {
-      const proximoKm = mantencion.proximoKilometraje ?? 0;
-      const meses = mantencion.meses ?? 0;
+      // Adaptar los datos al modelo visual esperado
+      const mapeada = {
+        ...mantencion,
+        tipo: mantencion.tipo || 'General', // Valor por defecto
+        criticidad: kmActual >= (mantencion.proximoKilometraje ?? 0) ? 'Alta' : 'Baja', // Ejemplo de criticidad
+        descripcion: mantencion.descripcion || `${mantencion.nombre} (${mantencion.accion || mantencion.accionSeleccionada || ''})`,
+        kmProgramado: mantencion.proximoKilometraje,
+        kmActual: kmActual,
+        estado: '', // Se calcula abajo
+        fecha: null // Se calcula abajo si aplica
+      };
 
+      // Calcular fecha de vencimiento si aplica
       let fechaVencimiento: Date | null = null;
-      if (meses > 0) {
-        const fechaBase = new Date();
-        fechaBase.setDate(1);
+      if (mapeada.meses > 0 && this.camion?.fRevisionTecnica) {
+        const fechaBase = new Date(this.camion.fRevisionTecnica);
         fechaVencimiento = new Date(fechaBase);
-        fechaVencimiento.setMonth(fechaVencimiento.getMonth() + meses);
+        fechaVencimiento.setMonth(fechaVencimiento.getMonth() + mapeada.meses);
+        mapeada.fecha = fechaVencimiento;
       }
 
-      const vencida = kmActual >= proximoKm || (fechaVencimiento !== null && fechaVencimiento <= hoy);
+      // Determinar si está vencida
+      const vencida = kmActual >= mapeada.proximoKilometraje || (fechaVencimiento !== null && fechaVencimiento <= hoy);
+      mapeada.estado = vencida ? 'Vencida' : 'Próxima';
 
       if (vencida) {
-        this.mantencionesPendientes.push(mantencion);
+        this.mantencionesPendientes.push(mapeada);
       } else {
-        this.mantencionesProximas.push(mantencion);
+        this.mantencionesProximas.push(mapeada);
+      }
+    });
+  }
+
+  // Método para marcar una mantención como completada y reprogramarla
+  completarMantencion(mantencion: any) {
+    if (!this.camion) {
+      alert('No hay camión seleccionado');
+      return;
+    }
+
+    // El backend ya registra automáticamente en el historial cuando se completa una mantención
+    this.camionService.completarMantencion(mantencion.id).subscribe({
+      next: (resp) => {
+        console.log('Mantención completada y registrada en historial:', resp);
+        
+        // Vuelve a cargar el camión actualizado y reprocesa las mantenciones
+        this.camionService.obtenerCamion(this.camion?.patente!).subscribe((camionActualizado) => {
+          this.camion = camionActualizado;
+          this.procesarMantenciones();
+        });
+      },
+      error: (err) => {
+        console.error('Error al completar mantención:', err);
+        alert('Error al marcar la mantención como completada');
       }
     });
   }

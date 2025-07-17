@@ -8,10 +8,10 @@
     <p class="subtitle">Seleccione el camión que utilizará para su jornada</p>
   </div>
 
-  <!-- Trucks Grid -->
-  <div *ngIf="camionesLocales.length > 0; else sinCamiones" class="trucks-grid">
+  <!-- CAMBIO: ahora usamos camiones (de la BD) en vez de camionesLocales -->
+  <div *ngIf="camiones.length > 0; else sinCamiones" class="trucks-grid">
     <div 
-      *ngFor="let camion of camionesLocales" 
+      *ngFor="let camion of camiones" 
       class="truck-card"
       (click)="seleccionarCamion(camion)"
     >
@@ -40,11 +40,11 @@
           </div>
           <div class="info-item">
             <span class="label">📅</span>
-            <span class="value">{{ camion.anno }}</span>
+            <span class="value">{{ camion.anio }}</span> <!-- CAMBIO: asegúrate que el campo sea anio -->
           </div>
           <div class="info-item">
             <span class="label">Tipo:</span>
-            <span class="value">{{ camion.tipo }}</span>
+            <span class="value">{{ camion.tipoCamion }}</span> <!-- CAMBIO: asegúrate que el campo sea tipoCamion -->
           </div>
           <div class="info-item">
             <span class="label">🎨</span>
@@ -63,7 +63,7 @@
               <span class="gauge-icon">📊</span>
               <span>Kilometraje:</span>
             </div>
-            <span class="kilometers-value">{{ camion.kilometraje_camion | number }} km</span>
+            <span class="kilometers-value">{{ camion.kilometraje | number }} km</span> <!-- CAMBIO: usa kilometraje -->
           </div>
         </div>
 
@@ -88,7 +88,7 @@
   <ng-template #sinCamiones>
     <div class="no-trucks">
       <div class="no-trucks-icon">🚛</div>
-      <p>No hay camiones guardados localmente.</p>
+      <p>No hay camiones registrados.</p> <!-- CAMBIO: mensaje actualizado -->
     </div>
   </ng-template>
 
@@ -114,7 +114,7 @@
             class="kilometers-input"
           />
           <p class="current-km">
-            Kilometraje actual: {{ camionSeleccionado.kilometraje_camion | number }} km
+            Kilometraje actual: {{ camionSeleccionado.kilometraje | number }} km <!-- CAMBIO: usa kilometraje -->
           </p>
         </div>
 
