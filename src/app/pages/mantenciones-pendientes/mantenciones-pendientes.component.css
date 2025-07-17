@@ -232,13 +232,26 @@
 }
 
 .modal {
-  background: var(--mp-card-bg);
+  background: var(--mp-card-bg, #fff);
   padding: 24px;
   border-radius: 8px;
   max-width: 400px;
   width: 90%;
-  box-shadow: var(--mp-card-shadow);
-  border: 1px solid var(--mp-card-border);
+  box-shadow: var(--mp-card-shadow, 0 4px 6px rgba(0,0,0,0.1));
+  border: 1.5px solid var(--mp-card-border, #374151);
+  color: var(--mp-text-primary, #1f2937);
+}
+
+:root .modal {
+  background: #fff;
+  color: #1f2937;
+  border: 1.5px solid #374151;
+}
+
+:root[data-theme="dark"] .modal {
+  background: #1f2937;
+  color: #f9fafb;
+  border: 1.5px solid #9ca3af;
 }
 
 .modal h3 {

@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     dateClick: this.handleDateClick.bind(this),
     events: [],
     fixedWeekCount: false,
+    eventClick: this.handleEventClick.bind(this),
     visibleRange: (currentDate) => {
       const start = new Date(currentDate.valueOf());
       const end = new Date(currentDate.valueOf());
@@ -56,6 +57,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   };
 
+  isMobileVerySmall = false;
+
   constructor(
     private router: Router,
     private camionDataService: CamionService,
@@ -65,18 +68,25 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cargarDatosReales();
-    
-    // Actualizar datos cuando la ventana vuelve a estar activa
+    this.checkScreenWidth();
+    window.addEventListener('resize', this.checkScreenWidth.bind(this));
     window.addEventListener('focus', () => {
       this.cargarDatosReales();
     });
   }
 
   ngOnDestroy() {
-    // Remover el event listener
+    window.removeEventListener('resize', this.checkScreenWidth.bind(this));
     window.removeEventListener('focus', () => {
       this.cargarDatosReales();
     });
+  }
+
+  checkScreenWidth() {
+    this.isMobileVerySmall = window.innerWidth < 410;
+    if (this.isMobileVerySmall) {
+      this.vistaActual = 'list';
+    }
   }
 
   cargarDatosReales() {
@@ -384,6 +394,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   switchView(view: 'calendar' | 'list'): void {
+    if (this.isMobileVerySmall && view === 'calendar') {
+      return;
+    }
     this.vistaActual = view;
   }
 
@@ -410,6 +423,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   handleDateClick(arg: any): void {
     alert('Haz hecho clic en la fecha: ' + arg.dateStr);
+  }
+
+  handleEventClick(arg: any) {
+    alert('Mantención pendiente: ' + arg.event.title);
   }
 
   verDetalles(alerta: any): void {

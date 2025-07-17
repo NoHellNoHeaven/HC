@@ -23,6 +23,9 @@ export class MantencionesPendientesComponent implements OnInit, OnDestroy {
   mantencionesProximas: any[] = [];
   private navSub: Subscription | null = null;
 
+  mostrarModal: boolean = false;
+  mantencionAConfirmar: any = null;
+
   ngOnInit() {
     // Primero intentar obtener el camión seleccionado del localStorage
     const camionLocal = this.camionService.getCamionSeleccionadoLocal();
@@ -203,5 +206,23 @@ export class MantencionesPendientesComponent implements OnInit, OnDestroy {
         alert('Error al marcar la mantención como completada');
       }
     });
+  }
+
+  // Método para abrir el modal de confirmación
+  abrirModalConfirmacion(mantencion: any) {
+    this.mantencionAConfirmar = mantencion;
+    this.mostrarModal = true;
+  }
+
+  cancelarConfirmacion() {
+    this.mostrarModal = false;
+    this.mantencionAConfirmar = null;
+  }
+
+  confirmarMantencion() {
+    if (this.mantencionAConfirmar) {
+      this.completarMantencion(this.mantencionAConfirmar);
+      this.cancelarConfirmacion();
+    }
   }
 }

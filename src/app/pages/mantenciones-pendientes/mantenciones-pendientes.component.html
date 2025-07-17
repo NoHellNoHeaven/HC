@@ -50,7 +50,7 @@
       <button class="button">
         Programar Mantenimiento
       </button>
-      <button class="button button-light" (click)="completarMantencion(mantencion)">
+      <button class="button button-light" (click)="abrirModalConfirmacion(mantencion)">
         Marcar como Completado
       </button>
     </div>
@@ -72,14 +72,7 @@
           <h3 class="patente">{{ mantencion.nombre }}</h3>
           <span class="camion-info-inline">{{ mantencion.camionMarca }} {{ mantencion.camionModelo }} ({{ mantencion.camionPatente }})</span>
         </div>
-        <span *ngIf="mantencion.criticidad"
-              [ngClass]="{
-                'criticidad-baja': mantencion.criticidad === 'Baja',
-                'criticidad-alta': mantencion.criticidad === 'Alta',
-                'criticidad-critica': mantencion.criticidad === 'Crítica'
-              }">
-          {{ mantencion.criticidad }}
-        </span>
+        <!-- Criticidad eliminada en próximas -->
         <span class="tipo" *ngIf="mantencion.tipo">{{ mantencion.tipo }}</span>
         <p class="descripcion" *ngIf="mantencion.descripcion">{{ mantencion.descripcion }}</p>
         <!-- Nueva línea minimalista de kilometraje para próximas -->
@@ -98,17 +91,15 @@
     </div>
   </div>
 </div>
-<!-- Modal de confirmación (opcional, solo visual) -->
-<!--
+<!-- Modal de confirmación -->
 <div *ngIf="mostrarModal" class="modal-backdrop" (click)="cancelarConfirmacion()">
   <div class="modal" (click)="$event.stopPropagation()">
     <h3>¿Confirmar mantenimiento?</h3>
     <p>¿Deseas marcar esta mantención como completada?</p>
     <div class="acciones">
       <button class="button button-light" (click)="cancelarConfirmacion()">Cancelar</button>
-      <button class="button" (click)="completarMantencion()">Confirmar</button>
+      <button class="button" (click)="confirmarMantencion()">Confirmar</button>
     </div>
   </div>
 </div>
--->
 

@@ -36,12 +36,12 @@
   
   <!-- Botones para cambiar de vista -->
   <div class="view-buttons">
-    <button (click)="switchView('calendar')" [disabled]="vistaActual === 'calendar'">Vista Calendario</button>
+    <button *ngIf="!isMobileVerySmall" (click)="switchView('calendar')" [disabled]="vistaActual === 'calendar'">Vista Calendario</button>
     <button (click)="switchView('list')" [disabled]="vistaActual === 'list'">Vista Lista</button>
   </div>
 
   <!-- Calendario o lista, según la vista actual -->
-  <div *ngIf="vistaActual === 'calendar'" class="calendar-container">
+  <div *ngIf="vistaActual === 'calendar' && !isMobileVerySmall" class="calendar-container">
     <full-calendar #calendar [options]="calendarOptions"></full-calendar>
   </div>
 
