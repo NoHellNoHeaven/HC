@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { HistorialMantencionesService, HistorialMantencion } from '../../services/historial-mantenciones.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-historial-mantenciones',
@@ -176,71 +177,41 @@ export class HistorialMantencionesComponent implements OnInit, OnDestroy {
     }
   }
 
-  exportarHistorial() {
-    const filtros: any = {};
-    if (this.filtroCamion) {
-      const [marca, modelo] = this.filtroCamion.split(' ');
-      filtros.marca = marca;
-      filtros.modelo = modelo;
-    }
-    if (this.filtroMantencion) {
-      filtros.tipoMantencion = this.filtroMantencion;
-    }
 
-    this.historialService.exportarHistorialCSV(filtros).subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'historial_mantenciones.csv';
-        link.click();
-        window.URL.revokeObjectURL(url);
-      },
-      error: (error) => {
-        console.error('Error al exportar CSV:', error);
-        // Fallback: exportar datos filtrados localmente
-        this.exportarHistorialLocal();
-      }
-    });
-  }
 
-  exportarHistorialLocal() {
+  exportarHistorialXLSX() {
+    // Crear un archivo XLSX real usando la librería
     const datos = this.historialFiltrado.map(item => ({
-      Fecha: new Date(item.fechaRealizada).toLocaleString('es-ES'),
-      Camión: `${item.camionMarca} ${item.camionModelo}`,
+      Fecha: new Date(item.fechaRealizada).toLocaleDateString('es-ES'),
+      Hora: new Date(item.fechaRealizada).toLocaleTimeString('es-ES'),
+      Camion: `${item.camionMarca} ${item.camionModelo}`,
       Patente: item.camionPatente,
-      Mantención: item.mantencionNombre,
-      Acción: item.mantencionAccion,
+      Mantencion: item.mantencionNombre,
+      Accion: item.mantencionAccion,
       Kilometraje: item.kilometrajeRealizado
     }));
 
-    const csv = this.convertirACSV(datos);
-    this.descargarCSV(csv, 'historial_mantenciones.csv');
+    // Crear el workbook y worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datos);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Historial Mantenciones');
+
+    // Generar el archivo
+    const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    this.descargarXLSX(excelBuffer, 'historial_mantenciones.xlsx');
   }
 
-  convertirACSV(datos: any[]): string {
-    if (datos.length === 0) return '';
-    
-    const headers = Object.keys(datos[0]);
-    const csvContent = [
-      headers.join(','),
-      ...datos.map(row => headers.map(header => `"${row[header]}"`).join(','))
-    ].join('\n');
-    
-    return csvContent;
-  }
-
-  descargarCSV(csv: string, filename: string) {
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  descargarXLSX(buffer: any, filename: string) {
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
+    link.href = url;
+    link.download = filename;
     link.click();
-    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   }
+
+
 
   // Método para formatear fecha en el template
   formatearFecha(fecha: string): string {

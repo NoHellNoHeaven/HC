@@ -89,7 +89,7 @@ export class MantencionesPendientesComponent implements OnInit, OnDestroy {
       // Adaptar los datos al modelo visual esperado
       const mapeada = {
         ...mantencion,
-        tipo: mantencion.tipo || 'General', // Valor por defecto
+        tipo: this.obtenerCategoriaMantencion(mantencion.nombre), // Obtener categoría con icono
         criticidad: kmActual >= (mantencion.proximoKilometraje ?? 0) ? 'Alta' : 'Baja', // Ejemplo de criticidad
         descripcion: mantencion.descripcion || `${mantencion.nombre} (${mantencion.accion || mantencion.accionSeleccionada || ''})`,
         kmProgramado: mantencion.proximoKilometraje,
@@ -117,6 +117,27 @@ export class MantencionesPendientesComponent implements OnInit, OnDestroy {
         this.mantencionesProximas.push(mapeada);
       }
     });
+  }
+
+  // Método para obtener la categoría de una mantención con icono
+  obtenerCategoriaMantencion(nombreMantencion: string): string {
+    const categorias = {
+      // 🛢️ Lubricación
+      'Aceite de motor': '🛢️ Lubricación',
+      'Filtro de aceite': '🛢️ Lubricación',
+      
+      // ⚫ Neumáticos y Frenos
+      'Reemplazo de neumáticos': '⚫ Neumáticos y Frenos',
+      'Revisión de frenos': '⚫ Neumáticos y Frenos',
+      
+      // 🔧 Mecánica
+      'Filtro de aire': '🔧 Mecánica',
+      'Revisión de tren delantero': '🔧 Mecánica',
+      'Revisión de suspensión': '🔧 Mecánica',
+      'Cambio de correa de distribución': '🔧 Mecánica'
+    };
+    
+    return categorias[nombreMantencion as keyof typeof categorias] || '🔧 Mantención';
   }
 
   // Método para marcar una mantención como completada y reprogramarla
