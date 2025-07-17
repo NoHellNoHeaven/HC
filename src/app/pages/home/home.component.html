@@ -33,6 +33,7 @@
     </div>
   </section>
 
+  
   <!-- Botones para cambiar de vista -->
   <div class="view-buttons">
     <button (click)="switchView('calendar')" [disabled]="vistaActual === 'calendar'">Vista Calendario</button>
@@ -54,7 +55,7 @@
       <span [ngClass]="{
         'badge badge-green': camion.estado === 'activo',
         'badge badge-blue': camion.estado === 'en mantencion'
-      }">{{ camion.estado }}</span>
+      }">{{ camion.estado === 'en mantencion' ? 'En mantencion' : camion.estado }}</span>
     </div>
     <p><strong>Patente:</strong> {{ camion.patente }}</p>
     <p><strong>Año:</strong> {{ camion.anio }}</p>

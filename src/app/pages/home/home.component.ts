@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   alertas: any[] = [];
   historialMantenciones: HistorialMantencion[] = [];
   mantencionesPendientes: any[] = [];
+  mantencionesCriticas: any[] = [];
   isLoading: boolean = false;
   error: string = '';
 
@@ -137,18 +138,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           };
         });
 
-        // Calcular estadísticas generales
-        this.calcularEstadisticas();
-        
         // Generar lista de mantenciones
         this.generarListaMantenciones();
-        
         // Generar alertas
         this.generarAlertas();
-        
         // Actualizar mantenciones pendientes
         this.actualizarMantencionesPendientes();
-        
+        // Calcular estadísticas generales (¡al final!)
+        this.calcularEstadisticas();
         // Actualizar eventos del calendario
         this.actualizarEventosCalendario();
         
@@ -165,13 +162,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   calcularEstadisticas() {
     const totalCamiones = this.camiones.length;
     const camionesOperativos = this.camiones.filter(c => c.estado === 'activo').length;
-    const alertasCriticas = this.camiones.reduce((total, c) => total + c.alertas, 0);
-    const mantencionesPendientes = this.listaMantenciones.filter(m => m.nivel === 'critica').length;
+    // Sumar solo las mantenciones con criticidad 'critica' para las alertas críticas
+    const alertasCriticas = this.mantencionesPendientes.filter(m => m.nivel === 'critica' || m.nivel === 'Crítica').length;
+    // El contador de mantenciones pendientes muestra el total de todas las pendientes
+    const mantencionesPendientes = this.mantencionesPendientes.length;
 
+    // Construimos el arreglo de estadísticas para mostrar en la vista
     this.stats = [
       { label: 'Camiones operativos', value: camionesOperativos },
-      { label: 'Alertas críticas', value: alertasCriticas },
-      { label: 'Mantenimientos pendientes', value: mantencionesPendientes },
+      { label: 'Alertas críticas', value: alertasCriticas }, // Solo críticas
+      { label: 'Mantenimientos pendientes', value: mantencionesPendientes }, // Todas las pendientes
       { label: 'Total de camiones', value: totalCamiones }
     ];
   }
@@ -453,18 +453,28 @@ export class HomeComponent implements OnInit, OnDestroy {
       
       if (camion.mantencionesVencidas && camion.mantencionesVencidas.length > 0) {
         camion.mantencionesVencidas.forEach((mantencion: any) => {
-          console.log(`    Agregando mantención pendiente: ${mantencion.nombre}`);
+          // Calcular criticidad igual que en mantenciones-pendientes.component.ts
+          const diferencia = camion.kmActual - (mantencion.proximoKilometraje ?? 0);
+          let criticidad = 'Baja';
+          if (diferencia > 500) {
+            criticidad = 'Crítica';
+          } else if (diferencia > 100) {
+            criticidad = 'Alta';
+          }
+          // Agregar la mantención pendiente con criticidad
           this.mantencionesPendientes.push({
             camion: camion.nombre,
             patente: camion.patente,
             mantencion: mantencion.nombre,
             proximoKm: mantencion.proximoKilometraje,
-            kmActual: camion.kmActual
+            kmActual: camion.kmActual,
+            nivel: criticidad // Este campo ahora tiene la criticidad correcta
           });
         });
       }
     });
     
+    // Ya no es necesario filtrar mantencionesCriticas aquí, el contador lo hace directo
     console.log('Total de mantenciones pendientes encontradas:', this.mantencionesPendientes.length);
     console.log('Mantenciones pendientes:', this.mantencionesPendientes);
   }
