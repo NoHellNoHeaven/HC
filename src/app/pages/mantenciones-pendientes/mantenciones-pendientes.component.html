@@ -19,19 +19,16 @@
     <div class="mantencion-top">
       <div class="mantencion-info">
         <h3 class="patente">{{ mantencion.nombre }}</h3>
-        <span class="badge badge-critico">{{ mantencion.criticidad }}</span>
-        <span class="tipo">{{ mantencion.tipo }}</span>
-        <p class="descripcion">{{ mantencion.descripcion }}</p>
-        
+        <span class="badge badge-critico" *ngIf="mantencion.criticidad">{{ mantencion.criticidad }}</span>
+        <span class="tipo" *ngIf="mantencion.tipo">{{ mantencion.tipo }}</span>
+        <p class="descripcion" *ngIf="mantencion.descripcion">{{ mantencion.descripcion }}</p>
         <!-- Nueva línea minimalista de kilometraje -->
         <div class="km-line">
-          <span class="km-text">Programado: {{ mantencion.kmProgramado | number }} km</span>
+          <span class="km-text">Programado: {{ mantencion.kmProgramado || mantencion.proximoKilometraje | number }} km</span>
           <span class="km-separator">•</span>
-          <span class="km-text">Actual: {{ mantencion.kmActual | number }} km</span>
+          <span class="km-text">Actual: {{ mantencion.kmActual || camion?.kilometraje | number }} km</span>
           <span class="km-separator">•</span>
-          <span class="km-status" [ngClass]="getKmStatusClass(mantencion)">
-            {{ getKmStatusText(mantencion) }}
-          </span>
+          <span class="km-status" *ngIf="mantencion.estado">{{ mantencion.estado }}</span>
         </div>
       </div>
       <div class="mantencion-fecha" *ngIf="mantencion.fecha">
@@ -43,10 +40,9 @@
       <button class="button">
         Programar Mantenimiento
       </button>
-      <button class="button button-light" (click)="confirmarMantencion(mantencion)">
+      <button class="button button-light" (click)="completarMantencion(mantencion)">
         Marcar como Completado
       </button>
-
     </div>
   </div>
 </div>
@@ -63,18 +59,15 @@
     <div class="mantencion-top">
       <div class="mantencion-info">
         <h3 class="patente">{{ mantencion.nombre }}</h3>
-        <span class="tipo">{{ mantencion.tipo }}</span>
-        <p class="descripcion">{{ mantencion.descripcion }}</p>
-        
+        <span class="tipo" *ngIf="mantencion.tipo">{{ mantencion.tipo }}</span>
+        <p class="descripcion" *ngIf="mantencion.descripcion">{{ mantencion.descripcion }}</p>
         <!-- Nueva línea minimalista de kilometraje para próximas -->
         <div class="km-line">
-          <span class="km-text">Programado: {{ mantencion.kmProgramado | number }} km</span>
+          <span class="km-text">Programado: {{ mantencion.kmProgramado || mantencion.proximoKilometraje | number }} km</span>
           <span class="km-separator">•</span>
-          <span class="km-text">Actual: {{ mantencion.kmActual | number }} km</span>
+          <span class="km-text">Actual: {{ mantencion.kmActual || camion?.kilometraje | number }} km</span>
           <span class="km-separator">•</span>
-          <span class="km-status km-status-pending">
-            {{ getKmStatusText(mantencion) }}
-          </span>
+          <span class="km-status km-status-pending" *ngIf="mantencion.estado">{{ mantencion.estado }}</span>
         </div>
       </div>
       <div class="mantencion-fecha" *ngIf="mantencion.fecha">
@@ -84,7 +77,8 @@
     </div>
   </div>
 </div>
-<!-- Modal de confirmación -->
+<!-- Modal de confirmación (opcional, solo visual) -->
+<!--
 <div *ngIf="mostrarModal" class="modal-backdrop" (click)="cancelarConfirmacion()">
   <div class="modal" (click)="$event.stopPropagation()">
     <h3>¿Confirmar mantenimiento?</h3>
@@ -95,4 +89,5 @@
     </div>
   </div>
 </div>
+-->
 

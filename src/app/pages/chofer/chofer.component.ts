@@ -73,7 +73,7 @@ export class ChoferesComponent implements OnInit {
       vencLicencia: '',
       telEmergencia: undefined,
       direccion: '',
-      estado: 'ACTIVO'
+      estado: 'Activo'
     };
   }
 

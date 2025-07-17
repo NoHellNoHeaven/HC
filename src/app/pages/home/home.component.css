@@ -817,3 +817,136 @@
 .details-btn:hover {
   background-color: var(--primary-hover-boton);
 }
+
+/* ====== LOADING STATE ====== */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid var(--card-border);
+  border-top: 5px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: var(--text-color);
+  opacity: 0.8;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* ====== ERROR STATE ====== */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px;
+  text-align: center;
+  background: var(--card-background);
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  margin: 20px;
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.error-container h3 {
+  margin: 0 0 12px 0;
+  color: var(--text-color);
+  font-size: 1.8rem;
+}
+
+.error-container p {
+  margin: 0 0 24px 0;
+  color: var(--text-color);
+  opacity: 0.8;
+  font-size: 1.1rem;
+}
+
+.btn-reintentar {
+  padding: 12px 24px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-reintentar:hover {
+  background: var(--primary-hover-boton);
+}
+
+/* ====== MANTENCIONES PENDIENTES ====== */
+.pending-card {
+  border-left: 4px solid #dc3545;
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.05), rgba(220, 53, 69, 0.1));
+}
+
+.pending-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.pending-icon {
+  font-size: 1.5rem;
+  margin-right: 12px;
+}
+
+.pending-info h4 {
+  margin: 0 0 4px 0;
+  color: var(--text-color);
+  font-size: 1.1rem;
+}
+
+.pending-info .patente {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.estado-vencida {
+  color: #dc3545;
+  font-weight: 600;
+  background: rgba(220, 53, 69, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.no-pending {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 2px dashed var(--card-border);
+}
+
+.no-pending p {
+  margin: 0;
+  font-size: 1.1rem;
+}

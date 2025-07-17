@@ -1,11 +1,29 @@
 <app-navbar></app-navbar>
 
 <div class="home-container">
-  <header class="home-header">
-    <h1>Bienvenido a Healthy Truck</h1>
-    <p>Tu plataforma para cuidar tu camión</p>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  </header>
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Cargando datos del sistema...</p>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error && !isLoading" class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h3>Error al cargar datos</h3>
+    <p>{{ error }}</p>
+    <button class="btn-reintentar" (click)="cargarDatosReales()">
+      Reintentar
+    </button>
+  </div>
+
+  <!-- Data state -->
+  <div *ngIf="!isLoading && !error">
+    <header class="home-header">
+      <h1>Bienvenido a Healthy Truck</h1>
+      <p>Tu plataforma para cuidar tu camión</p>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    </header>
 
   <!-- Estadísticas -->
   <section class="home-stats">
@@ -63,6 +81,34 @@
   </div>
 </section>
 
+    <!-- Mantenciones Pendientes -->
+    <section class="maintenance-list">
+      <div class="section-header">
+        <h2>Mantenciones Pendientes</h2>
+      </div>
+      <div *ngIf="mantencionesPendientes.length > 0; else sinMantencionesPendientes">
+        <div class="maintenance-card pending-card"
+             *ngFor="let item of mantencionesPendientes">
+          <div class="pending-header">
+            <span class="pending-icon">⚠️</span>
+            <div class="pending-info">
+              <h4>{{ item.camion }}</h4>
+              <p class="patente">{{ item.patente }}</p>
+            </div>
+          </div>
+          <p><strong>Mantención:</strong> {{ item.mantencion }}</p>
+          <p><strong>Próximo KM:</strong> {{ item.proximoKm }} km</p>
+          <p><strong>KM Actual:</strong> {{ item.kmActual }} km</p>
+          <p><strong>Estado:</strong> <span class="estado-vencida">VENCIDA</span></p>
+        </div>
+      </div>
+      <ng-template #sinMantencionesPendientes>
+        <div class="no-pending">
+          <p>No hay mantenciones pendientes. ¡Todos los camiones están al día!</p>
+        </div>
+      </ng-template>
+    </section>
+
     <!-- Historial de mantenciones -->
     <section class="maintenance-list">
       <div class="section-header">
@@ -77,14 +123,14 @@
           <div class="historial-header">
             <span class="historial-icon">🔧</span>
             <div class="fecha-hora">
-              <strong>{{ mantencion.fecha.split(' ')[0] }}</strong>
-              <span class="hora">{{ mantencion.fecha.split(' ')[1] }}</span>
+              <strong>{{ formatearFecha(mantencion.fechaRealizada).split(' ')[0] }}</strong>
+              <span class="hora">{{ formatearFecha(mantencion.fechaRealizada).split(' ')[1] }}</span>
             </div>
           </div>
-          <p><strong>Camión:</strong> {{ mantencion.camion }} ({{ mantencion.patente }})</p>
-          <p><strong>Mantención:</strong> {{ mantencion.nombre }}</p>
-          <p><strong>Acción:</strong> {{ mantencion.accion }}</p>
-          <p><strong>Kilometraje:</strong> {{ mantencion.kilometraje }} km</p>
+          <p><strong>Camión:</strong> {{ mantencion.camionMarca }} {{ mantencion.camionModelo }} ({{ mantencion.camionPatente }})</p>
+          <p><strong>Mantención:</strong> {{ mantencion.mantencionNombre }}</p>
+          <p><strong>Acción:</strong> {{ mantencion.mantencionAccion }}</p>
+          <p><strong>Kilometraje:</strong> {{ mantencion.kilometrajeRealizado }} km</p>
         </div>
       </div>
       <ng-template #sinHistorial>
@@ -125,6 +171,7 @@
       </div>
     </section>
 
+    </div>
   </div>
 </div>
 

@@ -166,6 +166,82 @@
   margin-bottom: 40px;
 }
 
+/* ====== LOADING STATE ====== */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--card-border);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: var(--text-color);
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* ====== ERROR STATE ====== */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.error-container h3 {
+  margin: 0 0 12px 0;
+  color: var(--text-color);
+  font-size: 1.5rem;
+}
+
+.error-container p {
+  margin: 0 0 20px 0;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.btn-reintentar {
+  padding: 10px 20px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-reintentar:hover {
+  background: var(--primary-dark);
+}
+
 /* ====== CONTROLES DE TABLA ====== */
 .table-controls {
   display: flex;
@@ -288,6 +364,26 @@
   width: 120px;
   min-width: 120px;
   text-align: right;
+}
+
+.col-acciones {
+  width: 80px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.btn-eliminar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-eliminar:hover {
+  background-color: rgba(220, 53, 69, 0.1);
 }
 
 /* ====== CELDAS ESPECIALES ====== */

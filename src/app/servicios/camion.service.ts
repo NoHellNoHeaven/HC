@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 
+// Modelo base del camión
 export interface Camion {
   patente: string;
   tipoCamion: string;
@@ -18,22 +19,41 @@ export interface Camion {
   combustible: string;
   kilometraje: number;
   fRevisionTecnica: string;
-  fVencimientoSeguro: string;
-  permisoCirculacion: string;
+  fVencimientoSeguro?: string;
+  permisoCirculacion?: string;
   estado?: string;
+  mantenciones?: Mantencion[]; // <-- Agregado para evitar error TS2339
+}
+
+// Modelo para mantenciones
+export interface Mantencion {
+  nombre: string;
+  accion: string;
+  kilometraje: number;
+  meses: number;
+  proximoKilometraje: number;
+}
+
+// Modelo completo para crear camión con mantenciones
+export interface CamionConMantenciones extends Camion {
+  mantenciones: Mantencion[];
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class CamionService {
-  private apiUrl = 'https://htserver-production.up.railway.app/camiones'; // usa tu URL real
+  private apiUrl = 'https://htserver-production.up.railway.app/camiones'; // tu backend en Railway
 
+  // Se mantiene el BehaviorSubject solo para el camión seleccionado
   private camionSource = new BehaviorSubject<Camion | null>(this.getCamionSeleccionadoLocal());
   camionSeleccionado$ = this.camionSource.asObservable();
 
   constructor(private http: HttpClient) {}
 
+  // ===========================
+  // MÉTODOS PARA CAMIÓN SELECCIONADO (puedes seguir usando localStorage solo para la selección)
+  // ===========================
   setCamionSeleccionado(camion: Camion | null): void {
     this.camionSource.next(camion);
     if (camion) {
@@ -48,28 +68,44 @@ export class CamionService {
     return data ? JSON.parse(data) : null;
   }
 
-  setCamionesLocal(camiones: Camion[]): void {
-    localStorage.setItem('camiones', JSON.stringify(camiones));
-  }
+  // ===========================
+  // MÉTODOS QUE USAN LA BASE DE DATOS REAL (Railway)
+  // ===========================
 
-  getCamionesLocal(): Camion[] {
-    const data = localStorage.getItem('camiones');
-    return data ? JSON.parse(data) : [];
-  }
-
+  // Obtener todos los camiones desde la base de datos real
   obtenerCamiones(): Observable<Camion[]> {
     return this.http.get<Camion[]>(this.apiUrl);
   }
 
-  crearCamion(camion: Camion): Observable<Camion> {
-    return this.http.post<Camion>(this.apiUrl, camion);
+  // Obtener un camión específico por patente desde la base de datos real
+  obtenerCamion(patente: string): Observable<CamionConMantenciones> {
+    return this.http.get<CamionConMantenciones>(`${this.apiUrl}/${patente}`);
   }
 
+  // Crear un camión en la base de datos real
+  crearCamion(camion: CamionConMantenciones): Observable<any> {
+    return this.http.post<any>(this.apiUrl, camion);
+  }
+
+  // Actualizar un camión en la base de datos real
   actualizarCamion(patente: string, camion: Partial<Camion>): Observable<Camion> {
     return this.http.put<Camion>(`${this.apiUrl}/${patente}`, camion);
   }
 
+  // Eliminar un camión en la base de datos real
   eliminarCamion(patente: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${patente}`);
   }
+
+  // Completar una mantención (reprogramar)
+  completarMantencion(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/mantenciones/${id}/completar`, {});
+  }
+
+  // ===========================
+  // MÉTODOS ELIMINADOS:
+  // - setCamionesLocal(camiones: Camion[])
+  // - getCamionesLocal()
+  // Estos métodos han sido eliminados porque ahora todo se gestiona con la base de datos real.
+  // ===========================
 }

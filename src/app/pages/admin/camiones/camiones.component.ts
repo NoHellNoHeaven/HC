@@ -1,125 +1,228 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { CamionService, Camion } from '../../../servicios/camion.service';
+import { Component, inject } from "@angular/core"
+import { FormsModule } from "@angular/forms"
+import { NgIf, NgFor } from "@angular/common"
+import { CamionService } from "../../../servicios/camion.service"
 
-interface Mantencion {
-  nombre: string;
-  accion: string[];
-  accionSeleccionada?: string;
-  kilometraje?: number;
-  meses?: number;
+type Mantencion = {
+  nombre: string
+  accion: string[]
+  accionSeleccionada: string
+  kilometraje: number | null
+  meses: number | null
 }
 
 @Component({
-  selector: 'app-camiones',
+  selector: "app-camiones",
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './camiones.component.html', 
-  styleUrls: ['./camiones.component.css'], 
+  imports: [FormsModule, NgIf, NgFor],
+  templateUrl: "./camiones.component.html",
+  styleUrls: ["./camiones.component.css"],
 })
 export class CamionesComponent {
-  private camionService = inject(CamionService);
+  camionService = inject(CamionService)
 
-  camion: Partial<Camion> = {};
-  tipoVehiculo: string[] = ['Camión', 'Camioneta', 'Pickup'];
-  tiposSello: string[] = ['Verde', 'Rojo'];
-  tiposCombustible: string[] = ['Diésel', 'Gasolina', 'Eléctrico'];
-  currentYear = new Date().getFullYear();
+  // Tab management
+  activeTab: "vehicle" | "maintenance" = "vehicle"
 
-  activeTab: 'vehicle' | 'maintenance' = 'vehicle';
-  isSubmitting = false;
-  showToast = false;
-  toastMessage = '';
-  toastType: 'success' | 'error' = 'success';
+  // Loading and notification states
+  isSubmitting = false
+  showToast = false
+  toastMessage = ""
+  toastType: "success" | "error" = "success"
+
+  camion = {
+    patente: "",
+    tipoCamion: "",
+    marca: "",
+    modelo: "",
+    anio: 0,
+    color: "",
+    nroMotor: "",
+    nroChasis: "",
+    fabrica: "",
+    procedencia: "",
+    tipoSello: "",
+    combustible: "",
+    kilometraje: 0,
+    fRevisionTecnica: "",
+    estado: "ACTIVO"
+  }
+
+  tipoVehiculo = [
+    "Camión",
+    "Camioneta",
+  ]
+
+  tiposCombustible = ["93", "95", "97", "Diesel"]
+  tiposSello = ["Verde", "Rojo", "Azul"]
+  currentYear: number = new Date().getFullYear()
 
   mantenciones: Mantencion[] = [
-    { nombre: 'Cambio de aceite', accion: ['Cambiar', 'Revisar'] },
-    { nombre: 'Filtro de aire', accion: ['Reemplazar', 'Limpiar'] },
-    { nombre: 'Revisión técnica', accion: ['Agendar', 'Realizar'] },
-    { nombre: 'Neumáticos', accion: ['Revisar', 'Rotar', 'Cambiar'] },
-  ];
+    { nombre: "Aceite de motor", accion: ["Cambiar"], accionSeleccionada: "", kilometraje: null, meses: 0 },
+    { nombre: "Filtro de aire", accion: ["Limpiar", "Cambiar"], accionSeleccionada: "", kilometraje: null, meses: 0 },
+    { nombre: "Revisión de frenos", accion: ["Revisar"], accionSeleccionada: "", kilometraje: null, meses: 0 },
+    { nombre: "Reemplazo de neumáticos", accion: ["Reemplazar"], accionSeleccionada: "", kilometraje: null, meses: 0 },
+    { nombre: "Revisión de tren delantero", accion: ["Revisar"], accionSeleccionada: "", kilometraje: null, meses: 0 },
+  ]
 
-  setActiveTab(tab: 'vehicle' | 'maintenance') {
-    this.activeTab = tab;
+  // Tab management methods
+  setActiveTab(tab: "vehicle" | "maintenance") {
+    this.activeTab = tab
   }
 
-  isBasicFormComplete(): boolean {
-    const c = this.camion;
-    return !!c.patente &&
-           !!c.tipoCamion &&
-           !!c.marca &&
-           !!c.modelo &&
-           !!c.anio &&
-           !!c.color &&
-           !!c.nroMotor &&
-           !!c.nroChasis &&
-           !!c.fabrica &&
-           !!c.procedencia &&
-           !!c.tipoSello &&
-           !!c.combustible &&
-           !!c.kilometraje &&
-           !!c.fRevisionTecnica;
-  }
-
-  areAllMaintenancesComplete(): boolean {
-    return this.mantenciones.every(m => m.accionSeleccionada && m.kilometraje);
-  }
-
+  // Get completed maintenances count
   getCompletedMaintenances(): number {
-    return this.mantenciones.filter(m => m.accionSeleccionada && m.kilometraje).length;
+    return this.mantenciones.filter((m) => m.accionSeleccionada && m.kilometraje !== null).length
   }
 
+  // Verificar si todas las mantenciones están completas
+  areAllMaintenancesComplete(): boolean {
+    return this.mantenciones.every((m) => m.accionSeleccionada && m.kilometraje !== null)
+  }
+
+  // Obtener mantenciones incompletas
+  getIncompleteMaintenances(): string[] {
+    return this.mantenciones.filter((m) => !m.accionSeleccionada || m.kilometraje === null).map((m) => m.nombre)
+  }
+
+  // Verificar si el formulario básico está completo
+  isBasicFormComplete(): boolean {
+    return !!(
+      this.camion.patente.trim() &&
+      this.camion.tipoCamion &&
+      this.camion.marca.trim() &&
+      this.camion.modelo.trim() &&
+      this.camion.anio &&
+      this.camion.color.trim() &&
+      this.camion.nroMotor.trim() &&
+      this.camion.nroChasis.trim() &&
+      this.camion.fabrica.trim() &&
+      this.camion.procedencia.trim() &&
+      this.camion.tipoSello &&
+      this.camion.combustible &&
+      this.camion.kilometraje &&
+      this.camion.fRevisionTecnica
+    )
+  }
+
+  // Verificar si se puede registrar el camión
   canRegisterTruck(): boolean {
-    return this.isBasicFormComplete() && this.areAllMaintenancesComplete();
+    return this.isBasicFormComplete() && this.areAllMaintenancesComplete()
   }
 
+  // Toast notification methods
+  showToastNotification(message: string, type: "success" | "error" = "success") {
+    this.toastMessage = message
+    this.toastType = type
+    this.showToast = true
+    setTimeout(() => {
+      this.showToast = false
+    }, 4000)
+  }
+
+  // Método con validaciones mejoradas
   enviarFormulario() {
-    if (!this.canRegisterTruck()) return;
+    // Validación de patente
+    if (!this.camion.patente.trim()) {
+      this.showToastNotification("La patente es obligatoria", "error")
+      this.setActiveTab("vehicle")
+      return
+    }
 
-    this.isSubmitting = true;
+    // Validación de formulario básico
+    if (!this.isBasicFormComplete()) {
+      this.showToastNotification("Por favor completa todos los campos del vehículo", "error")
+      this.setActiveTab("vehicle")
+      return
+    }
 
+    // Verificar mantenciones completas
+    if (!this.areAllMaintenancesComplete()) {
+      const incompleteMaintenances = this.getIncompleteMaintenances()
+      const completedCount = this.getCompletedMaintenances()
+      const totalCount = this.mantenciones.length
+      this.showToastNotification(
+        `Faltan ${totalCount - completedCount} mantenciones por completar: ${incompleteMaintenances.join(", ")}`,
+        "error",
+      )
+      this.setActiveTab("maintenance")
+      return
+    }
+
+    this.isSubmitting = true
+
+    // Construir el objeto con los nombres correctos para la interfaz Camion
     const datosCamion = {
       ...this.camion,
-      mantenciones: this.mantenciones,
-    };
+      mantenciones: this.mantenciones
+        .filter((m) => m.accionSeleccionada && m.kilometraje !== null)
+        .map((m) => {
+          const meses = m.meses ?? 0
+          return {
+            nombre: m.nombre,
+            accion: m.accionSeleccionada,
+            kilometraje: m.kilometraje,
+            meses,
+            proximoKilometraje: this.camion.kilometraje + Number(m.kilometraje),
+          }
+        }),
+    }
 
-    this.camionService.crearCamion(datosCamion as Camion).subscribe({
-      next: () => {
-        this.showToastMessage('Camión registrado exitosamente', 'success');
-        this.resetForm();
-        this.isSubmitting = false;
+    this.camionService.crearCamion(datosCamion as any).subscribe({
+      next: (respuesta) => {
+        this.showToastNotification("¡Camión registrado correctamente!", "success")
+        console.log(respuesta)
+        this.resetFormulario()
+        this.isSubmitting = false
       },
-      error: (err) => {
-        this.showToastMessage('Error al registrar camión: ' + this.obtenerMensajeError(err), 'error');
-        this.isSubmitting = false;
+      error: (error) => {
+        console.error("Error al guardar camión:", error)
+        this.showToastNotification("Error al guardar en la base de datos", "error")
+        this.isSubmitting = false
       },
-    });
+    })
   }
 
-  resetForm() {
-    this.camion = {};
-    this.mantenciones.forEach(m => {
-      delete m.accionSeleccionada;
-      delete m.kilometraje;
-      delete m.meses;
-    });
-    this.activeTab = 'vehicle';
-  }
+  resetFormulario() {
+    this.camion = {
+      patente: "",
+      tipoCamion: "",
+      marca: "",
+      modelo: "",
+      anio: 0,
+      color: "",
+      nroMotor: "",
+      nroChasis: "",
+      fabrica: "",
+      procedencia: "",
+      tipoSello: "",
+      combustible: "",
+      kilometraje: 0,
+      fRevisionTecnica: "",
+      estado: "ACTIVO"
+    }
 
-  showToastMessage(message: string, type: 'success' | 'error') {
-    this.toastMessage = message;
-    this.toastType = type;
-    this.showToast = true;
+    this.mantenciones = [
+      { nombre: "Aceite de motor", accion: ["Cambiar"], accionSeleccionada: "", kilometraje: null, meses: 0 },
+      { nombre: "Filtro de aire", accion: ["Limpiar", "Cambiar"], accionSeleccionada: "", kilometraje: null, meses: 0 },
+      { nombre: "Revisión de frenos", accion: ["Revisar"], accionSeleccionada: "", kilometraje: null, meses: 0 },
+      {
+        nombre: "Reemplazo de neumáticos",
+        accion: ["Reemplazar"],
+        accionSeleccionada: "",
+        kilometraje: null,
+        meses: 0,
+      },
+      {
+        nombre: "Revisión de tren delantero",
+        accion: ["Revisar"],
+        accionSeleccionada: "",
+        kilometraje: null,
+        meses: 0,
+      },
+    ]
 
-    setTimeout(() => (this.showToast = false), 4000);
-  }
-
-  obtenerMensajeError(error: any): string {
-    if (!error) return 'Error desconocido';
-    if (typeof error === 'string') return error;
-    if (error.message) return error.message;
-    if (error.error && typeof error.error === 'string') return error.error;
-    return 'Error inesperado';
+    // Reset to first tab
+    this.activeTab = "vehicle"
   }
 }

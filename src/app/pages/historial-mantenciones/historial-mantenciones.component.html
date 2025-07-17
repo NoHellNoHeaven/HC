@@ -65,7 +65,24 @@
 
   <!-- Lista de mantenciones -->
   <section class="mantenciones-section">
-    <div *ngIf="historialFiltrado.length > 0; else sinMantenciones" class="table-container">
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Cargando historial de mantenciones...</p>
+    </div>
+
+    <!-- Error state -->
+    <div *ngIf="error && !isLoading" class="error-container">
+      <div class="error-icon">⚠️</div>
+      <h3>Error al cargar el historial</h3>
+      <p>{{ error }}</p>
+      <button class="btn-reintentar" (click)="cargarHistorialCompleto()">
+        Reintentar
+      </button>
+    </div>
+
+    <!-- Data state -->
+    <div *ngIf="!isLoading && !error && historialFiltrado.length > 0; else sinMantenciones" class="table-container">
       <!-- Controles de ordenamiento -->
       <div class="table-controls">
         <div class="ordenamiento">
@@ -103,23 +120,31 @@
               <th class="col-kilometraje">
                 <span>Kilometraje de realización</span>
               </th>
+              <th class="col-acciones">
+                <span>Acciones</span>
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let mantencion of historialFiltrado" class="mantencion-row">
               <td class="col-fecha">
                 <div class="fecha-hora-cell">
-                  <div class="fecha">{{ mantencion.fecha.split(' ')[0] }}</div>
-                  <div class="hora">{{ mantencion.fecha.split(' ')[1] }}</div>
+                  <div class="fecha">{{ obtenerSoloFecha(mantencion.fechaRealizada) }}</div>
+                  <div class="hora">{{ obtenerSoloHora(mantencion.fechaRealizada) }}</div>
                 </div>
               </td>
-              <td class="col-camion">{{ mantencion.camion }}</td>
+              <td class="col-camion">{{ mantencion.camionMarca }} {{ mantencion.camionModelo }}</td>
               <td class="col-patente">
-                <span class="patente-badge">{{ mantencion.patente }}</span>
+                <span class="patente-badge">{{ mantencion.camionPatente }}</span>
               </td>
-              <td class="col-mantencion">{{ mantencion.nombre }}</td>
-              <td class="col-accion">{{ mantencion.accion }}</td>
-              <td class="col-kilometraje">{{ mantencion.kilometraje }} km</td>
+              <td class="col-mantencion">{{ mantencion.mantencionNombre }}</td>
+              <td class="col-accion">{{ mantencion.mantencionAccion }}</td>
+              <td class="col-kilometraje">{{ mantencion.kilometrajeRealizado }} km</td>
+              <td class="col-acciones">
+                <button class="btn-eliminar" (click)="eliminarRegistro(mantencion.id)" title="Eliminar registro">
+                  🗑️
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
