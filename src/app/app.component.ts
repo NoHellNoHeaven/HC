@@ -8,16 +8,25 @@ import dayGridPlugin from '@fullcalendar/daygrid';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, FullCalendarModule],
-  template: `<router-outlet></router-outlet>`,
+  template: `
+    <h1>Hello, {{ title }}</h1>
+    <router-outlet></router-outlet>
+  `,
 })
 export class AppComponent {
+  title = 'HC';
+
+  calendarOptions: CalendarOptions = {
+    initialView: 'dayGridMonth',
+    plugins: [dayGridPlugin],
+  };
+
   constructor() {
     this.cargarTemaGuardado(); // Aplica el tema al iniciar
   }
 
   cambiarTema(valor: 'light' | 'dark') {
     const html = document.documentElement;
-
     html.setAttribute('data-theme', valor);
     localStorage.setItem('theme', valor);
   }
@@ -26,9 +35,4 @@ export class AppComponent {
     const tema = (localStorage.getItem('theme') as 'light' | 'dark') || 'light';
     this.cambiarTema(tema);
   }
-
-  calendarOptions: CalendarOptions = {
-    initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin]
-  };
 }

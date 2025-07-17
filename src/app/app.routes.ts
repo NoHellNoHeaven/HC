@@ -15,7 +15,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { HistorialMantencionesComponent } from './pages/historial-mantenciones/historial-mantenciones.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'dashboard', component: DashboardComponent },

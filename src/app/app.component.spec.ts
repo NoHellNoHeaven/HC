@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent], // porque es standalone
     }).compileComponents();
   });
 
@@ -20,7 +20,7 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('HC');
   });
 
-  it('should render title', () => {
+  it('should render title in h1 tag', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;

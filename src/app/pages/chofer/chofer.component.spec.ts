@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChoferComponent } from './chofer.component';
+import { ChoferesComponent } from './chofer.component';
 
-describe('ChoferComponent', () => {
-  let component: ChoferComponent;
-  let fixture: ComponentFixture<ChoferComponent>;
+describe('ChoferesComponent', () => {
+  let component: ChoferesComponent;
+  let fixture: ComponentFixture<ChoferesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChoferComponent]
+      imports: [ChoferesComponent], // porque es standalone o componente
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ChoferComponent);
+    fixture = TestBed.createComponent(ChoferesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

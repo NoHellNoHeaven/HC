@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { MantencionesPendientesComponent } from './mantenciones-pendientes.component';
 
@@ -8,9 +9,11 @@ describe('MantencionesPendientesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MantencionesPendientesComponent]
-    })
-    .compileComponents();
+      imports: [
+        MantencionesPendientesComponent,
+        HttpClientTestingModule,  // Agregado para que funcione HttpClient en pruebas
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MantencionesPendientesComponent);
     component = fixture.componentInstance;
