@@ -149,7 +149,7 @@
   background: var(--primary-color, #4e8cff);
 }
 
-@media (max-width: 1290px) {
+@media (max-width: 1150px) {
   .navbar {
     padding: 0.3rem 0.7rem;
     min-height: 44px;
@@ -168,17 +168,35 @@
     top: 0;
     left: 0;
     height: 100vh;
-    width: 180px;
-    max-width: 70vw;
+    width: 280px;
+    max-width: 85vw;
     background: var(--card-background);
     box-shadow: 2px 0 16px 4px rgba(0,0,0,0.18), 0 8px 32px 0 rgba(0,0,0,0.25);
     z-index: 1020;
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(.4,0,.2,1);
-    padding-top: 70px;
+    padding: 0;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
     border-right: 2px solid #444c56;
+    justify-content: flex-start;
+  }
+  .menu-items-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 60px);
+    justify-content: stretch;
+    padding: 0;
+  }
+  .menu::before {
+    content: "Menú Principal";
+    display: block;
+    padding: 0.8rem 1.5rem 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-color, #4e8cff);
+    border-bottom: 2px solid #5a6472;
+    background: linear-gradient(135deg, var(--card-background) 0%, var(--background-color-focus) 100%);
   }
   .menu.open {
     transform: translateX(0);
@@ -195,14 +213,58 @@
     border-bottom: 1px solid #5a6472;
     margin: 0;
     padding: 0;
+    flex: 1;
+    display: flex;
+    min-height: 0;
   }
   .menu li:last-child {
     border-bottom: none;
   }
+  .menu li button {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 0;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    min-height: 0;
+    justify-content: flex-start;
+  }
+  .menu li button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  .menu li button:hover::before {
+    left: 100%;
+  }
+  .menu li button:hover {
+    background-color: var(--background-color-focus);
+    border-left-color: var(--primary-color, #4e8cff);
+    padding-left: 1.5rem;
+  }
+  .menu li button:active {
+    background-color: var(--primary-color, #4e8cff);
+    color: white;
+    transform: scale(0.98);
+  }
 }
 
 /* Para pantallas grandes */
-@media(min-width: 1290px) {
+@media(min-width: 1150px) {
   .hamburger {
     display: none;
   }
@@ -216,10 +278,29 @@
     box-shadow: none;
     z-index: auto;
     gap: 16px;
+    padding: 0;
+    border-right: none;
+    justify-content: flex-start;
+  }
+
+  .menu-items-container {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    justify-content: flex-start;
+    padding: 0;
+  }
+
+  .menu::before {
+    display: none;
   }
 
   .menu li {
     margin: 0;
+    border-bottom: none;
+    flex: none;
+    display: block;
+    min-height: auto;
   }
 
   .menu li button {
@@ -227,14 +308,59 @@
     color: var(--text-color);
     padding: 0.5rem 1rem;
     border-radius: 4px;
+    border-left: none;
+    gap: 0;
+    position: static;
+    overflow: visible;
+    height: auto;
+    min-height: auto;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: normal;
+  }
+
+  .menu li button::before {
+    display: none;
   }
 
   .menu li button:hover {
     background-color: var(--background-color-focus);
+    border-left-color: transparent;
+    padding-left: 1rem;
+    transform: none;
+  }
+
+  .menu li button:active {
+    background-color: var(--background-color-focus);
+    color: var(--text-color);
+    transform: none;
   }
 
   .overlay {
     display: none !important;
+  }
+
+  /* Ocultar elementos del sidebar en navbar horizontal */
+  .sidebar-only {
+    display: none !important;
+  }
+
+  /* Mostrar elementos del navbar horizontal */
+  .navbar-only {
+    display: block !important;
+  }
+}
+
+/* Para pantallas pequeñas (sidebar) */
+@media (max-width: 1150px) {
+  /* Ocultar elementos del navbar horizontal en sidebar */
+  .navbar-only {
+    display: none !important;
+  }
+
+  /* Mostrar elementos del sidebar */
+  .sidebar-only {
+    display: block !important;
   }
 }
 

@@ -6,26 +6,42 @@
   </button>
 
   <ul [class.open]="menuOpen" class="menu">
-    <ng-container *ngIf="usuario?.rol === 'Chofer'; else menuAdmin">
-      <li><button class="seleccion-vehiculo" (click)="navegar('/seleccion-vehiculo-chofer')">Selección de Vehículo</button></li>
-      <li><button class="configuraciones" (click)="navegar('/configuraciones')">Configuración</button></li>
-    </ng-container>
-    <ng-template #menuAdmin>
-      <li><button class="home" (click)="navegar('/home')">Home</button></li>
-      <li><button class="mantenciones-pendientes" (click)="navegar('/mantenciones-pendientes')">Mantenciones</button></li>
-      <li><button class="choferes" (click)="navegar('/choferes')">Choferes</button></li>
-      <li><button class="camiones" (click)="navegar('/camiones')">Registrar Camiones</button></li>
-      <li><button class="dashboard" (click)="navegar('/historial-mantenciones')">Historial de Mantenciones</button></li>
-      <li><button class="configuraciones" (click)="navegar('/configuraciones')">Configuración</button></li>
-    </ng-template>
+    <div class="menu-items-container">
+      <ng-container *ngIf="usuario?.rol === 'Chofer'; else menuAdmin">
+        <!-- Versión con iconos para sidebar -->
+        <li class="sidebar-only"><button class="seleccion-vehiculo" (click)="navegar('/seleccion-vehiculo-chofer')">🚗 Selección de Vehículo</button></li>
+        <li class="sidebar-only"><button class="configuraciones" (click)="navegar('/configuraciones')">⚙️ Configuración</button></li>
+        
+        <!-- Versión sin iconos para navbar horizontal -->
+        <li class="navbar-only"><button class="seleccion-vehiculo" (click)="navegar('/seleccion-vehiculo-chofer')">Selección de Vehículo</button></li>
+        <li class="navbar-only"><button class="configuraciones" (click)="navegar('/configuraciones')">Configuración</button></li>
+      </ng-container>
+      <ng-template #menuAdmin>
+        <!-- Versión con iconos para sidebar -->
+        <li class="sidebar-only"><button class="home" (click)="navegar('/home')">🏠 Home</button></li>
+        <li class="sidebar-only"><button class="mantenciones-pendientes" (click)="navegar('/mantenciones-pendientes')">🔧 Mantenciones</button></li>
+        <li class="sidebar-only"><button class="choferes" (click)="navegar('/choferes')">👨‍💼 Choferes</button></li>
+        <li class="sidebar-only"><button class="camiones" (click)="navegar('/camiones')">🚛 Registrar Camiones</button></li>
+        <li class="sidebar-only"><button class="dashboard" (click)="navegar('/historial-mantenciones')">📊 Historial de Mantenciones</button></li>
+        <li class="sidebar-only"><button class="configuraciones" (click)="navegar('/configuraciones')">⚙️ Configuración</button></li>
+        
+        <!-- Versión sin iconos para navbar horizontal -->
+        <li class="navbar-only"><button class="home" (click)="navegar('/home')">Home</button></li>
+        <li class="navbar-only"><button class="mantenciones-pendientes" (click)="navegar('/mantenciones-pendientes')">Mantenciones</button></li>
+        <li class="navbar-only"><button class="choferes" (click)="navegar('/choferes')">Choferes</button></li>
+        <li class="navbar-only"><button class="camiones" (click)="navegar('/camiones')">Registrar Camiones</button></li>
+        <li class="navbar-only"><button class="dashboard" (click)="navegar('/historial-mantenciones')">Historial de Mantenciones</button></li>
+        <li class="navbar-only"><button class="configuraciones" (click)="navegar('/configuraciones')">Configuración</button></li>
+      </ng-template>
+    </div>
   </ul>
 
-  <div class="user-info" *ngIf="isLoggedIn && usuario">
+  <div class="user-info" *ngIf="isLoggedIn && usuario && !menuOpen">
     <span class="user-name">{{ usuario.nombre }}</span>
     <span class="user-role">({{ usuario.rol }})</span>
     <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
   </div>
-  <div class="user-info" *ngIf="!isLoggedIn">
+  <div class="user-info" *ngIf="!isLoggedIn && !menuOpen">
     <button class="login-btn" (click)="login()">Login</button>
   </div>
 
